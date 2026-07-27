@@ -1,0 +1,17 @@
+{
+  "name": "quickindex",
+  "version": "0.1.0",
+  "description": "Phase 1 MVP - bulk URL indexing tool (IndexNow + Google Indexing API + status dashboard)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "better-sqlite3": "^11.3.0",
+    "node-fetch": "^2.7.0",
+    "uuid": "^9.0.1",
+    "googleapis": "^144.0.0"
+  }
+}

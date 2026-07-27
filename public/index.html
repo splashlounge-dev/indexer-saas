@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>QuickIndex — Submit URLs</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="ping-dot"></span>
+      <span class="brand-name">QuickIndex</span>
+    </div>
+    <div class="stats" id="stats">
+      <div class="stat"><span class="stat-value" id="statTotal">0</span><span class="stat-label">submitted</span></div>
+      <div class="stat"><span class="stat-value" id="statAccepted">0</span><span class="stat-label">accepted</span></div>
+      <div class="stat"><span class="stat-value" id="statSites">0</span><span class="stat-label">sites tracked</span></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel submit-panel">
+      <h1>Send your URLs down the wire.</h1>
+      <p class="sub">One notification, three engines listening — Bing, Yandex, DuckDuckGo. Paste one URL per line.</p>
+
+      <textarea id="urlInput" placeholder="https://example.com/new-page-1
+https://example.com/new-page-2
+https://example.com/blog/my-post"></textarea>
+
+      <div class="submit-row">
+        <button id="submitBtn">Submit URLs</button>
+        <span id="submitStatus" class="submit-status"></span>
+      </div>
+
+      <details class="honesty-note">
+        <summary>What this actually does (read before you rely on it)</summary>
+        <ul>
+          <li><strong>Covers:</strong> Bing, Yandex, DuckDuckGo — all support IndexNow natively.</li>
+          <li><strong>Does not cover Google.</strong> Google has no public instant-index API for ordinary pages. Keep submitting your sitemap in Search Console and build normal internal links — that's still what drives Google indexing.</li>
+          <li><strong>"Accepted" ≠ "indexed."</strong> A 200/202 response means the engine received the notification, not that the page is in the index yet. Indexing still depends on the page's own quality and crawlability.</li>
+          <li>No key file to upload — this tool hosts the IndexNow key for you automatically.</li>
+        </ul>
+      </details>
+    </section>
+
+    <section class="panel table-panel">
+      <h2>Recent submissions</h2>
+      <div class="table-wrap">
+        <table id="submissionsTable">
+          <thead>
+            <tr>
+              <th>URL</th>
+              <th>Host</th>
+              <th>Result</th>
+              <th>HTTP</th>
+              <th>Submitted</th>
+            </tr>
+          </thead>
+          <tbody id="submissionsBody">
+            <tr><td colspan="5" class="empty">No submissions yet — paste some URLs above.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
