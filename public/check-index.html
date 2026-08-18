@@ -188,12 +188,12 @@ https://example.com/blog/my-post"></textarea>
     <div class="drop" id="dropZone">
       <div class="drop-left">
         <span class="drop-icon">⇪</span>
-        <span class="drop-text"><b>Drop a file here</b> or click browse — .txt / .csv, one URL per line</span>
+        <span class="drop-text"><b>Drop a file here</b> or click browse — .txt, .csv or .xlsx, one URL per line (or any column)</span>
       </div>
       <div style="display:flex; align-items:center; gap:10px;">
         <span class="file-chip" id="fileChip"><span id="fileName"></span><button id="fileClear" title="Remove file">✕</button></span>
         <button class="file-btn" id="browseBtn" type="button">Browse file</button>
-        <input type="file" id="fileInput" accept=".txt,.csv">
+        <input type="file" id="fileInput" accept=".txt,.csv,.xlsx,.xls">
       </div>
     </div>
 
@@ -231,6 +231,7 @@ https://example.com/blog/my-post"></textarea>
 
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 const urlText = document.getElementById('urlText');
 const fileInput = document.getElementById('fileInput');
@@ -266,13 +267,39 @@ dropZone.addEventListener('drop', e => {
 });
 
 function readFile(file){
-  const reader = new FileReader();
-  reader.onload = () => {
-    uploadedFileText = reader.result;
-    fileName.textContent = file.name;
-    fileChip.style.display = 'inline-flex';
-  };
-  reader.readAsText(file);
+  const isExcel = /\.(xlsx|xls)$/i.test(file.name);
+
+  if (isExcel){
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        let allText = '';
+        workbook.SheetNames.forEach(sheetName => {
+          const sheet = workbook.Sheets[sheetName];
+          const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+          rows.forEach(row => { allText += row.join(' ') + '\n'; });
+        });
+        uploadedFileText = allText;
+        fileName.textContent = file.name;
+        fileChip.style.display = 'inline-flex';
+        progressText.textContent = '';
+      } catch(err){
+        progressText.textContent = 'Could not read that Excel file — try saving it as .csv instead.';
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  } else {
+    const reader = new FileReader();
+    reader.onload = () => {
+      uploadedFileText = reader.result;
+      fileName.textContent = file.name;
+      fileChip.style.display = 'inline-flex';
+      progressText.textContent = '';
+    };
+    reader.readAsText(file);
+  }
 }
 
 fileClear.addEventListener('click', () => {
