@@ -1,74 +1,380 @@
-// check-index-route.js
-// Add this route to your existing Express server (server.js / app.js)
-//
-// SETUP REQUIRED:
-// 1. Go to https://programmablesearchengine.google.com/ and create a Search Engine
-//    - Turn ON "Search the entire web"
-//    - Copy the "Search engine ID" (this is your CX)
-// 2. Go to https://console.cloud.google.com/apis/credentials
-//    - Enable "Custom Search API"
-//    - Create an API key
-// 3. Add these to your Railway environment variables:
-//    GOOGLE_API_KEY=your_api_key_here
-//    GOOGLE_CSE_ID=your_search_engine_id_here
-//
-// FREE TIER: 100 queries/day. Beyond that: $5 per 1000 queries (up to 10k/day).
-// For bulk checking, consider adding a simple in-memory or DB cache so the
-// same URL isn't queried twice in a short window.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickIndex — Bulk Index Checker</title>
+<style>
+  :root{
+    --bg:#0a0f0d;
+    --panel:#0f1613;
+    --border:#1c2622;
+    --border-soft:#182420;
+    --text:#e8f0ec;
+    --muted:#5f7a70;
+    --green:#3ddc84;
+    --green-dim:#1f6b45;
+    --red:#ff6b6b;
+    --amber:#e0a03c;
+    --mono:'JetBrains Mono','Fira Code',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--mono);
+    padding:0 20px 60px;
+  }
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:22px 4px;
+    border-bottom:1px solid var(--border);
+    max-width:1400px;
+    margin:0 auto;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);}
+  .stats{display:flex;gap:36px;}
+  .stat{text-align:right;}
+  .stat .num{color:var(--green);font-size:20px;font-weight:700;display:block;}
+  .stat .label{color:var(--muted);font-size:10px;letter-spacing:.08em;}
 
-const express = require('express');
-const router = express.Router();
+  .wrap{max-width:1400px;margin:0 auto;}
+  .card{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:34px;
+    margin-top:28px;
+  }
+  h1{font-size:26px;margin:0 0 8px;font-weight:700;}
+  .sub{color:var(--muted);font-size:13.5px;margin:0 0 22px;line-height:1.5;}
+  .sub b{color:var(--text);}
 
-const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
-const GOOGLE_CSE_ID = process.env.GOOGLE_CSE_ID;
+  textarea{
+    width:100%;
+    min-height:130px;
+    background:#0a0f0d;
+    border:1px solid var(--border);
+    border-radius:5px;
+    color:var(--green);
+    font-family:var(--mono);
+    font-size:13.5px;
+    padding:14px;
+    resize:vertical;
+  }
+  textarea::placeholder{color:#33443c;}
+  textarea:focus{outline:none;border-color:var(--green-dim);}
 
-// simple in-memory cache to avoid re-querying the same URL repeatedly (resets on restart)
-const cache = new Map();
-const CACHE_TTL_MS = 1000 * 60 * 60 * 6; // 6 hours
-
-router.post('/api/check-index', async (req, res) => {
-  const { url } = req.body;
-
-  if (!url || !/^https?:\/\//i.test(url)) {
-    return res.status(400).json({ error: 'Invalid URL' });
+  .drop{
+    margin-top:14px;
+    border:1px dashed var(--border);
+    border-radius:5px;
+    padding:18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    flex-wrap:wrap;
+    transition:border-color .15s;
+  }
+  .drop.drag{border-color:var(--green);background:#0c1512;}
+  .drop-left{display:flex;align-items:center;gap:12px;}
+  .drop-icon{color:var(--muted);font-size:18px;}
+  .drop-text{font-size:12.5px;color:var(--muted);}
+  .drop-text b{color:var(--text);}
+  .file-btn{
+    background:transparent;
+    border:1px solid var(--border);
+    color:var(--text);
+    padding:9px 16px;
+    border-radius:5px;
+    font-family:var(--mono);
+    font-size:12.5px;
+    cursor:pointer;
+  }
+  .file-btn:hover{border-color:var(--green-dim);}
+  #fileInput{display:none;}
+  .file-chip{
+    display:none;
+    align-items:center;
+    gap:8px;
+    background:#0a0f0d;
+    border:1px solid var(--green-dim);
+    padding:6px 10px;
+    border-radius:4px;
+    font-size:12px;
+    color:var(--green);
+  }
+  .file-chip button{
+    background:none;border:none;color:var(--muted);cursor:pointer;font-family:var(--mono);font-size:13px;
   }
 
-  const cached = cache.get(url);
-  if (cached && Date.now() - cached.time < CACHE_TTL_MS) {
-    return res.json({ url, indexed: cached.indexed, cached: true });
+  .actions{display:flex;align-items:center;gap:16px;margin-top:20px;flex-wrap:wrap;}
+  button.submit{
+    background:var(--green);
+    color:#08130d;
+    border:none;
+    padding:12px 26px;
+    font-weight:700;
+    font-family:var(--mono);
+    font-size:14px;
+    border-radius:5px;
+    cursor:pointer;
   }
+  button.submit:hover{background:#4ee897;}
+  button.submit:disabled{background:#1f6b45;color:#0a1a12;cursor:not-allowed;}
+  .progress-text{color:var(--muted);font-size:12.5px;}
 
-  if (!GOOGLE_API_KEY || !GOOGLE_CSE_ID) {
-    return res.status(500).json({ error: 'Google API credentials not configured' });
+  details{margin-top:22px;border-top:1px dashed var(--border-soft);padding-top:16px;}
+  summary{color:var(--amber);cursor:pointer;font-size:13px;list-style:none;}
+  summary::-webkit-details-marker{display:none;}
+  summary:before{content:"▶ ";}
+  details[open] summary:before{content:"▼ ";}
+  .details-body{color:var(--muted);font-size:12.5px;line-height:1.7;margin-top:10px;}
+
+  h2{font-size:16px;margin:0 0 18px;font-weight:700;}
+  .table-actions{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .dl-btn{
+    background:transparent;border:1px solid var(--border);color:var(--green);
+    padding:7px 14px;border-radius:5px;font-family:var(--mono);font-size:12px;cursor:pointer;
   }
+  .dl-btn:hover{border-color:var(--green-dim);}
+  .dl-btn:disabled{opacity:.4;cursor:not-allowed;}
 
-  try {
-    const query = `site:${url}`;
-    const apiUrl = `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_API_KEY}&cx=${GOOGLE_CSE_ID}&q=${encodeURIComponent(query)}`;
-
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-
-    if (data.error) {
-      // e.g. daily quota exceeded
-      return res.status(429).json({ url, indexed: null, error: data.error.message });
-    }
-
-    const indexed = !!(data.searchInformation && parseInt(data.searchInformation.totalResults, 10) > 0);
-
-    cache.set(url, { indexed, time: Date.now() });
-
-    res.json({ url, indexed });
-  } catch (err) {
-    console.error('check-index error:', err);
-    res.status(500).json({ url, indexed: null, error: 'Lookup failed' });
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{
+    text-align:left;color:var(--muted);font-weight:500;font-size:10.5px;
+    letter-spacing:.06em;padding:10px 8px;border-bottom:1px solid var(--border);
   }
+  td{padding:11px 8px;border-bottom:1px solid var(--border-soft);vertical-align:top;word-break:break-all;}
+  tr:last-child td{border-bottom:none;}
+  .url-cell{color:var(--text);max-width:340px;}
+  .host-cell{color:var(--muted);}
+  .badge{
+    display:inline-block;padding:3px 9px;border-radius:4px;font-size:11px;font-weight:700;
+  }
+  .badge.yes{background:rgba(61,220,132,.12);color:var(--green);}
+  .badge.no{background:rgba(255,107,107,.12);color:var(--red);}
+  .badge.err{background:rgba(224,160,60,.12);color:var(--amber);}
+  .badge.pending{background:rgba(95,122,112,.15);color:var(--muted);}
+  .empty{text-align:center;color:var(--muted);padding:40px 0;font-size:13px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand"><span class="dot"></span>QuickIndex</div>
+  <div class="stats">
+    <div class="stat"><span class="num" id="statSubmitted">0</span><span class="label">SUBMITTED</span></div>
+    <div class="stat"><span class="num" id="statIndexed">0</span><span class="label">INDEXED</span></div>
+    <div class="stat"><span class="num" id="statTracked">1</span><span class="label">SITES TRACKED</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h1>Check which pages are indexed.</h1>
+    <p class="sub">Paste URLs below, one per line — <b>or</b> upload a <b>.txt / .csv</b> file with one URL per line. Every URL gets checked against Google's index.</p>
+
+    <textarea id="urlText" placeholder="https://example.com/new-page-1
+https://example.com/new-page-2
+https://example.com/blog/my-post"></textarea>
+
+    <div class="drop" id="dropZone">
+      <div class="drop-left">
+        <span class="drop-icon">⇪</span>
+        <span class="drop-text"><b>Drop a file here</b> or click browse — .txt / .csv, one URL per line</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span class="file-chip" id="fileChip"><span id="fileName"></span><button id="fileClear" title="Remove file">✕</button></span>
+        <button class="file-btn" id="browseBtn" type="button">Browse file</button>
+        <input type="file" id="fileInput" accept=".txt,.csv">
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="submit" id="submitBtn">Check Index Status</button>
+      <span class="progress-text" id="progressText"></span>
+    </div>
+
+    <details>
+      <summary>What this actually does (read before you rely on it)</summary>
+      <div class="details-body">
+        Each URL is sent to a <code>site:</code> search query via the Google Custom Search API on the server.
+        A URL is marked <b>Indexed</b> if Google returns at least one result for that exact page, and
+        <b>Not indexed</b> if it returns zero. This reflects Google's index only — it does not check Bing,
+        Yandex, or DuckDuckGo, and it does not submit or request indexing on your behalf. The free tier
+        allows 100 lookups/day; if you go over quota, remaining URLs will show as an error rather than a result.
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <div class="table-actions">
+      <h2>Results</h2>
+      <button class="dl-btn" id="downloadBtn" disabled>⭳ Download CSV</button>
+    </div>
+    <table>
+      <thead>
+        <tr><th>URL</th><th>HOST</th><th>RESULT</th><th>CHECKED</th></tr>
+      </thead>
+      <tbody id="resultsBody">
+        <tr><td colspan="4"><div class="empty">No results yet — paste URLs or upload a file above.</div></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+const urlText = document.getElementById('urlText');
+const fileInput = document.getElementById('fileInput');
+const browseBtn = document.getElementById('browseBtn');
+const dropZone = document.getElementById('dropZone');
+const fileChip = document.getElementById('fileChip');
+const fileName = document.getElementById('fileName');
+const fileClear = document.getElementById('fileClear');
+const submitBtn = document.getElementById('submitBtn');
+const progressText = document.getElementById('progressText');
+const resultsBody = document.getElementById('resultsBody');
+const downloadBtn = document.getElementById('downloadBtn');
+const statSubmitted = document.getElementById('statSubmitted');
+const statIndexed = document.getElementById('statIndexed');
+
+let uploadedFileText = null;
+let results = [];
+
+browseBtn.addEventListener('click', () => fileInput.click());
+
+fileInput.addEventListener('change', () => {
+  if (fileInput.files.length) readFile(fileInput.files[0]);
 });
 
-module.exports = router;
+['dragover','dragenter'].forEach(evt =>
+  dropZone.addEventListener(evt, e => { e.preventDefault(); dropZone.classList.add('drag'); })
+);
+['dragleave','drop'].forEach(evt =>
+  dropZone.addEventListener(evt, e => { e.preventDefault(); dropZone.classList.remove('drag'); })
+);
+dropZone.addEventListener('drop', e => {
+  if (e.dataTransfer.files.length) readFile(e.dataTransfer.files[0]);
+});
 
-// In your main server.js, wire this up like:
-//
-// const checkIndexRoute = require('./check-index-route');
-// app.use(express.json());
-// app.use(checkIndexRoute);
+function readFile(file){
+  const reader = new FileReader();
+  reader.onload = () => {
+    uploadedFileText = reader.result;
+    fileName.textContent = file.name;
+    fileChip.style.display = 'inline-flex';
+  };
+  reader.readAsText(file);
+}
+
+fileClear.addEventListener('click', () => {
+  uploadedFileText = null;
+  fileInput.value = '';
+  fileChip.style.display = 'none';
+});
+
+function extractUrls(){
+  const combined = [urlText.value, uploadedFileText || ''].join('\n');
+  const urlRegex = /https?:\/\/[^\s,"'<>]+/gi;
+  const found = combined.match(urlRegex) || [];
+  return [...new Set(found.map(u => u.trim().replace(/[),.]+$/,'')))];
+}
+
+function hostOf(url){
+  try { return new URL(url).host; } catch(e){ return '—'; }
+}
+
+function renderResults(){
+  if (!results.length){
+    resultsBody.innerHTML = '<tr><td colspan="4"><div class="empty">No results yet — paste URLs or upload a file above.</div></td></tr>';
+    downloadBtn.disabled = true;
+    return;
+  }
+  resultsBody.innerHTML = results.map(r => {
+    let badge;
+    if (r.status === 'pending') badge = '<span class="badge pending">checking…</span>';
+    else if (r.status === 'error') badge = `<span class="badge err">error</span>`;
+    else if (r.indexed) badge = '<span class="badge yes">✓ Indexed</span>';
+    else badge = '<span class="badge no">✕ Not indexed</span>';
+    return `<tr>
+      <td class="url-cell">${r.url}</td>
+      <td class="host-cell">${hostOf(r.url)}</td>
+      <td>${badge}</td>
+      <td class="host-cell">${r.checkedAt || '—'}</td>
+    </tr>`;
+  }).join('');
+  downloadBtn.disabled = results.every(r => r.status === 'pending');
+}
+
+async function checkOne(url){
+  try {
+    const res = await fetch('/api/check-index', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ url })
+    });
+    const data = await res.json();
+    if (data.error) return { indexed:null, status:'error' };
+    return { indexed: data.indexed, status:'done' };
+  } catch(e){
+    return { indexed:null, status:'error' };
+  }
+}
+
+submitBtn.addEventListener('click', async () => {
+  const urls = extractUrls();
+  if (!urls.length){
+    progressText.textContent = 'Add at least one valid URL first.';
+    return;
+  }
+
+  results = urls.map(u => ({ url:u, status:'pending', indexed:null, checkedAt:null }));
+  renderResults();
+  statSubmitted.textContent = urls.length;
+
+  submitBtn.disabled = true;
+  let done = 0;
+  let indexedCount = 0;
+
+  for (let i = 0; i < results.length; i++){
+    progressText.textContent = `Checking ${i+1} of ${results.length}…`;
+    const outcome = await checkOne(results[i].url);
+    results[i].status = outcome.status;
+    results[i].indexed = outcome.indexed;
+    results[i].checkedAt = new Date().toLocaleTimeString();
+    if (outcome.indexed) indexedCount++;
+    done++;
+    statIndexed.textContent = indexedCount;
+    renderResults();
+  }
+
+  progressText.textContent = `Done — ${indexedCount} of ${done} indexed.`;
+  submitBtn.disabled = false;
+});
+
+downloadBtn.addEventListener('click', () => {
+  const rows = [['URL','Host','Result','Checked At']];
+  results.forEach(r => {
+    let res = 'error';
+    if (r.status === 'done') res = r.indexed ? 'Indexed' : 'Not indexed';
+    rows.push([r.url, hostOf(r.url), res, r.checkedAt || '']);
+  });
+  const csv = rows.map(row => row.map(cell => `"${String(cell).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type:'text/csv' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'index-check-results.csv';
+  link.click();
+});
+</script>
+
+</body>
+</html>
