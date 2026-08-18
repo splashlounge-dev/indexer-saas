@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://indexer-saas-production.up.railway.app/sitemap.xml
