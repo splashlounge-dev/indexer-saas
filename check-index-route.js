@@ -20,7 +20,15 @@ router.post('/api/check-index', async (req, res) => {
   }
 
   if (!GOOGLE_API_KEY || !GOOGLE_CSE_ID) {
-    return res.status(500).json({ error: 'Google API credentials not configured' });
+    console.error('check-index: missing credentials', {
+      hasKey: !!GOOGLE_API_KEY,
+      hasCseId: !!GOOGLE_CSE_ID,
+    });
+    return res.status(500).json({
+      url,
+      indexed: null,
+      error: 'Google API credentials not configured',
+    });
   }
 
   try {
@@ -30,18 +38,37 @@ router.post('/api/check-index', async (req, res) => {
     const response = await fetch(apiUrl);
     const data = await response.json();
 
-    if (data.error) {
-      return res.status(429).json({ url, indexed: null, error: data.error.message });
+    // Log the FULL raw response so we can see exactly what Google says
+    console.error('check-index: Google API raw response', {
+      httpStatus: response.status,
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok || data.error) {
+      const message = data.error?.message || `HTTP ${response.status}`;
+      const reason = data.error?.errors?.[0]?.reason || 'unknown_reason';
+      return res.status(response.status || 500).json({
+        url,
+        indexed: null,
+        error: message,
+        reason,
+      });
     }
 
-    const indexed = !!(data.searchInformation && parseInt(data.searchInformation.totalResults, 10) > 0);
+    const indexed = !!(
+      data.searchInformation &&
+      parseInt(data.searchInformation.totalResults, 10) > 0
+    );
 
     cache.set(url, { indexed, time: Date.now() });
-
     res.json({ url, indexed });
   } catch (err) {
-    console.error('check-index error:', err);
-    res.status(500).json({ url, indexed: null, error: 'Lookup failed' });
+    console.error('check-index: fetch/network error', err);
+    res.status(500).json({
+      url,
+      indexed: null,
+      error: err.message || 'Lookup failed',
+    });
   }
 });
 
