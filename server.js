@@ -19,6 +19,7 @@ const crypto = require("crypto");
 const Database = require("better-sqlite3");
 const fetch = require("node-fetch");
 const { v4: uuidv4 } = require("uuid");
+const checkIndexRoute = require("./check-index-route");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -29,6 +30,7 @@ const PUBLIC_BASE_URL = process.env.PUBLIC_BASE_URL || "http://localhost:3000";
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(checkIndexRoute);
 
 // ---------- Database ----------
 const db = new Database(path.join(__dirname, "quickindex.db"));
