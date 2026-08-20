@@ -1,321 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Check Indexability — Is My Page Eligible for Google Indexing? | QuickIndex</title>
-<meta name="description" content="Free indexability checker. Paste your URLs and instantly see if robots.txt, meta robots, X-Robots-Tag headers, or canonical tags are blocking Google from indexing your pages.">
-<link rel="icon" href="QI-favicon.ico" />
-<style>
-  :root{
-    --bg:#0a0f0d;
-    --panel:#0f1613;
-    --border:#1c2622;
-    --border-soft:#182420;
-    --text:#e8f0ec;
-    --muted:#5f7a70;
-    --green:#3ddc84;
-    --green-dim:#1f6b45;
-    --red:#ff6b6b;
-    --amber:#e0a03c;
-    --mono:'JetBrains Mono','Fira Code',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  }
-  *{box-sizing:border-box;}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--mono);padding:0 20px 60px;}
-  header{display:flex;align-items:center;justify-content:space-between;padding:22px 4px;border-bottom:1px solid var(--border);max-width:1400px;margin:0 auto;}
-  .brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;text-decoration:none;color:var(--text);}
-  .dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);}
-  .nav-links{display:flex;gap:22px;}
-  .nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;padding:6px 2px;border-bottom:2px solid transparent;transition:color .15s ease, border-color .15s ease;}
-  .nav-links a:hover{color:var(--text);}
-  .nav-links a.active{color:var(--green);border-bottom-color:var(--green);}
-  .wrap{max-width:1400px;margin:0 auto;}
-  .card{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:34px;margin-top:28px;}
-  h1{font-size:26px;margin:0 0 8px;font-weight:700;}
-  h2{font-size:16px;margin:0 0 18px;font-weight:700;}
-  h3{font-size:14px;margin:22px 0 8px;font-weight:700;color:var(--green);}
-  p{line-height:1.7;}
-  .sub{color:var(--muted);font-size:13.5px;margin:0 0 22px;line-height:1.5;}
-  .sub b{color:var(--text);}
-  textarea{width:100%;min-height:110px;background:#0a0f0d;border:1px solid var(--border);border-radius:5px;color:var(--green);font-family:var(--mono);font-size:13.5px;padding:14px;resize:vertical;}
-  textarea::placeholder{color:#33443c;}
-  textarea:focus{outline:none;border-color:var(--green-dim);}
-  .actions{display:flex;align-items:center;gap:16px;margin-top:20px;flex-wrap:wrap;}
-  button.submit{background:var(--green);color:#08130d;border:none;padding:12px 26px;font-weight:700;font-family:var(--mono);font-size:14px;border-radius:5px;cursor:pointer;}
-  button.submit:hover{background:#4ee897;}
-  button.submit:disabled{background:#1f6b45;color:#0a1a12;cursor:not-allowed;}
-  .progress-text{color:var(--muted);font-size:12.5px;}
-  details{margin-top:22px;border-top:1px dashed var(--border-soft);padding-top:16px;}
-  summary{color:var(--amber);cursor:pointer;font-size:13px;list-style:none;}
-  summary::-webkit-details-marker{display:none;}
-  summary:before{content:"▶ ";}
-  details[open] summary:before{content:"▼ ";}
-  .details-body{color:var(--muted);font-size:12.5px;line-height:1.7;margin-top:10px;}
-  .results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
-  .results-header h2{margin:0;}
-  button.export{background:transparent;color:var(--green);border:1px solid var(--green-dim);padding:8px 18px;font-weight:700;font-family:var(--mono);font-size:12.5px;border-radius:5px;cursor:pointer;display:flex;align-items:center;gap:6px;}
-  button.export:hover{background:rgba(61,220,132,.08);border-color:var(--green);}
-  button.export:disabled{opacity:.4;cursor:not-allowed;}
-  table{width:100%;border-collapse:collapse;font-size:13px;}
-  th{text-align:left;color:var(--muted);font-weight:500;font-size:10.5px;letter-spacing:.06em;padding:10px 8px;border-bottom:1px solid var(--border);}
-  td{padding:11px 8px;border-bottom:1px solid var(--border-soft);vertical-align:top;word-break:break-all;}
-  tr:last-child td{border-bottom:none;}
-  .url-cell{color:var(--text);max-width:300px;}
-  .badge{display:inline-block;padding:3px 9px;border-radius:4px;font-size:11px;font-weight:700;}
-  .badge.yes{background:rgba(61,220,132,.12);color:var(--green);}
-  .badge.no{background:rgba(255,107,107,.12);color:var(--red);}
-  .badge.maybe{background:rgba(224,160,60,.12);color:var(--amber);}
-  .badge.pending{background:rgba(95,122,112,.15);color:var(--muted);}
-  .reasons{color:var(--muted);font-size:11px;margin-top:4px;line-height:1.6;}
-  .reasons span{display:block;color:var(--amber);}
-  .empty{text-align:center;color:var(--muted);padding:40px 0;font-size:13px;}
-  .seo-card p{color:var(--muted);font-size:13.5px;}
-  .seo-card ul{color:var(--muted);font-size:13.5px;line-height:1.9;padding-left:20px;}
-  .seo-card li b{color:var(--text);}
-  .faq-item{border-bottom:1px solid var(--border-soft);padding:16px 0;}
-  .faq-item:last-child{border-bottom:none;}
-  .faq-item h3{margin-top:0;}
-  .faq-item p{margin:0;color:var(--muted);font-size:13.5px;}
-  footer{max-width:1400px;margin:40px auto 0;color:var(--muted);font-size:11.5px;text-align:center;padding-top:20px;border-top:1px solid var(--border);}
-</style>
-</head>
+  <meta name="google-site-verification" content="6Uj19hFgxnF86C_j0I3HnN858dXRzVyrCmK6NhcnpRQ" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuickIndex — Get Your URLs Indexed in Seconds</title>
+  <meta name="description" content="Submit URLs to Bing, Yandex, DuckDuckGo, and other search engines via IndexNow. Verify your domain, track submissions, and get crawlers moving fast." />
+  <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://indexer-saas-production.up.railway.app/" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="QI-favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="QI-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="QI-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="QI-apple-touch-icon.png" />
+</head> 
 <body>
-
-<header>
-  <a class="brand" href="https://indexer-saas-production.up.railway.app/"><span class="dot"></span>QuickIndex</a>
-  <nav class="nav-links">
-    <a href="https://indexer-saas-production.up.railway.app/">Submit URLs</a>
-    <a href="https://indexer-saas-production.up.railway.app/check-index.html" class="active">Check Indexability</a>
-  </nav>
-</header>
-
-<div class="wrap">
-  <div class="card">
-    <h1>Can Google actually index this page?</h1>
-    <p class="sub">Paste URLs below, one per line. We check <b>robots.txt</b>, <b>meta robots tags</b>, <b>X-Robots-Tag headers</b>, and <b>canonical tags</b> — the real reasons pages don't get indexed. 100% free, no API key, no daily limit.</p>
-
-    <textarea id="urlText" placeholder="https://example.com/page-1
-https://example.com/page-2"></textarea>
-
-    <div class="actions">
-      <button class="submit" id="submitBtn">Check Indexability</button>
-      <span class="progress-text" id="progressText"></span>
+  <div class="scanlines" aria-hidden="true"></div>
+  <header class="topbar">
+    <div class="brand">
+      <span class="ping-dot"></span>
+      <span class="brand-name">QuickIndex</span>
     </div>
-
-    <details>
-      <summary>What this actually does (read before you rely on it)</summary>
-      <div class="details-body">
-        This does <b>not</b> tell you whether Google has already indexed the page (that would require the
-        Search Console API, which needs domain ownership). Instead, it tells you whether the page is
-        <b>technically eligible</b> to be indexed right now — which is usually the more actionable question.
-        It checks: robots.txt rules, a <code>&lt;meta name="robots"&gt;</code> tag with "noindex", an
-        <code>X-Robots-Tag</code> HTTP header with "noindex", the page's HTTP status code, and whether its
-        canonical tag points somewhere else. If any of these block indexing, Google won't index the page no
-        matter how many times you submit it.
+    <div class="stats" id="stats">
+      <div class="stat"><span class="stat-value" id="statTotal">0</span><span class="stat-label">submitted</span></div>
+      <div class="stat"><span class="stat-value" id="statAccepted">0</span><span class="stat-label">accepted</span></div>
+      <div class="stat"><span class="stat-value" id="statSites">0</span><span class="stat-label">sites tracked</span></div>
+    </div>
+  </header>
+  <main>
+    <section class="panel submit-panel">
+      <h1>Send your URLs down the wire.</h1>
+      <p class="sub">One notification, three engines listening — Bing, Yandex, DuckDuckGo. Paste one URL per line.</p>
+      <textarea id="urlInput" placeholder="https://example.com/new-page-1
+https://example.com/new-page-2
+https://example.com/blog/my-post"></textarea>
+      <div class="submit-row">
+        <button id="submitBtn">Submit URLs</button>
+        <span id="submitStatus" class="submit-status"></span>
       </div>
-    </details>
-  </div>
-
-  <div class="card">
-    <div class="results-header">
-      <h2>Results</h2>
-      <button class="export" id="exportBtn" disabled>⬇ Export to Excel</button>
-    </div>
-    <table>
-      <thead>
-        <tr><th>URL</th><th>STATUS</th><th>VERDICT</th><th>DETAILS</th></tr>
-      </thead>
-      <tbody id="resultsBody">
-        <tr><td colspan="4"><div class="empty">No results yet — paste URLs above.</div></td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- SEO CONTENT SECTION -->
-  <div class="card seo-card">
-    <h2>Why check indexability instead of just checking if a page is indexed?</h2>
-    <p>
-      Most "index checkers" only tell you whether Google has already crawled and stored a URL — a status,
-      not a reason. That's a lagging signal: by the time a page shows as "not indexed," you've usually lost
-      days or weeks of potential traffic. Indexability checking answers a different, earlier question — is
-      this page even <b>allowed</b> to be indexed right now? If robots.txt, a noindex tag, or a bad canonical
-      is blocking it, submitting it to Search Console or waiting for a recrawl won't help until you fix the
-      underlying block.
-    </p>
-    <h3>What actually gets checked</h3>
-    <ul>
-      <li><b>robots.txt rules</b> — a disallow rule for the URL path silently stops crawlers before they ever load the page.</li>
-      <li><b>Meta robots tag</b> — a <code>&lt;meta name="robots" content="noindex"&gt;</code> tag in the page's <code>&lt;head&gt;</code> explicitly tells search engines to skip it.</li>
-      <li><b>X-Robots-Tag header</b> — the same noindex instruction, but sent at the HTTP header level, often missed because it's invisible in page source.</li>
-      <li><b>HTTP status code</b> — 4xx and 5xx responses, and redirect chains, all affect whether a URL is indexable.</li>
-      <li><b>Canonical tag</b> — if the page's canonical points to a different URL, Google is being told to index that URL instead, not this one.</li>
-    </ul>
-
-    <h3>Common reasons pages don't get indexed</h3>
-    <ul>
-      <li>A staging or dev noindex tag that was never removed after launch</li>
-      <li>A CMS or plugin default that sets noindex on new post types automatically</li>
-      <li>A robots.txt rule written for one folder that accidentally matches more URLs than intended</li>
-      <li>A self-referencing canonical tag pointing to the wrong parameter or trailing slash</li>
-      <li>Thin or duplicate content that Google chooses to crawl but not index (crawled — currently not indexed)</li>
-    </ul>
-
-    <h3>How to use the results</h3>
-    <p>
-      Run your most important pages — new blog posts, product pages, or anything that should be ranking but
-      isn't — through the checker above. Any page flagged "Not indexable" or "Likely blocked" has a specific,
-      fixable technical cause listed in the Details column. Fix that cause first, then request indexing again
-      in Google Search Console.
-    </p>
-  </div>
-
-  <div class="card seo-card">
-    <h2>Frequently asked questions</h2>
-    <div class="faq-item">
-      <h3>Does this tool confirm a page is indexed on Google right now?</h3>
-      <p>No. Confirming actual indexing status requires the Search Console API, which needs you to verify domain ownership. This tool checks eligibility — whether the page is technically allowed to be indexed — which you can check for any URL without owning the domain.</p>
-    </div>
-    <div class="faq-item">
-      <h3>Is there a limit on how many URLs I can check?</h3>
-      <p>No daily limit and no API key required. Paste as many URLs as you need, one per line.</p>
-    </div>
-    <div class="faq-item">
-      <h3>What's the difference between meta robots and X-Robots-Tag?</h3>
-      <p>Both send the same "noindex" instruction to search engines. Meta robots lives in the HTML head and only works on HTML pages. X-Robots-Tag is sent as an HTTP response header, so it can also block PDFs, images, and other non-HTML files — and it's easy to miss because it never shows up in page source.</p>
-    </div>
-    <div class="faq-item">
-      <h3>Can I export my results?</h3>
-      <p>Yes — once all URLs finish checking, use the "Export to Excel" button to download a full report with every field (robots.txt status, meta robots, X-Robots-Tag, canonical, redirects) as an .xlsx file.</p>
-    </div>
-  </div>
-</div>
-
-<footer>QuickIndex — free indexability &amp; indexing tools for SEOs.</footer>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script>
-const urlText = document.getElementById('urlText');
-const submitBtn = document.getElementById('submitBtn');
-const progressText = document.getElementById('progressText');
-const resultsBody = document.getElementById('resultsBody');
-const exportBtn = document.getElementById('exportBtn');
-
-let results = [];
-
-function extractUrls(){
-  const urlRegex = /https?:\/\/[^\s,"'<>]+/gi;
-  const found = urlText.value.match(urlRegex) || [];
-  return [...new Set(found.map(u => u.trim()))];
-}
-
-function verdictBadge(r){
-  if (r.status === 'pending') return '<span class="badge pending">checking…</span>';
-  if (r.status === 'error') return `<span class="badge maybe">error</span>`;
-  if (r.verdict === 'indexable') return '<span class="badge yes">✓ Indexable</span>';
-  if (r.verdict === 'likely_not_indexable') return '<span class="badge maybe">⚠ Likely blocked</span>';
-  return '<span class="badge no">✕ Not indexable</span>';
-}
-
-function verdictLabel(r){
-  if (r.status === 'pending') return 'Checking…';
-  if (r.status === 'error') return 'Error';
-  if (r.verdict === 'indexable') return 'Indexable';
-  if (r.verdict === 'likely_not_indexable') return 'Likely blocked';
-  return 'Not indexable';
-}
-
-function renderResults(){
-  if (!results.length){
-    resultsBody.innerHTML = '<tr><td colspan="4"><div class="empty">No results yet — paste URLs above.</div></td></tr>';
-    exportBtn.disabled = true;
-    return;
-  }
-  resultsBody.innerHTML = results.map(r => {
-    const reasonsHtml = (r.reasons && r.reasons.length)
-      ? `<div class="reasons">${r.reasons.map(x => `<span>• ${x}</span>`).join('')}</div>`
-      : (r.errorMessage || r.error ? `<div class="reasons"><span>${r.errorMessage || r.error}</span></div>` : '');
-    return `<tr>
-      <td class="url-cell">${r.url}</td>
-      <td>${r.httpStatus || '—'}</td>
-      <td>${verdictBadge(r)}</td>
-      <td>${reasonsHtml || '<span style="color:var(--muted)">No issues found</span>'}</td>
-    </tr>`;
-  }).join('');
-
-  const allDone = results.every(r => r.status !== 'pending');
-  exportBtn.disabled = !allDone;
-}
-
-async function checkOne(url){
-  try {
-    const res = await fetch('/api/check-index', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ url })
-    });
-    const data = await res.json();
-    if (!res.ok || data.error) {
-      return { status: 'error', errorMessage: data.error || `HTTP ${res.status}` };
-    }
-    return { status: 'done', ...data };
-  } catch(e){
-    return { status: 'error', errorMessage: e.message || 'Network error' };
-  }
-}
-
-submitBtn.addEventListener('click', async () => {
-  const urls = extractUrls();
-  if (!urls.length){
-    progressText.textContent = 'Add at least one valid URL first.';
-    return;
-  }
-
-  results = urls.map(u => ({ url: u, status: 'pending' }));
-  renderResults();
-  submitBtn.disabled = true;
-
-  for (let i = 0; i < results.length; i++){
-    progressText.textContent = `Checking ${i+1} of ${results.length}…`;
-    const outcome = await checkOne(results[i].url);
-    results[i] = { url: results[i].url, ...outcome };
-    renderResults();
-  }
-
-  progressText.textContent = `Done — checked ${results.length} URL(s).`;
-  submitBtn.disabled = false;
-});
-
-exportBtn.addEventListener('click', () => {
-  if (!results.length) return;
-
-  const rows = results.map(r => ({
-    URL: r.url,
-    'HTTP Status': r.httpStatus || '—',
-    Verdict: verdictLabel(r),
-    'Robots.txt Blocked': r.robotsTxtBlocked === true ? 'Yes' : (r.robotsTxtBlocked === false ? 'No' : '—'),
-    'Meta Robots': r.metaRobots || '—',
-    'X-Robots-Tag': r.xRobotsTag || '—',
-    'Canonical URL': r.canonical || '—',
-    'Canonical Mismatch': r.canonicalMismatch ? 'Yes' : 'No',
-    'Redirected': r.redirected ? 'Yes' : 'No',
-    'Final URL': r.finalUrl || '—',
-    Details: (r.reasons && r.reasons.length) ? r.reasons.join(' | ') : (r.errorMessage || r.error || 'No issues found'),
-  }));
-
-  const ws = XLSX.utils.json_to_sheet(rows);
-  ws['!cols'] = [
-    { wch: 40 }, { wch: 12 }, { wch: 16 }, { wch: 18 },
-    { wch: 20 }, { wch: 18 }, { wch: 40 }, { wch: 18 },
-    { wch: 12 }, { wch: 40 }, { wch: 50 },
-  ];
-
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, 'Indexability Results');
-
-  const timestamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
-  XLSX.writeFile(wb, `quickindex-results-${timestamp}.xlsx`);
-});
-</script>
-
+      <details class="honesty-note">
+        <summary>What this actually does (read before you rely on it)</summary>
+        <ul>
+          <li><strong>Covers:</strong> Bing, Yandex, DuckDuckGo — all support IndexNow natively.</li>
+          <li><strong>Does not cover Google.</strong> Google has no public instant-index API for ordinary pages. Keep submitting your sitemap in Search Console and build normal internal links — that's still what drives Google indexing.</li>
+          <li><strong>"Accepted" ≠ "indexed."</strong> A 200/202 response means the engine received the notification, not that the page is in the index yet. Indexing still depends on the page's own quality and crawlability.</li>
+          <li>No key file to upload — this tool hosts the IndexNow key for you automatically.</li>
+        </ul>
+      </details>
+    </section>
+    <section class="panel table-panel">
+      <h2>Recent submissions</h2>
+      <div class="table-wrap">
+        <table id="submissionsTable">
+          <thead>
+            <tr>
+              <th>URL</th>
+              <th>Host</th>
+              <th>Result</th>
+              <th>HTTP</th>
+              <th>Submitted</th>
+            </tr>
+          </thead>
+          <tbody id="submissionsBody">
+            <tr><td colspan="5" class="empty">No submissions yet — paste some URLs above.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script src="app.js"></script>
 </body>
 </html>
