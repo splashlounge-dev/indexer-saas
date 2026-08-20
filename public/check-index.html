@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QuickIndex — Indexability Checker</title>
+<title>Check Indexability — Is My Page Eligible for Google Indexing? | QuickIndex</title>
+<meta name="description" content="Free indexability checker. Paste your URLs and instantly see if robots.txt, meta robots, X-Robots-Tag headers, or canonical tags are blocking Google from indexing your pages.">
 <link rel="icon" href="QI-favicon.ico" />
 <style>
   :root{
@@ -22,7 +23,7 @@
   *{box-sizing:border-box;}
   body{margin:0;background:var(--bg);color:var(--text);font-family:var(--mono);padding:0 20px 60px;}
   header{display:flex;align-items:center;justify-content:space-between;padding:22px 4px;border-bottom:1px solid var(--border);max-width:1400px;margin:0 auto;}
-  .brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;}
+  .brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;text-decoration:none;color:var(--text);}
   .dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);}
   .nav-links{display:flex;gap:22px;}
   .nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;padding:6px 2px;border-bottom:2px solid transparent;transition:color .15s ease, border-color .15s ease;}
@@ -31,6 +32,9 @@
   .wrap{max-width:1400px;margin:0 auto;}
   .card{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:34px;margin-top:28px;}
   h1{font-size:26px;margin:0 0 8px;font-weight:700;}
+  h2{font-size:16px;margin:0 0 18px;font-weight:700;}
+  h3{font-size:14px;margin:22px 0 8px;font-weight:700;color:var(--green);}
+  p{line-height:1.7;}
   .sub{color:var(--muted);font-size:13.5px;margin:0 0 22px;line-height:1.5;}
   .sub b{color:var(--text);}
   textarea{width:100%;min-height:110px;background:#0a0f0d;border:1px solid var(--border);border-radius:5px;color:var(--green);font-family:var(--mono);font-size:13.5px;padding:14px;resize:vertical;}
@@ -47,7 +51,6 @@
   summary:before{content:"▶ ";}
   details[open] summary:before{content:"▼ ";}
   .details-body{color:var(--muted);font-size:12.5px;line-height:1.7;margin-top:10px;}
-  h2{font-size:16px;margin:0 0 18px;font-weight:700;}
   .results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
   .results-header h2{margin:0;}
   button.export{background:transparent;color:var(--green);border:1px solid var(--green-dim);padding:8px 18px;font-weight:700;font-family:var(--mono);font-size:12.5px;border-radius:5px;cursor:pointer;display:flex;align-items:center;gap:6px;}
@@ -66,15 +69,23 @@
   .reasons{color:var(--muted);font-size:11px;margin-top:4px;line-height:1.6;}
   .reasons span{display:block;color:var(--amber);}
   .empty{text-align:center;color:var(--muted);padding:40px 0;font-size:13px;}
+  .seo-card p{color:var(--muted);font-size:13.5px;}
+  .seo-card ul{color:var(--muted);font-size:13.5px;line-height:1.9;padding-left:20px;}
+  .seo-card li b{color:var(--text);}
+  .faq-item{border-bottom:1px solid var(--border-soft);padding:16px 0;}
+  .faq-item:last-child{border-bottom:none;}
+  .faq-item h3{margin-top:0;}
+  .faq-item p{margin:0;color:var(--muted);font-size:13.5px;}
+  footer{max-width:1400px;margin:40px auto 0;color:var(--muted);font-size:11.5px;text-align:center;padding-top:20px;border-top:1px solid var(--border);}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="brand"><span class="dot"></span>QuickIndex</div>
+  <a class="brand" href="https://indexer-saas-production.up.railway.app/"><span class="dot"></span>QuickIndex</a>
   <nav class="nav-links">
-    <a href="/index.html">Submit URLs</a>
-    <a href="/check-index.html" class="active">Check Indexability</a>
+    <a href="https://indexer-saas-production.up.railway.app/">Submit URLs</a>
+    <a href="https://indexer-saas-production.up.railway.app/check-index.html" class="active">Check Indexability</a>
   </nav>
 </header>
 
@@ -119,7 +130,67 @@ https://example.com/page-2"></textarea>
       </tbody>
     </table>
   </div>
+
+  <!-- SEO CONTENT SECTION -->
+  <div class="card seo-card">
+    <h2>Why check indexability instead of just checking if a page is indexed?</h2>
+    <p>
+      Most "index checkers" only tell you whether Google has already crawled and stored a URL — a status,
+      not a reason. That's a lagging signal: by the time a page shows as "not indexed," you've usually lost
+      days or weeks of potential traffic. Indexability checking answers a different, earlier question — is
+      this page even <b>allowed</b> to be indexed right now? If robots.txt, a noindex tag, or a bad canonical
+      is blocking it, submitting it to Search Console or waiting for a recrawl won't help until you fix the
+      underlying block.
+    </p>
+    <h3>What actually gets checked</h3>
+    <ul>
+      <li><b>robots.txt rules</b> — a disallow rule for the URL path silently stops crawlers before they ever load the page.</li>
+      <li><b>Meta robots tag</b> — a <code>&lt;meta name="robots" content="noindex"&gt;</code> tag in the page's <code>&lt;head&gt;</code> explicitly tells search engines to skip it.</li>
+      <li><b>X-Robots-Tag header</b> — the same noindex instruction, but sent at the HTTP header level, often missed because it's invisible in page source.</li>
+      <li><b>HTTP status code</b> — 4xx and 5xx responses, and redirect chains, all affect whether a URL is indexable.</li>
+      <li><b>Canonical tag</b> — if the page's canonical points to a different URL, Google is being told to index that URL instead, not this one.</li>
+    </ul>
+
+    <h3>Common reasons pages don't get indexed</h3>
+    <ul>
+      <li>A staging or dev noindex tag that was never removed after launch</li>
+      <li>A CMS or plugin default that sets noindex on new post types automatically</li>
+      <li>A robots.txt rule written for one folder that accidentally matches more URLs than intended</li>
+      <li>A self-referencing canonical tag pointing to the wrong parameter or trailing slash</li>
+      <li>Thin or duplicate content that Google chooses to crawl but not index (crawled — currently not indexed)</li>
+    </ul>
+
+    <h3>How to use the results</h3>
+    <p>
+      Run your most important pages — new blog posts, product pages, or anything that should be ranking but
+      isn't — through the checker above. Any page flagged "Not indexable" or "Likely blocked" has a specific,
+      fixable technical cause listed in the Details column. Fix that cause first, then request indexing again
+      in Google Search Console.
+    </p>
+  </div>
+
+  <div class="card seo-card">
+    <h2>Frequently asked questions</h2>
+    <div class="faq-item">
+      <h3>Does this tool confirm a page is indexed on Google right now?</h3>
+      <p>No. Confirming actual indexing status requires the Search Console API, which needs you to verify domain ownership. This tool checks eligibility — whether the page is technically allowed to be indexed — which you can check for any URL without owning the domain.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is there a limit on how many URLs I can check?</h3>
+      <p>No daily limit and no API key required. Paste as many URLs as you need, one per line.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What's the difference between meta robots and X-Robots-Tag?</h3>
+      <p>Both send the same "noindex" instruction to search engines. Meta robots lives in the HTML head and only works on HTML pages. X-Robots-Tag is sent as an HTTP response header, so it can also block PDFs, images, and other non-HTML files — and it's easy to miss because it never shows up in page source.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can I export my results?</h3>
+      <p>Yes — once all URLs finish checking, use the "Export to Excel" button to download a full report with every field (robots.txt status, meta robots, X-Robots-Tag, canonical, redirects) as an .xlsx file.</p>
+    </div>
+  </div>
 </div>
+
+<footer>QuickIndex — free indexability &amp; indexing tools for SEOs.</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
