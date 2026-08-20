@@ -19,148 +19,61 @@
     --mono:'JetBrains Mono','Fira Code',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   }
   *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
-    font-family:var(--mono);
-    padding:0 20px 60px;
-  }
-  header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:22px 4px;
-    border-bottom:1px solid var(--border);
-    max-width:1400px;
-    margin:0 auto;
-  }
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--mono);padding:0 20px 60px;}
+  header{display:flex;align-items:center;justify-content:space-between;padding:22px 4px;border-bottom:1px solid var(--border);max-width:1400px;margin:0 auto;}
   .brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;}
   .dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);}
   .stats{display:flex;gap:36px;}
   .stat{text-align:right;}
   .stat .num{color:var(--green);font-size:20px;font-weight:700;display:block;}
   .stat .label{color:var(--muted);font-size:10px;letter-spacing:.08em;}
-
   .wrap{max-width:1400px;margin:0 auto;}
-  .card{
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:6px;
-    padding:34px;
-    margin-top:28px;
-  }
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:34px;margin-top:28px;}
   h1{font-size:26px;margin:0 0 8px;font-weight:700;}
   .sub{color:var(--muted);font-size:13.5px;margin:0 0 22px;line-height:1.5;}
   .sub b{color:var(--text);}
-
-  textarea{
-    width:100%;
-    min-height:130px;
-    background:#0a0f0d;
-    border:1px solid var(--border);
-    border-radius:5px;
-    color:var(--green);
-    font-family:var(--mono);
-    font-size:13.5px;
-    padding:14px;
-    resize:vertical;
-  }
+  textarea{width:100%;min-height:130px;background:#0a0f0d;border:1px solid var(--border);border-radius:5px;color:var(--green);font-family:var(--mono);font-size:13.5px;padding:14px;resize:vertical;}
   textarea::placeholder{color:#33443c;}
   textarea:focus{outline:none;border-color:var(--green-dim);}
-
-  .drop{
-    margin-top:14px;
-    border:1px dashed var(--border);
-    border-radius:5px;
-    padding:18px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:14px;
-    flex-wrap:wrap;
-    transition:border-color .15s;
-  }
+  .drop{margin-top:14px;border:1px dashed var(--border);border-radius:5px;padding:18px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;transition:border-color .15s;}
   .drop.drag{border-color:var(--green);background:#0c1512;}
   .drop-left{display:flex;align-items:center;gap:12px;}
   .drop-icon{color:var(--muted);font-size:18px;}
   .drop-text{font-size:12.5px;color:var(--muted);}
   .drop-text b{color:var(--text);}
-  .file-btn{
-    background:transparent;
-    border:1px solid var(--border);
-    color:var(--text);
-    padding:9px 16px;
-    border-radius:5px;
-    font-family:var(--mono);
-    font-size:12.5px;
-    cursor:pointer;
-  }
+  .file-btn{background:transparent;border:1px solid var(--border);color:var(--text);padding:9px 16px;border-radius:5px;font-family:var(--mono);font-size:12.5px;cursor:pointer;}
   .file-btn:hover{border-color:var(--green-dim);}
   #fileInput{display:none;}
-  .file-chip{
-    display:none;
-    align-items:center;
-    gap:8px;
-    background:#0a0f0d;
-    border:1px solid var(--green-dim);
-    padding:6px 10px;
-    border-radius:4px;
-    font-size:12px;
-    color:var(--green);
-  }
-  .file-chip button{
-    background:none;border:none;color:var(--muted);cursor:pointer;font-family:var(--mono);font-size:13px;
-  }
-
+  .file-chip{display:none;align-items:center;gap:8px;background:#0a0f0d;border:1px solid var(--green-dim);padding:6px 10px;border-radius:4px;font-size:12px;color:var(--green);}
+  .file-chip button{background:none;border:none;color:var(--muted);cursor:pointer;font-family:var(--mono);font-size:13px;}
   .actions{display:flex;align-items:center;gap:16px;margin-top:20px;flex-wrap:wrap;}
-  button.submit{
-    background:var(--green);
-    color:#08130d;
-    border:none;
-    padding:12px 26px;
-    font-weight:700;
-    font-family:var(--mono);
-    font-size:14px;
-    border-radius:5px;
-    cursor:pointer;
-  }
+  button.submit{background:var(--green);color:#08130d;border:none;padding:12px 26px;font-weight:700;font-family:var(--mono);font-size:14px;border-radius:5px;cursor:pointer;}
   button.submit:hover{background:#4ee897;}
   button.submit:disabled{background:#1f6b45;color:#0a1a12;cursor:not-allowed;}
   .progress-text{color:var(--muted);font-size:12.5px;}
-
   details{margin-top:22px;border-top:1px dashed var(--border-soft);padding-top:16px;}
   summary{color:var(--amber);cursor:pointer;font-size:13px;list-style:none;}
   summary::-webkit-details-marker{display:none;}
   summary:before{content:"▶ ";}
   details[open] summary:before{content:"▼ ";}
   .details-body{color:var(--muted);font-size:12.5px;line-height:1.7;margin-top:10px;}
-
   h2{font-size:16px;margin:0 0 18px;font-weight:700;}
   .table-actions{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
-  .dl-btn{
-    background:transparent;border:1px solid var(--border);color:var(--green);
-    padding:7px 14px;border-radius:5px;font-family:var(--mono);font-size:12px;cursor:pointer;
-  }
+  .dl-btn{background:transparent;border:1px solid var(--border);color:var(--green);padding:7px 14px;border-radius:5px;font-family:var(--mono);font-size:12px;cursor:pointer;}
   .dl-btn:hover{border-color:var(--green-dim);}
   .dl-btn:disabled{opacity:.4;cursor:not-allowed;}
-
   table{width:100%;border-collapse:collapse;font-size:13px;}
-  th{
-    text-align:left;color:var(--muted);font-weight:500;font-size:10.5px;
-    letter-spacing:.06em;padding:10px 8px;border-bottom:1px solid var(--border);
-  }
+  th{text-align:left;color:var(--muted);font-weight:500;font-size:10.5px;letter-spacing:.06em;padding:10px 8px;border-bottom:1px solid var(--border);}
   td{padding:11px 8px;border-bottom:1px solid var(--border-soft);vertical-align:top;word-break:break-all;}
   tr:last-child td{border-bottom:none;}
   .url-cell{color:var(--text);max-width:340px;}
   .host-cell{color:var(--muted);}
-  .badge{
-    display:inline-block;padding:3px 9px;border-radius:4px;font-size:11px;font-weight:700;
-  }
+  .badge{display:inline-block;padding:3px 9px;border-radius:4px;font-size:11px;font-weight:700;}
   .badge.yes{background:rgba(61,220,132,.12);color:var(--green);}
   .badge.no{background:rgba(255,107,107,.12);color:var(--red);}
   .badge.err{background:rgba(224,160,60,.12);color:var(--amber);}
   .badge.pending{background:rgba(95,122,112,.15);color:var(--muted);}
+  .err-msg{color:var(--amber);font-size:11px;margin-top:4px;display:block;}
   .empty{text-align:center;color:var(--muted);padding:40px 0;font-size:13px;}
 </style>
 </head>
@@ -176,15 +89,12 @@
 </header>
 
 <div class="wrap">
-
   <div class="card">
     <h1>Check which pages are indexed.</h1>
     <p class="sub">Paste URLs below, one per line — <b>or</b> upload a <b>.txt / .csv</b> file with one URL per line. Every URL gets checked against Google's index.</p>
-
     <textarea id="urlText" placeholder="https://example.com/new-page-1
 https://example.com/new-page-2
 https://example.com/blog/my-post"></textarea>
-
     <div class="drop" id="dropZone">
       <div class="drop-left">
         <span class="drop-icon">⇪</span>
@@ -196,12 +106,10 @@ https://example.com/blog/my-post"></textarea>
         <input type="file" id="fileInput" accept=".txt,.csv,.xlsx,.xls">
       </div>
     </div>
-
     <div class="actions">
       <button class="submit" id="submitBtn">Check Index Status</button>
       <span class="progress-text" id="progressText"></span>
     </div>
-
     <details>
       <summary>What this actually does (read before you rely on it)</summary>
       <div class="details-body">
@@ -220,15 +128,12 @@ https://example.com/blog/my-post"></textarea>
       <button class="dl-btn" id="downloadBtn" disabled>⭳ Download CSV</button>
     </div>
     <table>
-      <thead>
-        <tr><th>URL</th><th>HOST</th><th>RESULT</th><th>CHECKED</th></tr>
-      </thead>
+      <thead><tr><th>URL</th><th>HOST</th><th>RESULT</th><th>CHECKED</th></tr></thead>
       <tbody id="resultsBody">
         <tr><td colspan="4"><div class="empty">No results yet — paste URLs or upload a file above.</div></td></tr>
       </tbody>
     </table>
   </div>
-
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -251,24 +156,13 @@ let uploadedFileText = null;
 let results = [];
 
 browseBtn.addEventListener('click', () => fileInput.click());
-
-fileInput.addEventListener('change', () => {
-  if (fileInput.files.length) readFile(fileInput.files[0]);
-});
-
-['dragover','dragenter'].forEach(evt =>
-  dropZone.addEventListener(evt, e => { e.preventDefault(); dropZone.classList.add('drag'); })
-);
-['dragleave','drop'].forEach(evt =>
-  dropZone.addEventListener(evt, e => { e.preventDefault(); dropZone.classList.remove('drag'); })
-);
-dropZone.addEventListener('drop', e => {
-  if (e.dataTransfer.files.length) readFile(e.dataTransfer.files[0]);
-});
+fileInput.addEventListener('change', () => { if (fileInput.files.length) readFile(fileInput.files[0]); });
+['dragover','dragenter'].forEach(evt => dropZone.addEventListener(evt, e => { e.preventDefault(); dropZone.classList.add('drag'); }));
+['dragleave','drop'].forEach(evt => dropZone.addEventListener(evt, e => { e.preventDefault(); dropZone.classList.remove('drag'); }));
+dropZone.addEventListener('drop', e => { if (e.dataTransfer.files.length) readFile(e.dataTransfer.files[0]); });
 
 function readFile(file){
   const isExcel = /\.(xlsx|xls)$/i.test(file.name);
-
   if (isExcel){
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -315,9 +209,7 @@ function extractUrls(){
   return [...new Set(found.map(u => u.trim().replace(/[),.]+$/,'')))];
 }
 
-function hostOf(url){
-  try { return new URL(url).host; } catch(e){ return '—'; }
-}
+function hostOf(url){ try { return new URL(url).host; } catch(e){ return '—'; } }
 
 function renderResults(){
   if (!results.length){
@@ -327,10 +219,16 @@ function renderResults(){
   }
   resultsBody.innerHTML = results.map(r => {
     let badge;
-    if (r.status === 'pending') badge = '<span class="badge pending">checking…</span>';
-    else if (r.status === 'error') badge = `<span class="badge err">error</span>`;
-    else if (r.indexed) badge = '<span class="badge yes">✓ Indexed</span>';
-    else badge = '<span class="badge no">✕ Not indexed</span>';
+    if (r.status === 'pending') {
+      badge = '<span class="badge pending">checking…</span>';
+    } else if (r.status === 'error') {
+      badge = `<span class="badge err">error</span>`;
+      if (r.errorMessage) badge += `<span class="err-msg">${r.errorMessage}</span>`;
+    } else if (r.indexed) {
+      badge = '<span class="badge yes">✓ Indexed</span>';
+    } else {
+      badge = '<span class="badge no">✕ Not indexed</span>';
+    }
     return `<tr>
       <td class="url-cell">${r.url}</td>
       <td class="host-cell">${hostOf(r.url)}</td>
@@ -349,10 +247,12 @@ async function checkOne(url){
       body: JSON.stringify({ url })
     });
     const data = await res.json();
-    if (data.error) return { indexed:null, status:'error' };
+    if (!res.ok || data.error) {
+      return { indexed: null, status: 'error', errorMessage: data.error || `HTTP ${res.status}` };
+    }
     return { indexed: data.indexed, status:'done' };
   } catch(e){
-    return { indexed:null, status:'error' };
+    return { indexed:null, status:'error', errorMessage: e.message || 'Network error' };
   }
 }
 
@@ -362,27 +262,24 @@ submitBtn.addEventListener('click', async () => {
     progressText.textContent = 'Add at least one valid URL first.';
     return;
   }
-
-  results = urls.map(u => ({ url:u, status:'pending', indexed:null, checkedAt:null }));
+  results = urls.map(u => ({ url:u, status:'pending', indexed:null, checkedAt:null, errorMessage:null }));
   renderResults();
   statSubmitted.textContent = urls.length;
-
   submitBtn.disabled = true;
   let done = 0;
   let indexedCount = 0;
-
   for (let i = 0; i < results.length; i++){
     progressText.textContent = `Checking ${i+1} of ${results.length}…`;
     const outcome = await checkOne(results[i].url);
     results[i].status = outcome.status;
     results[i].indexed = outcome.indexed;
+    results[i].errorMessage = outcome.errorMessage || null;
     results[i].checkedAt = new Date().toLocaleTimeString();
     if (outcome.indexed) indexedCount++;
     done++;
     statIndexed.textContent = indexedCount;
     renderResults();
   }
-
   progressText.textContent = `Done — ${indexedCount} of ${done} indexed.`;
   submitBtn.disabled = false;
 });
@@ -402,6 +299,5 @@ downloadBtn.addEventListener('click', () => {
   link.click();
 });
 </script>
-
 </body>
 </html>
