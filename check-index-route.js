@@ -38,7 +38,6 @@ router.post('/api/check-index', async (req, res) => {
     const response = await fetch(apiUrl);
     const data = await response.json();
 
-    // Log the FULL raw response so we can see exactly what Google says
     console.error('check-index: Google API raw response', {
       httpStatus: response.status,
       body: JSON.stringify(data),
