@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QuickIndex — Indexability Checker</title>
+<link rel="icon" href="QI-favicon.ico" />
 <style>
   :root{
     --bg:#0a0f0d;
@@ -23,6 +24,10 @@
   header{display:flex;align-items:center;justify-content:space-between;padding:22px 4px;border-bottom:1px solid var(--border);max-width:1400px;margin:0 auto;}
   .brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;}
   .dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);}
+  .nav-links{display:flex;gap:22px;}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;padding:6px 2px;border-bottom:2px solid transparent;transition:color .15s ease, border-color .15s ease;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-links a.active{color:var(--green);border-bottom-color:var(--green);}
   .wrap{max-width:1400px;margin:0 auto;}
   .card{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:34px;margin-top:28px;}
   h1{font-size:26px;margin:0 0 8px;font-weight:700;}
@@ -43,6 +48,11 @@
   details[open] summary:before{content:"▼ ";}
   .details-body{color:var(--muted);font-size:12.5px;line-height:1.7;margin-top:10px;}
   h2{font-size:16px;margin:0 0 18px;font-weight:700;}
+  .results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+  .results-header h2{margin:0;}
+  button.export{background:transparent;color:var(--green);border:1px solid var(--green-dim);padding:8px 18px;font-weight:700;font-family:var(--mono);font-size:12.5px;border-radius:5px;cursor:pointer;display:flex;align-items:center;gap:6px;}
+  button.export:hover{background:rgba(61,220,132,.08);border-color:var(--green);}
+  button.export:disabled{opacity:.4;cursor:not-allowed;}
   table{width:100%;border-collapse:collapse;font-size:13px;}
   th{text-align:left;color:var(--muted);font-weight:500;font-size:10.5px;letter-spacing:.06em;padding:10px 8px;border-bottom:1px solid var(--border);}
   td{padding:11px 8px;border-bottom:1px solid var(--border-soft);vertical-align:top;word-break:break-all;}
@@ -62,6 +72,10 @@
 
 <header>
   <div class="brand"><span class="dot"></span>QuickIndex</div>
+  <nav class="nav-links">
+    <a href="/index.html">Submit URLs</a>
+    <a href="/check-index.html" class="active">Check Indexability</a>
+  </nav>
 </header>
 
 <div class="wrap">
@@ -92,7 +106,10 @@ https://example.com/page-2"></textarea>
   </div>
 
   <div class="card">
-    <h2>Results</h2>
+    <div class="results-header">
+      <h2>Results</h2>
+      <button class="export" id="exportBtn" disabled>⬇ Export to Excel</button>
+    </div>
     <table>
       <thead>
         <tr><th>URL</th><th>STATUS</th><th>VERDICT</th><th>DETAILS</th></tr>
@@ -104,11 +121,13 @@ https://example.com/page-2"></textarea>
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 const urlText = document.getElementById('urlText');
 const submitBtn = document.getElementById('submitBtn');
 const progressText = document.getElementById('progressText');
 const resultsBody = document.getElementById('resultsBody');
+const exportBtn = document.getElementById('exportBtn');
 
 let results = [];
 
@@ -126,9 +145,18 @@ function verdictBadge(r){
   return '<span class="badge no">✕ Not indexable</span>';
 }
 
+function verdictLabel(r){
+  if (r.status === 'pending') return 'Checking…';
+  if (r.status === 'error') return 'Error';
+  if (r.verdict === 'indexable') return 'Indexable';
+  if (r.verdict === 'likely_not_indexable') return 'Likely blocked';
+  return 'Not indexable';
+}
+
 function renderResults(){
   if (!results.length){
     resultsBody.innerHTML = '<tr><td colspan="4"><div class="empty">No results yet — paste URLs above.</div></td></tr>';
+    exportBtn.disabled = true;
     return;
   }
   resultsBody.innerHTML = results.map(r => {
@@ -142,6 +170,9 @@ function renderResults(){
       <td>${reasonsHtml || '<span style="color:var(--muted)">No issues found</span>'}</td>
     </tr>`;
   }).join('');
+
+  const allDone = results.every(r => r.status !== 'pending');
+  exportBtn.disabled = !allDone;
 }
 
 async function checkOne(url){
@@ -181,6 +212,37 @@ submitBtn.addEventListener('click', async () => {
 
   progressText.textContent = `Done — checked ${results.length} URL(s).`;
   submitBtn.disabled = false;
+});
+
+exportBtn.addEventListener('click', () => {
+  if (!results.length) return;
+
+  const rows = results.map(r => ({
+    URL: r.url,
+    'HTTP Status': r.httpStatus || '—',
+    Verdict: verdictLabel(r),
+    'Robots.txt Blocked': r.robotsTxtBlocked === true ? 'Yes' : (r.robotsTxtBlocked === false ? 'No' : '—'),
+    'Meta Robots': r.metaRobots || '—',
+    'X-Robots-Tag': r.xRobotsTag || '—',
+    'Canonical URL': r.canonical || '—',
+    'Canonical Mismatch': r.canonicalMismatch ? 'Yes' : 'No',
+    'Redirected': r.redirected ? 'Yes' : 'No',
+    'Final URL': r.finalUrl || '—',
+    Details: (r.reasons && r.reasons.length) ? r.reasons.join(' | ') : (r.errorMessage || r.error || 'No issues found'),
+  }));
+
+  const ws = XLSX.utils.json_to_sheet(rows);
+  ws['!cols'] = [
+    { wch: 40 }, { wch: 12 }, { wch: 16 }, { wch: 18 },
+    { wch: 20 }, { wch: 18 }, { wch: 40 }, { wch: 18 },
+    { wch: 12 }, { wch: 40 }, { wch: 50 },
+  ];
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Indexability Results');
+
+  const timestamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+  XLSX.writeFile(wb, `quickindex-results-${timestamp}.xlsx`);
 });
 </script>
 
