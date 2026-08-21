@@ -12,8 +12,81 @@
 <meta property="og:title" content="Free Indexability Checker — QuickIndex">
 <meta property="og:description" content="Paste any URL and instantly see whether Google can actually index it. Checks robots.txt, meta robots, X-Robots-Tag, and canonical tags.">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="QuickIndex">
 <meta property="og:url" content="https://indexer-saas-production.up.railway.app/check-index.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Free Indexability Checker — QuickIndex">
+<meta name="twitter:description" content="Paste any URL and instantly see whether Google can actually index it. Checks robots.txt, meta robots, X-Robots-Tag, and canonical tags.">
 
+<!-- ============ SCHEMA: WebSite / Organization ============ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "QuickIndex",
+  "url": "https://indexer-saas-production.up.railway.app/",
+  "description": "A bulk URL indexing tool that submits pages to Bing, Yandex, and DuckDuckGo via the IndexNow protocol.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "QuickIndex"
+  }
+}
+</script>
+
+<!-- ============ SCHEMA: SoftwareApplication (this tool) ============ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "QuickIndex Indexability Checker",
+  "applicationCategory": "SEO Tool",
+  "operatingSystem": "Web",
+  "url": "https://indexer-saas-production.up.railway.app/check-index.html",
+  "description": "A free tool that checks whether a URL is technically eligible to be indexed by Google, scanning robots.txt rules, meta robots tags, X-Robots-Tag headers, and canonical tags.",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "QuickIndex",
+    "url": "https://indexer-saas-production.up.railway.app/"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "Robots.txt disallow/allow rule checking",
+    "Meta robots noindex detection",
+    "X-Robots-Tag HTTP header detection",
+    "Canonical tag mismatch detection",
+    "HTTP status and redirect tracking",
+    "Bulk URL checking with Excel export"
+  ]
+}
+</script>
+
+<!-- ============ SCHEMA: BreadcrumbList ============ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://indexer-saas-production.up.railway.app/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Check Indexability",
+      "item": "https://indexer-saas-production.up.railway.app/check-index.html"
+    }
+  ]
+}
+</script>
+
+<!-- ============ SCHEMA: FAQPage (AEO / GEO) ============ -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -71,6 +144,11 @@
   .nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;padding:6px 2px;border-bottom:2px solid transparent;transition:color .15s ease, border-color .15s ease;}
   .nav-links a:hover{color:var(--text);}
   .nav-links a.active{color:var(--text);border-bottom-color:var(--green);}
+  .breadcrumbs{max-width:1400px;margin:14px auto 0;padding:0 20px;}
+  .breadcrumbs ol{list-style:none;display:flex;gap:6px;margin:0;padding:0;font-size:12px;color:var(--muted);}
+  .breadcrumbs a{color:var(--muted);text-decoration:none;}
+  .breadcrumbs a:hover{color:var(--text);}
+  .breadcrumbs li:not(:last-child)::after{content:"/";margin-left:6px;color:var(--border);}
   .wrap{max-width:1400px;margin:0 auto;}
   .card{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:34px;margin-top:28px;}
   h1{font-size:26px;margin:0 0 8px;font-weight:700;}
@@ -128,10 +206,17 @@
 <header>
   <div class="brand"><a href="/index.html"><span class="dot"></span>QuickIndex</a></div>
   <nav class="nav-links" aria-label="Main navigation">
-    <a href="/index.html">Submit URLs to Search Engines</a>
-    <a href="/check-index.html" class="active">Check If a Page Is Indexable</a>
+    <a href="/index.html">Submit URLs</a>
+    <a href="/check-index.html" class="active">Check Indexability</a>
   </nav>
 </header>
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/index.html">Home</a></li>
+    <li aria-current="page">Check Indexability</li>
+  </ol>
+</nav>
 
 <div class="wrap">
   <div class="card">
