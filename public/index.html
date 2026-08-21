@@ -140,6 +140,7 @@
       <span class="brand-name">QuickIndex</span>
     </div>
     <nav class="main-nav" aria-label="Main navigation">
+      <a href="/index.html" class="nav-link active">Submit URLs</a>
       <a href="/check-index.html" class="nav-link" title="Check whether a page is eligible to be indexed">Check Indexability</a>
     </nav>
     <div class="stats" id="stats">
@@ -243,17 +244,21 @@ https://example.com/blog/my-post"></textarea>
   </main>
 
   <style>
-    .main-nav{display:flex;align-items:center;}
+    .main-nav{display:flex;align-items:center;gap:22px;}
     .main-nav .nav-link{
-      color:var(--green,#3ddc84);
+      color:var(--muted,#5f7a70);
       text-decoration:none;
       font-size:13px;
-      border:1px solid var(--border,#1c2622);
-      padding:8px 14px;
-      border-radius:5px;
-      transition:border-color .15s;
+      font-weight:600;
+      padding:6px 2px;
+      border-bottom:2px solid transparent;
+      transition:color .15s ease, border-color .15s ease;
     }
-    .main-nav .nav-link:hover{border-color:var(--green-dim,#1f6b45);}
+    .main-nav .nav-link:hover{color:var(--text,#e8f0ec);}
+    .main-nav .nav-link.active{
+      color:var(--text,#e8f0ec);
+      border-bottom-color:var(--green,#3ddc84);
+    }
     .breadcrumbs{max-width:1400px;margin:14px auto 0;padding:0 20px;}
     .breadcrumbs ol{list-style:none;display:flex;gap:6px;margin:0;padding:0;font-size:12px;color:var(--muted,#5f7a70);}
     .info-panel .steps-list{margin:0;padding-left:20px;line-height:1.8;color:var(--muted,#5f7a70);font-size:13.5px;}
