@@ -42,7 +42,7 @@
   "applicationCategory": "SEO Tool",
   "operatingSystem": "Web",
   "url": "https://indexer-saas-production.up.railway.app/check-index.html",
-  "description": "A free tool that checks whether a URL is technically eligible to be indexed by Google, scanning robots.txt rules, meta robots tags, X-Robots-Tag headers, and canonical tags.",
+  "description": "A free tool that checks whether a URL is technically eligible to be indexed by Google, scanning robots.txt rules, meta robots tags, X-Robots-Tag headers, and canonical tags, and shows the results in a signal-by-signal table.",
   "isPartOf": {
     "@type": "WebSite",
     "name": "QuickIndex",
@@ -59,6 +59,7 @@
     "X-Robots-Tag HTTP header detection",
     "Canonical tag mismatch detection",
     "HTTP status and redirect tracking",
+    "Signal-by-signal results table",
     "Bulk URL checking with Excel export"
   ]
 }
@@ -105,7 +106,7 @@
       "name": "Why isn't my page getting indexed by Google?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The most common reasons are a noindex tag in the page's meta robots or X-Robots-Tag header, a robots.txt rule blocking the URL, a canonical tag pointing to a different page, or the page returning a non-200 HTTP status. This tool checks all four automatically."
+        "text": "The most common reasons are a noindex tag in the page's meta robots or X-Robots-Tag header, a robots.txt rule blocking the URL, a canonical tag pointing to a different page, or the page returning a non-200 HTTP status. This tool checks all four automatically and lists them in the results table."
       }
     },
     {
@@ -114,6 +115,22 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "Yes. There's no API key, no account, and no daily limit on how many URLs you can check."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does the \"Likely blocked\" verdict mean?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "\"Likely blocked\" means the page passed some checks but tripped a signal that often, though not always, keeps a page out of the index — for example a soft redirect, a canonical pointing to a similar-but-different URL, or a robots.txt rule that only partially matches the path. Check the details column for the exact signal before assuming the page is fine."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to verify domain ownership to use this tool?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Because this tool only reads what's publicly available on the page and in robots.txt, you can check any URL, on any domain, without proving you own it. Ownership verification is only required for tools that read data out of Google's own index, like Search Console."
       }
     }
   ]
@@ -164,6 +181,15 @@
   button.submit:hover{background:#4ee897;}
   button.submit:disabled{background:#1f6b45;color:#0a1a12;cursor:not-allowed;}
   .progress-text{color:var(--muted);font-size:12.5px;}
+
+  /* live usage strip */
+  .live-strip{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin-top:18px;padding:12px 16px;border:1px solid var(--border-soft);border-radius:5px;background:rgba(61,220,132,.03);}
+  .live-stat{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);}
+  .live-stat b{color:var(--green);font-size:13.5px;font-weight:700;}
+  .live-pulse{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 1.8s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+  .live-strip.is-hidden{display:none;}
+
   details{margin-top:22px;border-top:1px dashed var(--border-soft);padding-top:16px;}
   summary{color:var(--amber);cursor:pointer;font-size:13px;list-style:none;}
   summary::-webkit-details-marker{display:none;}
@@ -193,6 +219,12 @@
   .info-item{border:1px solid var(--border-soft);border-radius:5px;padding:16px 18px;}
   .info-item p{color:var(--muted);font-size:12.5px;line-height:1.6;margin:0;}
 
+  /* signals reference table */
+  .signals-table td, .signals-table th{word-break:normal;}
+  .signals-table td.sig-name{color:var(--text);font-weight:700;white-space:nowrap;}
+  .signals-table td.sig-fix{color:var(--muted);}
+  code{background:#0a0f0d;border:1px solid var(--border-soft);border-radius:3px;padding:1px 5px;color:var(--green);font-size:.95em;}
+
   .faq-item{border-bottom:1px solid var(--border-soft);padding:16px 0;}
   .faq-item:last-child{border-bottom:none;}
   .faq-item p{color:var(--muted);font-size:13px;line-height:1.65;margin:6px 0 0;}
@@ -221,7 +253,7 @@
 <div class="wrap">
   <div class="card">
     <h1>Can Google actually index this page?</h1>
-    <p class="sub">Paste URLs below, one per line. We check <b>robots.txt</b>, <b>meta robots tags</b>, <b>X-Robots-Tag headers</b>, and <b>canonical tags</b> — the real reasons pages don't get indexed. 100% free, no API key, no daily limit.</p>
+    <p class="sub">Paste URLs below, one per line. We check <b>robots.txt</b>, <b>meta robots tags</b>, <b>X-Robots-Tag headers</b>, and <b>canonical tags</b> — the real reasons pages don't get indexed — and lay every signal out in a table below. 100% free, no API key, no daily limit.</p>
 
     <textarea id="urlText" placeholder="https://example.com/page-1
 https://example.com/page-2" aria-label="URLs to check"></textarea>
@@ -229,6 +261,12 @@ https://example.com/page-2" aria-label="URLs to check"></textarea>
     <div class="actions">
       <button class="submit" id="submitBtn">Check Indexability</button>
       <span class="progress-text" id="progressText"></span>
+    </div>
+
+    <div class="live-strip is-hidden" id="liveStrip">
+      <div class="live-stat"><span class="live-pulse"></span> Live now: <b id="liveNowStat">—</b></div>
+      <div class="live-stat">Checks today: <b id="checksTodayStat">—</b></div>
+      <div class="live-stat">URLs checked today: <b id="urlsTodayStat">—</b></div>
     </div>
 
     <details>
@@ -256,6 +294,43 @@ https://example.com/page-2" aria-label="URLs to check"></textarea>
       </thead>
       <tbody id="resultsBody">
         <tr><td colspan="4"><div class="empty">No results yet — paste URLs above.</div></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Indexability signals we check</h2>
+    <p class="sub">Every URL you paste is scored against these four signals. This is the same logic behind the verdicts in the results table above.</p>
+    <table class="signals-table">
+      <thead>
+        <tr><th>Signal</th><th>What it means</th><th>How to fix it</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="sig-name">robots.txt</td>
+          <td>A <code>Disallow</code> rule matches the page's path, so Google's crawler never fetches it.</td>
+          <td class="sig-fix">Remove or narrow the matching <code>Disallow</code> rule in robots.txt.</td>
+        </tr>
+        <tr>
+          <td class="sig-name">Meta robots</td>
+          <td><code>&lt;meta name="robots" content="noindex"&gt;</code> is present in the page's HTML.</td>
+          <td class="sig-fix">Delete the tag, or change <code>noindex</code> to <code>index</code>.</td>
+        </tr>
+        <tr>
+          <td class="sig-name">X-Robots-Tag</td>
+          <td>The HTTP response header sends <code>noindex</code> at the server level, outside the HTML.</td>
+          <td class="sig-fix">Update the server or CDN config that sets this response header.</td>
+        </tr>
+        <tr>
+          <td class="sig-name">Canonical</td>
+          <td>The <code>&lt;link rel="canonical"&gt;</code> tag names a different URL as the preferred version.</td>
+          <td class="sig-fix">Point the canonical at itself, or confirm the other URL really is the one you want indexed.</td>
+        </tr>
+        <tr>
+          <td class="sig-name">HTTP status</td>
+          <td>The page returns a redirect, 404, or server error instead of a 200 response.</td>
+          <td class="sig-fix">Fix the broken response, or check the redirect's final destination instead.</td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -290,7 +365,7 @@ https://example.com/page-2" aria-label="URLs to check"></textarea>
     </div>
     <div class="faq-item">
       <h3>Why isn't my page getting indexed by Google?</h3>
-      <p>The most common reasons are a noindex tag in the page's meta robots or X-Robots-Tag header, a robots.txt rule blocking the URL, a canonical tag pointing to a different page, or the page returning a non-200 HTTP status. This tool checks all four automatically.</p>
+      <p>The most common reasons are a noindex tag in the page's meta robots or X-Robots-Tag header, a robots.txt rule blocking the URL, a canonical tag pointing to a different page, or the page returning a non-200 HTTP status. This tool checks all four automatically and lists them in the results table.</p>
     </div>
     <div class="faq-item">
       <h3>Is this indexability checker free?</h3>
@@ -299,6 +374,14 @@ https://example.com/page-2" aria-label="URLs to check"></textarea>
     <div class="faq-item">
       <h3>Can I check more than one URL at once?</h3>
       <p>Yes — paste as many URLs as you want, one per line, and each one is checked individually. When results are ready, you can export the full table to an Excel file.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What does the "Likely blocked" verdict mean?</h3>
+      <p>It means the page passed some checks but tripped a signal that often, though not always, keeps a page out of the index — for example a soft redirect, a canonical pointing to a similar-but-different URL, or a robots.txt rule that only partially matches the path. Check the details column for the exact signal before assuming the page is fine.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Do I need to verify domain ownership to use this tool?</h3>
+      <p>No. Because this tool only reads what's publicly available on the page and in robots.txt, you can check any URL, on any domain, without proving you own it. Ownership verification is only required for tools that read data out of Google's own index, like Search Console.</p>
     </div>
   </div>
 </div>
@@ -314,6 +397,10 @@ const submitBtn = document.getElementById('submitBtn');
 const progressText = document.getElementById('progressText');
 const resultsBody = document.getElementById('resultsBody');
 const exportBtn = document.getElementById('exportBtn');
+const liveStrip = document.getElementById('liveStrip');
+const liveNowStat = document.getElementById('liveNowStat');
+const checksTodayStat = document.getElementById('checksTodayStat');
+const urlsTodayStat = document.getElementById('urlsTodayStat');
 
 let results = [];
 
@@ -398,6 +485,9 @@ submitBtn.addEventListener('click', async () => {
 
   progressText.textContent = `Done — checked ${results.length} URL(s).`;
   submitBtn.disabled = false;
+
+  // refresh live stats right after a batch finishes, so the strip reflects this run
+  refreshStats();
 });
 
 exportBtn.addEventListener('click', () => {
@@ -430,6 +520,38 @@ exportBtn.addEventListener('click', () => {
   const timestamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
   XLSX.writeFile(wb, `quickindex-results-${timestamp}.xlsx`);
 });
+
+/* ============ live usage widget ============
+   Registers this visit and polls a stats endpoint so the strip shows
+   today's checks and how many people are on the page right now.
+   Requires two backend endpoints that don't exist in this static file yet:
+     POST /api/track-visit  -> { ok: true }
+     GET  /api/stats        -> { liveNow, checksToday, urlsCheckedToday }
+   The widget hides itself silently if those endpoints aren't there yet,
+   so it's safe to ship before the backend work lands. */
+async function registerVisit(){
+  try {
+    await fetch('/api/track-visit', { method: 'POST' });
+  } catch(e){ /* non-fatal, stats just won't include this visit */ }
+}
+
+async function refreshStats(){
+  try {
+    const res = await fetch('/api/stats');
+    if (!res.ok) throw new Error('stats endpoint not available');
+    const data = await res.json();
+    liveNowStat.textContent = data.liveNow ?? '—';
+    checksTodayStat.textContent = data.checksToday ?? '—';
+    urlsTodayStat.textContent = data.urlsCheckedToday ?? '—';
+    liveStrip.classList.remove('is-hidden');
+  } catch(e){
+    liveStrip.classList.add('is-hidden');
+  }
+}
+
+registerVisit();
+refreshStats();
+setInterval(refreshStats, 20000);
 </script>
 
 </body>
