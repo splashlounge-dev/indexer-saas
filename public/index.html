@@ -140,7 +140,7 @@
       <span class="brand-name">QuickIndex</span>
     </div>
     <nav class="main-nav" aria-label="Main navigation">
-      <a href="https://indexer-saas-production.up.railway.app/" class="nav-link active">Submit URLs</a>
+      <a href="/index.html" class="nav-link active">Submit URLs</a>
       <a href="/check-index.html" class="nav-link" title="Check whether a page is eligible to be indexed">Check Indexability</a>
     </nav>
     <div class="stats" id="stats">
@@ -159,7 +159,7 @@
   <main>
     <section class="panel submit-panel">
       <h1>Send your URLs down the wire.</h1>
-      <p class="sub">One click, instant notification to every IndexNow-enabled search engine — so new pages get crawled in seconds, not weeks. Paste one URL per line.</p>
+      <p class="sub">One notification, three engines listening — Bing, Yandex, DuckDuckGo. Paste one URL per line.</p>
       <textarea id="urlInput" placeholder="https://example.com/new-page-1
 https://example.com/new-page-2
 https://example.com/blog/my-post"></textarea>
@@ -201,15 +201,10 @@ https://example.com/blog/my-post"></textarea>
     <section class="panel info-panel">
       <h2>How IndexNow submission works</h2>
       <ol class="steps-list">
-        <li><strong>Covers:</strong> Every major search engine that supports the IndexNow protocol.</li>
-        <li><strong>Does not cover Google.</strong> Google has no public instant-index API for ordinary pages. Keep submitting your sitemap in Search Console, maintain strong internal links, and follow standard SEO practices for Google.</li>
-        <li><strong>"Accepted" ≠ "indexed."</strong> A 200/202 response means the engine received the notification, not that the page is in the index yet. Indexing still depends on the page's own quality, crawlability, relevance, and technical SEO.</li>
-        <li><strong>Does not guarantee rankings.</strong> IndexNow helps search engines discover URL updates faster, but it does not guarantee higher rankings, search visibility, or traffic.</li>
-        <li><strong>SEO still matters.</strong> IndexNow does not replace technical SEO, helpful content, internal linking, canonical URLs, structured data, crawlability, or other search optimization practices.</li>
-        <li><strong>AEO is not guaranteed.</strong> IndexNow does not guarantee that your content will appear in featured answers, answer engines, AI-generated answers, or other answer-focused search experiences. Clear, well-structured, relevant answers are still important.</li>
-        <li><strong>GEO/AI visibility is not guaranteed.</strong> IndexNow does not guarantee that your pages will be cited, mentioned, or recommended by generative AI systems. Accurate, original, well-structured, and trustworthy content can help AI systems understand your website and its information.</li>
-        <li><strong>Faster discovery ≠ faster ranking.</strong> IndexNow can notify participating search engines about new, updated, or deleted URLs, but each search engine decides when and whether to crawl, index, and rank those URLs.</li>
-        <li><strong>No key file to upload.</strong> This tool hosts the IndexNow key for you automatically, so you do not need to manually upload a key file to your website.</li>
+        <li><strong>You paste URLs</strong> — one per line, straight from your sitemap, a blog post, or a batch of updated pages.</li>
+        <li><strong>QuickIndex pings IndexNow</strong> — a single API call reaches Bing, Yandex, and DuckDuckGo at once, telling them a page is new or has changed.</li>
+        <li><strong>Crawlers get notified within seconds</strong> — instead of waiting for their next scheduled crawl, these engines can visit the page right away.</li>
+        <li><strong>You track the result</strong> — every submission is logged with its HTTP status so you can see what was accepted.</li>
       </ol>
       <p class="sub">
         Already have a page you're not sure is eligible to be indexed at all? Use the
