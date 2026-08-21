@@ -3,24 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Check Indexability: Is My Page Eligible for Google Indexing?</title>
-<meta name="description" content="Free indexability checker to see if robots.txt, meta robots, X-Robots-Tag, or canonical tags are blocking Google from indexing your pages.">
-
-<!-- Search Engine Indexing -->
+<title>Free Indexability Checker — See Why Google Won't Index Your Page | QuickIndex</title>
+<meta name="description" content="Paste any URL and instantly see whether Google can actually index it. We check robots.txt, meta robots tags, X-Robots-Tag headers, and canonical tags — no API key, no sign-up, no daily limit.">
 <meta name="robots" content="index, follow">
-<meta name="googlebot" content="index, follow">
-
-<!-- Canonical URL -->
 <link rel="canonical" href="https://indexer-saas-production.up.railway.app/check-index.html">
-
-<!-- Stylesheet -->
-<link rel="stylesheet" href="style.css" />
-
-<!-- Favicons -->
 <link rel="icon" href="QI-favicon.ico" />
-<link rel="icon" type="image/png" sizes="32x32" href="QI-32x32.png" />
-<link rel="icon" type="image/png" sizes="16x16" href="QI-16x16.png" />
-<link rel="apple-touch-icon" sizes="180x180" href="QI-apple-touch-icon.png" />
+
+<meta property="og:title" content="Free Indexability Checker — QuickIndex">
+<meta property="og:description" content="Paste any URL and instantly see whether Google can actually index it. Checks robots.txt, meta robots, X-Robots-Tag, and canonical tags.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://indexer-saas-production.up.railway.app/check-index.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does this tool tell me if Google has already indexed my page?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Confirming that a page is already sitting in Google's index requires the Search Console API, which only works for domains you own and verify. This tool checks whether a page is technically eligible to be indexed right now — which is the part you can actually fix."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why isn't my page getting indexed by Google?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The most common reasons are a noindex tag in the page's meta robots or X-Robots-Tag header, a robots.txt rule blocking the URL, a canonical tag pointing to a different page, or the page returning a non-200 HTTP status. This tool checks all four automatically."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this indexability checker free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. There's no API key, no account, and no daily limit on how many URLs you can check."
+      }
+    }
+  ]
+}
+</script>
+
 <style>
   :root{
     --bg:#0a0f0d;
@@ -37,19 +63,19 @@
   }
   *{box-sizing:border-box;}
   body{margin:0;background:var(--bg);color:var(--text);font-family:var(--mono);padding:0 20px 60px;}
-  header{display:flex;align-items:center;justify-content:space-between;padding:22px 4px;border-bottom:1px solid var(--border);max-width:1400px;margin:0 auto;}
-  .brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;text-decoration:none;color:var(--text);}
+  header{display:flex;align-items:center;justify-content:space-between;padding:22px 4px;border-bottom:1px solid var(--border);max-width:1400px;margin:0 auto;flex-wrap:wrap;gap:14px;}
+  .brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;}
+  .brand a{color:var(--text);text-decoration:none;display:flex;align-items:center;gap:10px;}
   .dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);}
-  .nav-links{display:flex;gap:22px;}
+  .nav-links{display:flex;align-items:center;gap:22px;}
   .nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;padding:6px 2px;border-bottom:2px solid transparent;transition:color .15s ease, border-color .15s ease;}
   .nav-links a:hover{color:var(--text);}
-  .nav-links a.active{color:var(--green);border-bottom-color:var(--green);}
+  .nav-links a.active{color:var(--text);border-bottom-color:var(--green);}
   .wrap{max-width:1400px;margin:0 auto;}
   .card{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:34px;margin-top:28px;}
   h1{font-size:26px;margin:0 0 8px;font-weight:700;}
   h2{font-size:16px;margin:0 0 18px;font-weight:700;}
-  h3{font-size:14px;margin:22px 0 8px;font-weight:700;color:var(--green);}
-  p{line-height:1.7;}
+  h3{font-size:14.5px;margin:0 0 8px;font-weight:700;color:var(--text);}
   .sub{color:var(--muted);font-size:13.5px;margin:0 0 22px;line-height:1.5;}
   .sub b{color:var(--text);}
   textarea{width:100%;min-height:110px;background:#0a0f0d;border:1px solid var(--border);border-radius:5px;color:var(--green);font-family:var(--mono);font-size:13.5px;padding:14px;resize:vertical;}
@@ -66,7 +92,7 @@
   summary:before{content:"▶ ";}
   details[open] summary:before{content:"▼ ";}
   .details-body{color:var(--muted);font-size:12.5px;line-height:1.7;margin-top:10px;}
-  .results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+  .results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px;}
   .results-header h2{margin:0;}
   button.export{background:transparent;color:var(--green);border:1px solid var(--green-dim);padding:8px 18px;font-weight:700;font-family:var(--mono);font-size:12.5px;border-radius:5px;cursor:pointer;display:flex;align-items:center;gap:6px;}
   button.export:hover{background:rgba(61,220,132,.08);border-color:var(--green);}
@@ -84,23 +110,26 @@
   .reasons{color:var(--muted);font-size:11px;margin-top:4px;line-height:1.6;}
   .reasons span{display:block;color:var(--amber);}
   .empty{text-align:center;color:var(--muted);padding:40px 0;font-size:13px;}
-  .seo-card p{color:var(--muted);font-size:13.5px;}
-  .seo-card ul{color:var(--muted);font-size:13.5px;line-height:1.9;padding-left:20px;}
-  .seo-card li b{color:var(--text);}
+
+  .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:6px;}
+  .info-item{border:1px solid var(--border-soft);border-radius:5px;padding:16px 18px;}
+  .info-item p{color:var(--muted);font-size:12.5px;line-height:1.6;margin:0;}
+
   .faq-item{border-bottom:1px solid var(--border-soft);padding:16px 0;}
   .faq-item:last-child{border-bottom:none;}
-  .faq-item h3{margin-top:0;}
-  .faq-item p{margin:0;color:var(--muted);font-size:13.5px;}
-  footer{max-width:1400px;margin:40px auto 0;color:var(--muted);font-size:11.5px;text-align:center;padding-top:20px;border-top:1px solid var(--border);}
+  .faq-item p{color:var(--muted);font-size:13px;line-height:1.65;margin:6px 0 0;}
+
+  footer{max-width:1400px;margin:40px auto 0;padding-top:20px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;text-align:center;}
+  footer a{color:var(--muted);}
 </style>
 </head>
 <body>
 
 <header>
-  <a class="brand" href="https://indexer-saas-production.up.railway.app/"><span class="dot"></span>QuickIndex</a>
-  <nav class="nav-links">
-    <a href="https://indexer-saas-production.up.railway.app/">Submit URLs</a>
-    <a href="https://indexer-saas-production.up.railway.app/check-index.html" class="active">Check Indexability</a>
+  <div class="brand"><a href="/index.html"><span class="dot"></span>QuickIndex</a></div>
+  <nav class="nav-links" aria-label="Main navigation">
+    <a href="/index.html">Submit URLs to Search Engines</a>
+    <a href="/check-index.html" class="active">Check If a Page Is Indexable</a>
   </nav>
 </header>
 
@@ -110,7 +139,7 @@
     <p class="sub">Paste URLs below, one per line. We check <b>robots.txt</b>, <b>meta robots tags</b>, <b>X-Robots-Tag headers</b>, and <b>canonical tags</b> — the real reasons pages don't get indexed. 100% free, no API key, no daily limit.</p>
 
     <textarea id="urlText" placeholder="https://example.com/page-1
-https://example.com/page-2"></textarea>
+https://example.com/page-2" aria-label="URLs to check"></textarea>
 
     <div class="actions">
       <button class="submit" id="submitBtn">Check Indexability</button>
@@ -146,66 +175,52 @@ https://example.com/page-2"></textarea>
     </table>
   </div>
 
-  <!-- SEO CONTENT SECTION -->
-  <div class="card seo-card">
-    <h2>Why check indexability instead of just checking if a page is indexed?</h2>
-    <p>
-      Most "index checkers" only tell you whether Google has already crawled and stored a URL — a status,
-      not a reason. That's a lagging signal: by the time a page shows as "not indexed," you've usually lost
-      days or weeks of potential traffic. Indexability checking answers a different, earlier question — is
-      this page even <b>allowed</b> to be indexed right now? If robots.txt, a noindex tag, or a bad canonical
-      is blocking it, submitting it to Search Console or waiting for a recrawl won't help until you fix the
-      underlying block.
-    </p>
-    <h3>What actually gets checked</h3>
-    <ul>
-      <li><b>robots.txt rules</b> — a disallow rule for the URL path silently stops crawlers before they ever load the page.</li>
-      <li><b>Meta robots tag</b> — a <code>&lt;meta name="robots" content="noindex"&gt;</code> tag in the page's <code>&lt;head&gt;</code> explicitly tells search engines to skip it.</li>
-      <li><b>X-Robots-Tag header</b> — the same noindex instruction, but sent at the HTTP header level, often missed because it's invisible in page source.</li>
-      <li><b>HTTP status code</b> — 4xx and 5xx responses, and redirect chains, all affect whether a URL is indexable.</li>
-      <li><b>Canonical tag</b> — if the page's canonical points to a different URL, Google is being told to index that URL instead, not this one.</li>
-    </ul>
-
-    <h3>Common reasons pages don't get indexed</h3>
-    <ul>
-      <li>A staging or dev noindex tag that was never removed after launch</li>
-      <li>A CMS or plugin default that sets noindex on new post types automatically</li>
-      <li>A robots.txt rule written for one folder that accidentally matches more URLs than intended</li>
-      <li>A self-referencing canonical tag pointing to the wrong parameter or trailing slash</li>
-      <li>Thin or duplicate content that Google chooses to crawl but not index (crawled — currently not indexed)</li>
-    </ul>
-
-    <h3>How to use the results</h3>
-    <p>
-      Run your most important pages — new blog posts, product pages, or anything that should be ranking but
-      isn't — through the checker above. Any page flagged "Not indexable" or "Likely blocked" has a specific,
-      fixable technical cause listed in the Details column. Fix that cause first, then request indexing again
-      in Google Search Console.
-    </p>
+  <div class="card">
+    <h2>Why pages don't get indexed</h2>
+    <div class="info-grid">
+      <div class="info-item">
+        <h3>Blocked by robots.txt</h3>
+        <p>If a Disallow rule in your robots.txt file matches the page's path, Google's crawler won't fetch the page at all — so it can't be indexed, regardless of anything else on the page.</p>
+      </div>
+      <div class="info-item">
+        <h3>Noindex tag</h3>
+        <p>A <code>&lt;meta name="robots" content="noindex"&gt;</code> tag in the page's HTML, or an equivalent <code>X-Robots-Tag: noindex</code> HTTP header, tells Google directly to leave the page out of search results.</p>
+      </div>
+      <div class="info-item">
+        <h3>Canonical pointing elsewhere</h3>
+        <p>If the page's canonical tag names a different URL, Google treats that other URL as the "real" version and typically indexes it instead of the one you're checking.</p>
+      </div>
+      <div class="info-item">
+        <h3>Non-200 response</h3>
+        <p>Redirects, 404s, and server errors all prevent indexing of the original URL. A redirect isn't necessarily a problem — but it means the destination URL is what gets indexed, not the one you submitted.</p>
+      </div>
+    </div>
   </div>
 
-  <div class="card seo-card">
+  <div class="card">
     <h2>Frequently asked questions</h2>
     <div class="faq-item">
-      <h3>Does this tool confirm a page is indexed on Google right now?</h3>
-      <p>No. Confirming actual indexing status requires the Search Console API, which needs you to verify domain ownership. This tool checks eligibility — whether the page is technically allowed to be indexed — which you can check for any URL without owning the domain.</p>
+      <h3>Does this tool tell me if Google has already indexed my page?</h3>
+      <p>No. Confirming that a page is already sitting in Google's index requires the Search Console API, which only works for domains you own and verify. This tool checks whether a page is technically eligible to be indexed right now — which is the part you can actually fix.</p>
     </div>
     <div class="faq-item">
-      <h3>Is there a limit on how many URLs I can check?</h3>
-      <p>No daily limit and no API key required. Paste as many URLs as you need, one per line.</p>
+      <h3>Why isn't my page getting indexed by Google?</h3>
+      <p>The most common reasons are a noindex tag in the page's meta robots or X-Robots-Tag header, a robots.txt rule blocking the URL, a canonical tag pointing to a different page, or the page returning a non-200 HTTP status. This tool checks all four automatically.</p>
     </div>
     <div class="faq-item">
-      <h3>What's the difference between meta robots and X-Robots-Tag?</h3>
-      <p>Both send the same "noindex" instruction to search engines. Meta robots lives in the HTML head and only works on HTML pages. X-Robots-Tag is sent as an HTTP response header, so it can also block PDFs, images, and other non-HTML files — and it's easy to miss because it never shows up in page source.</p>
+      <h3>Is this indexability checker free?</h3>
+      <p>Yes. There's no API key, no account, and no daily limit on how many URLs you can check.</p>
     </div>
     <div class="faq-item">
-      <h3>Can I export my results?</h3>
-      <p>Yes — once all URLs finish checking, use the "Export to Excel" button to download a full report with every field (robots.txt status, meta robots, X-Robots-Tag, canonical, redirects) as an .xlsx file.</p>
+      <h3>Can I check more than one URL at once?</h3>
+      <p>Yes — paste as many URLs as you want, one per line, and each one is checked individually. When results are ready, you can export the full table to an Excel file.</p>
     </div>
   </div>
 </div>
 
-<footer>QuickIndex — free indexability &amp; indexing tools for SEOs.</footer>
+<footer>
+  <p>QuickIndex — <a href="/index.html">Submit URLs to Bing, Yandex &amp; DuckDuckGo</a> · <a href="/check-index.html">Check Indexability</a></p>
+</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
