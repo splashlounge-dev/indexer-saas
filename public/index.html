@@ -7,26 +7,154 @@
   <title>QuickIndex — Get Your URLs Indexed in Seconds</title>
   <meta name="description" content="Submit URLs to Bing, Yandex, DuckDuckGo, and other search engines via IndexNow. Verify your domain, track submissions, and get crawlers moving fast." />
   <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://indexer-saas-production.up.railway.app/" />
+  <link rel="canonical" href="https://indexer-saas-production.up.railway.app/" />
+
+  <!-- Open Graph / social -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="QuickIndex" />
+  <meta property="og:title" content="QuickIndex — Get Your URLs Indexed in Seconds" />
+  <meta property="og:description" content="Submit URLs to Bing, Yandex, DuckDuckGo, and other search engines via IndexNow. Verify your domain, track submissions, and get crawlers moving fast." />
+  <meta property="og:url" content="https://indexer-saas-production.up.railway.app/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="QuickIndex — Get Your URLs Indexed in Seconds" />
+  <meta name="twitter:description" content="Submit URLs to Bing, Yandex, DuckDuckGo via IndexNow in seconds. Free, fast, no fuss." />
+
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" href="QI-favicon.ico" />
   <link rel="icon" type="image/png" sizes="32x32" href="QI-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="QI-16x16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="QI-apple-touch-icon.png" />
-</head> 
+
+  <!-- ============ SCHEMA: WebSite / Organization ============ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "QuickIndex",
+    "url": "https://indexer-saas-production.up.railway.app/",
+    "description": "A bulk URL indexing tool that submits pages to Bing, Yandex, and DuckDuckGo via the IndexNow protocol.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "QuickIndex"
+    }
+  }
+  </script>
+
+  <!-- ============ SCHEMA: SoftwareApplication (the tool) ============ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "QuickIndex",
+    "applicationCategory": "SEO Tool",
+    "operatingSystem": "Web",
+    "url": "https://indexer-saas-production.up.railway.app/",
+    "description": "QuickIndex lets you submit URLs in bulk to Bing, Yandex, and DuckDuckGo through the IndexNow protocol, so crawlers are notified about new or updated pages within seconds instead of waiting for the next crawl cycle.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "Bulk URL submission via IndexNow",
+      "Automatic key hosting - no manual file upload required",
+      "Submission history and tracking",
+      "Coverage for Bing, Yandex, and DuckDuckGo",
+      "Free indexability checker for robots.txt, meta robots, and canonical issues"
+    ]
+  }
+  </script>
+
+  <!-- ============ SCHEMA: BreadcrumbList ============ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://indexer-saas-production.up.railway.app/"
+      }
+    ]
+  }
+  </script>
+
+  <!-- ============ SCHEMA: FAQPage (AEO / GEO) ============ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is QuickIndex?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "QuickIndex is a free tool that submits your URLs to Bing, Yandex, and DuckDuckGo using the IndexNow protocol, so those search engines are notified about new or changed pages within seconds instead of waiting to discover them on their own."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does QuickIndex submit URLs to Google?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Google does not participate in the IndexNow protocol and has no public instant-indexing API for ordinary web pages. To help Google index your pages, submit a sitemap through Google Search Console and use the URL Inspection tool to request indexing manually."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does an 'accepted' submission mean the page is indexed?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. An accepted submission means the search engine received your notification, not that the page has been added to its index. Whether a page actually gets indexed still depends on the page's own quality, crawlability, and the search engine's own policies."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to upload a key file to use QuickIndex?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "For sites you don't control, no manual upload is needed - QuickIndex routes those URLs through a discovery hub. If you want direct IndexNow submissions accepted for your own verified domain, QuickIndex generates a key and the exact key file to upload to your site's root."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is QuickIndex free to use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, QuickIndex is free to use for submitting URLs via IndexNow and for checking whether a page is technically eligible to be indexed."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
 <body>
   <div class="scanlines" aria-hidden="true"></div>
+
   <header class="topbar">
     <div class="brand">
       <span class="ping-dot"></span>
       <span class="brand-name">QuickIndex</span>
     </div>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="/check-index.html" class="nav-link" title="Check whether a page is eligible to be indexed">Check Indexability</a>
+    </nav>
     <div class="stats" id="stats">
       <div class="stat"><span class="stat-value" id="statTotal">0</span><span class="stat-label">submitted</span></div>
       <div class="stat"><span class="stat-value" id="statAccepted">0</span><span class="stat-label">accepted</span></div>
       <div class="stat"><span class="stat-value" id="statSites">0</span><span class="stat-label">sites tracked</span></div>
     </div>
   </header>
+
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ol>
+      <li aria-current="page">Home</li>
+    </ol>
+  </nav>
+
   <main>
     <section class="panel submit-panel">
       <h1>Send your URLs down the wire.</h1>
@@ -48,6 +176,7 @@ https://example.com/blog/my-post"></textarea>
         </ul>
       </details>
     </section>
+
     <section class="panel table-panel">
       <h2>Recent submissions</h2>
       <div class="table-wrap">
@@ -67,7 +196,77 @@ https://example.com/blog/my-post"></textarea>
         </table>
       </div>
     </section>
+
+    <section class="panel info-panel">
+      <h2>How IndexNow submission works</h2>
+      <ol class="steps-list">
+        <li><strong>You paste URLs</strong> — one per line, straight from your sitemap, a blog post, or a batch of updated pages.</li>
+        <li><strong>QuickIndex pings IndexNow</strong> — a single API call reaches Bing, Yandex, and DuckDuckGo at once, telling them a page is new or has changed.</li>
+        <li><strong>Crawlers get notified within seconds</strong> — instead of waiting for their next scheduled crawl, these engines can visit the page right away.</li>
+        <li><strong>You track the result</strong> — every submission is logged with its HTTP status so you can see what was accepted.</li>
+      </ol>
+      <p class="sub">
+        Already have a page you're not sure is eligible to be indexed at all? Use the
+        <a href="/check-index.html">Indexability Checker</a> to scan it for robots.txt blocks, noindex tags,
+        and canonical mismatches before you submit it.
+      </p>
+    </section>
+
+    <section class="panel faq-panel">
+      <h2>Frequently asked questions</h2>
+
+      <details class="faq-item">
+        <summary>What is QuickIndex?</summary>
+        <p>QuickIndex is a free tool that submits your URLs to Bing, Yandex, and DuckDuckGo using the IndexNow protocol, so those search engines are notified about new or changed pages within seconds instead of waiting to discover them on their own.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>Does QuickIndex submit URLs to Google?</summary>
+        <p>No. Google does not participate in the IndexNow protocol and has no public instant-indexing API for ordinary web pages. To help Google index your pages, submit a sitemap through Google Search Console and use the URL Inspection tool to request indexing manually.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>Does an "accepted" submission mean the page is indexed?</summary>
+        <p>No. An accepted submission means the search engine received your notification, not that the page has been added to its index. Whether a page actually gets indexed still depends on the page's own quality, crawlability, and the search engine's own policies.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>Do I need to upload a key file to use QuickIndex?</summary>
+        <p>For sites you don't control, no manual upload is needed — QuickIndex routes those URLs through a discovery hub. If you want direct IndexNow submissions accepted for your own verified domain, QuickIndex generates a key and the exact key file to upload to your site's root.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>Is QuickIndex free to use?</summary>
+        <p>Yes, QuickIndex is free to use for submitting URLs via IndexNow and for checking whether a page is technically eligible to be indexed.</p>
+      </details>
+    </section>
   </main>
+
+  <style>
+    .main-nav{display:flex;align-items:center;}
+    .main-nav .nav-link{
+      color:var(--green,#3ddc84);
+      text-decoration:none;
+      font-size:13px;
+      border:1px solid var(--border,#1c2622);
+      padding:8px 14px;
+      border-radius:5px;
+      transition:border-color .15s;
+    }
+    .main-nav .nav-link:hover{border-color:var(--green-dim,#1f6b45);}
+    .breadcrumbs{max-width:1400px;margin:14px auto 0;padding:0 20px;}
+    .breadcrumbs ol{list-style:none;display:flex;gap:6px;margin:0;padding:0;font-size:12px;color:var(--muted,#5f7a70);}
+    .info-panel .steps-list{margin:0;padding-left:20px;line-height:1.8;color:var(--muted,#5f7a70);font-size:13.5px;}
+    .info-panel .steps-list strong{color:var(--text,#e8f0ec);}
+    .info-panel a{color:var(--green,#3ddc84);}
+    .faq-panel .faq-item{border-top:1px dashed var(--border-soft,#182420);padding:14px 0;}
+    .faq-panel .faq-item summary{cursor:pointer;font-weight:600;color:var(--text,#e8f0ec);list-style:none;}
+    .faq-panel .faq-item summary::-webkit-details-marker{display:none;}
+    .faq-panel .faq-item summary:before{content:"▶ ";color:var(--amber,#e0a03c);}
+    .faq-panel .faq-item[open] summary:before{content:"▼ ";}
+    .faq-panel .faq-item p{color:var(--muted,#5f7a70);font-size:13.5px;line-height:1.7;margin:10px 0 0;}
+  </style>
+
   <script src="app.js"></script>
 </body>
 </html>
