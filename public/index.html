@@ -49,17 +49,17 @@
     "applicationCategory": "SEO Tool",
     "operatingSystem": "Web",
     "url": "https://indexer-saas-production.up.railway.app/",
-    "description": "QuickIndex lets you submit URLs in bulk and instantly notifies participating search engine crawlers via the IndexNow protocol, so new or updated pages can be discovered within seconds instead of waiting for the next scheduled crawl.",
+    "description": "QuickIndex lets you submit URLs in bulk — pasted or uploaded as a file — and instantly notifies participating search engine crawlers via the IndexNow protocol, so new or updated pages can be discovered within seconds instead of waiting for the next scheduled crawl.",
     "offers": {
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "USD"
     },
     "featureList": [
-      "Bulk URL submission with instant crawler notification",
+      "Bulk URL submission by pasting or uploading a file",
+      "Instant crawler notification with live per-submission timing",
       "Automatic key hosting - no manual file upload required",
-      "Submission history and real-time tracking",
-      "Domain verification for direct submissions",
+      "Real submission results with retry for failed items",
       "Free indexability checker for robots.txt, meta robots, and canonical issues"
     ]
   }
@@ -101,6 +101,14 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "No. An accepted submission means the notification was received, not that the page has already been added to a search index. Whether a page actually gets indexed still depends on the page's own quality, crawlability, and the search engine's own policies."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I upload a file instead of pasting URLs?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. QuickIndex accepts .txt, .csv, and .xlsx files with one URL per line or in any column, so you can submit large batches without pasting them manually."
         }
       },
       {
@@ -159,19 +167,37 @@
   <main>
     <section class="panel submit-panel">
       <h1>Send your URLs down the wire.</h1>
-      <p class="sub">One click, instant notification across the IndexNow network — so new pages get crawled in seconds, not weeks. Paste one URL per line.</p>
+      <p class="sub">One click, instant notification across the IndexNow network — so new pages get crawled in seconds, not weeks. Paste one URL per line, or upload a file below.</p>
       <textarea id="urlInput" placeholder="https://example.com/new-page-1
 https://example.com/new-page-2
 https://example.com/blog/my-post"></textarea>
+
+      <div class="drop" id="dropZone">
+        <div class="drop-left">
+          <span class="drop-icon">⇪</span>
+          <span class="drop-text"><b>Drop a file here</b> or click browse — .txt, .csv or .xlsx, one URL per line (or any column)</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span class="file-chip" id="fileChip"><span id="fileName"></span><button id="fileClear" title="Remove file">✕</button></span>
+          <button class="file-btn" id="browseBtn" type="button">Browse file</button>
+          <input type="file" id="fileInput" accept=".txt,.csv,.xlsx,.xls">
+        </div>
+      </div>
+
       <div class="submit-row">
         <button id="submitBtn">Submit URLs</button>
         <span id="submitStatus" class="submit-status"></span>
       </div>
+
+      <div id="liveProgress" class="live-progress" style="display:none;"></div>
+      <div id="resultSummary" class="result-summary" style="display:none;"></div>
+
       <details class="honesty-note">
         <summary>What this actually does (read before you rely on it)</summary>
         <ul>
           <li><strong>Instant notification:</strong> your URLs are pushed to every participating crawler in one call, the moment you submit.</li>
           <li><strong>"Accepted" ≠ "indexed."</strong> Acceptance means the notification was received, not that the page is in the index yet. Indexing still depends on the page's own quality and crawlability.</li>
+          <li><strong>One shared confirmation, not per-engine:</strong> the submission protocol returns a single accepted/rejected result for each host — it doesn't report back separately for each individual search engine.</li>
           <li>No key file to upload — this tool hosts the verification key for you automatically.</li>
         </ul>
       </details>
@@ -194,15 +220,15 @@ https://example.com/blog/my-post"></textarea>
         </div>
         <div class="benefit-card">
           <h3>Built for bulk</h3>
-          <p>Paste dozens of URLs at once, or upload a file — no need to submit pages one at a time.</p>
+          <p>Paste dozens of URLs at once, or upload a .txt, .csv, or .xlsx file — no need to submit pages one at a time.</p>
         </div>
         <div class="benefit-card">
-          <h3>Free to use</h3>
-          <p>Submitting URLs and checking indexability both come at no cost — no card, no subscription.</p>
+          <h3>Live, honest progress</h3>
+          <p>Watch each submission process in real time, with real results — not a fake progress bar that just tells you what you want to hear.</p>
         </div>
         <div class="benefit-card">
-          <h3>Know before you submit</h3>
-          <p>Run a page through the Indexability Checker first to catch robots.txt or noindex issues before they waste a submission.</p>
+          <h3>Retry what fails</h3>
+          <p>If any submission comes back rejected or errors out, retry just those — no need to resubmit everything.</p>
         </div>
       </div>
     </section>
@@ -230,10 +256,10 @@ https://example.com/blog/my-post"></textarea>
     <section class="panel info-panel">
       <h2>How instant submission works</h2>
       <ol class="steps-list">
-        <li><strong>You paste URLs</strong> — one per line, straight from your sitemap, a blog post, or a batch of updated pages.</li>
-        <li><strong>QuickIndex sends a single notification</strong> — one API call reaches every participating crawler at once, flagging the page as new or changed.</li>
+        <li><strong>You paste or upload URLs</strong> — one per line, straight from your sitemap, a blog post, a batch of updated pages, or a spreadsheet.</li>
+        <li><strong>QuickIndex sends a notification per host</strong> — each domain in your list gets its own real-time submission call, and you can watch it happen with a live timer.</li>
         <li><strong>Crawlers get notified within seconds</strong> — instead of waiting for a scheduled crawl, they can visit the page right away.</li>
-        <li><strong>You track the result</strong> — every submission is logged with its HTTP status so you can see what was accepted.</li>
+        <li><strong>You see the real result</strong> — accepted, rejected, or queued, exactly as the submission protocol reported it. Anything that fails can be retried with one click.</li>
       </ol>
       <p class="sub">
         Already have a page you're not sure is eligible to be indexed at all? Use the
@@ -253,6 +279,11 @@ https://example.com/blog/my-post"></textarea>
       <details class="faq-item">
         <summary>Does an "accepted" submission mean the page is indexed?</summary>
         <p>No. An accepted submission means the notification was received, not that the page has already been added to a search index. Whether a page actually gets indexed still depends on the page's own quality, crawlability, and the search engine's own policies.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>Can I upload a file instead of pasting URLs?</summary>
+        <p>Yes. QuickIndex accepts .txt, .csv, and .xlsx files with one URL per line or in any column, so you can submit large batches without pasting them manually.</p>
       </details>
 
       <details class="faq-item">
@@ -291,6 +322,92 @@ https://example.com/blog/my-post"></textarea>
     .breadcrumbs{max-width:1400px;margin:14px auto 0;padding:0 20px;}
     .breadcrumbs ol{list-style:none;display:flex;gap:6px;margin:0;padding:0;font-size:12px;color:var(--muted,#5f7a70);}
 
+    .drop{
+      margin-top:14px;
+      border:1px dashed var(--border,#1c2622);
+      border-radius:5px;
+      padding:18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      transition:border-color .15s;
+    }
+    .drop.drag{border-color:var(--green,#3ddc84);background:#0c1512;}
+    .drop-left{display:flex;align-items:center;gap:12px;}
+    .drop-icon{color:var(--muted,#5f7a70);font-size:18px;}
+    .drop-text{font-size:12.5px;color:var(--muted,#5f7a70);}
+    .drop-text b{color:var(--text,#e8f0ec);}
+    .file-btn{
+      background:transparent;
+      border:1px solid var(--border,#1c2622);
+      color:var(--text,#e8f0ec);
+      padding:9px 16px;
+      border-radius:5px;
+      font-family:inherit;
+      font-size:12.5px;
+      cursor:pointer;
+    }
+    .file-btn:hover{border-color:var(--green-dim,#1f6b45);}
+    #fileInput{display:none;}
+    .file-chip{
+      display:none;
+      align-items:center;
+      gap:8px;
+      background:var(--bg,#0a0f0d);
+      border:1px solid var(--green-dim,#1f6b45);
+      padding:6px 10px;
+      border-radius:4px;
+      font-size:12px;
+      color:var(--green,#3ddc84);
+    }
+    .file-chip button{
+      background:none;border:none;color:var(--muted,#5f7a70);cursor:pointer;font-size:13px;
+    }
+
+    .live-progress{
+      margin-top:16px;
+      border:1px solid var(--border,#1c2622);
+      border-radius:5px;
+      padding:14px;
+      background:var(--bg,#0a0f0d);
+      font-size:12.5px;
+    }
+    .live-progress .progress-row{
+      display:flex;
+      justify-content:space-between;
+      padding:6px 2px;
+      border-bottom:1px dashed var(--border-soft,#182420);
+      color:var(--muted,#5f7a70);
+    }
+    .live-progress .progress-row:last-child{border-bottom:none;}
+    .live-progress .progress-row .host{color:var(--text,#e8f0ec);}
+    .live-progress .progress-row .timer{font-variant-numeric:tabular-nums;}
+    .live-progress .progress-row.done .timer{color:var(--green,#3ddc84);}
+
+    .result-summary{
+      margin-top:16px;
+      border:1px solid var(--border,#1c2622);
+      border-radius:5px;
+      padding:16px;
+      background:var(--bg,#0a0f0d);
+    }
+    .result-summary .summary-line{font-size:14px;font-weight:700;color:var(--text,#e8f0ec);margin-bottom:10px;}
+    .result-summary .summary-line .accepted-count{color:var(--green,#3ddc84);}
+    .result-summary .retry-btn{
+      background:transparent;
+      border:1px solid var(--amber,#e0a03c);
+      color:var(--amber,#e0a03c);
+      padding:8px 16px;
+      border-radius:5px;
+      font-family:inherit;
+      font-size:12.5px;
+      cursor:pointer;
+      margin-top:8px;
+    }
+    .result-summary .retry-btn:hover{background:rgba(224,160,60,.1);}
+
     .benefits-panel h2{margin-bottom:20px;}
     .benefits-grid{
       display:grid;
@@ -327,6 +444,7 @@ https://example.com/blog/my-post"></textarea>
     .faq-panel .faq-item p{color:var(--muted,#5f7a70);font-size:13.5px;line-height:1.7;margin:10px 0 0;}
   </style>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
