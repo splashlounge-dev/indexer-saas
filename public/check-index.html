@@ -3,7 +3,124 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QuickIndex — Indexability Checker</title>
+<title>QuickIndex — Free Indexability Checker (robots.txt, noindex, canonical)</title>
+<meta name="description" content="Check whether a page is technically eligible to be indexed. Scans robots.txt, meta robots tags, X-Robots-Tag headers, and canonical tags — free, no API key, no daily limit.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://indexer-saas-production.up.railway.app/check-index.html">
+
+<!-- Open Graph / social -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="QuickIndex">
+<meta property="og:title" content="QuickIndex — Free Indexability Checker">
+<meta property="og:description" content="Check whether a page is technically eligible to be indexed. Scans robots.txt, meta robots tags, X-Robots-Tag headers, and canonical tags — free, no API key, no daily limit.">
+<meta property="og:url" content="https://indexer-saas-production.up.railway.app/check-index.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="QuickIndex — Free Indexability Checker">
+<meta name="twitter:description" content="Scan any page for robots.txt blocks, noindex tags, and canonical mismatches. Free, no limits.">
+
+<link rel="icon" href="QI-favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="QI-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="QI-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="QI-apple-touch-icon.png">
+
+<!-- ============ SCHEMA: SoftwareApplication (this tool) ============ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "QuickIndex Indexability Checker",
+  "applicationCategory": "SEO Tool",
+  "operatingSystem": "Web",
+  "url": "https://indexer-saas-production.up.railway.app/check-index.html",
+  "description": "A free tool that checks whether a page is technically eligible to be indexed by scanning robots.txt rules, meta robots tags, X-Robots-Tag HTTP headers, HTTP status codes, and canonical tags.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "Bulk URL checking by pasting or uploading a file",
+    "robots.txt rule evaluation",
+    "Meta robots noindex detection",
+    "X-Robots-Tag header detection",
+    "Canonical tag mismatch detection",
+    "CSV export of results"
+  ]
+}
+</script>
+
+<!-- ============ SCHEMA: BreadcrumbList ============ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://indexer-saas-production.up.railway.app/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Check Indexability",
+      "item": "https://indexer-saas-production.up.railway.app/check-index.html"
+    }
+  ]
+}
+</script>
+
+<!-- ============ SCHEMA: FAQPage (AEO / GEO) ============ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does 'indexable' mean?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A page is indexable when nothing is technically blocking a search engine from adding it to its index: it returns a successful HTTP status, robots.txt doesn't disallow it, there's no noindex meta tag or X-Robots-Tag header, and its canonical tag points to itself rather than another URL."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this tool tell me if my page is already indexed?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Checking whether a page has already been indexed requires access to a search engine's own index data, such as through Google Search Console. This tool instead checks eligibility - whether the page is technically allowed to be indexed right now, which is usually the more actionable question when a page isn't showing up in search."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a noindex tag and why does it block indexing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A noindex directive - set either as a meta robots tag in the page's HTML or as an X-Robots-Tag HTTP header - explicitly tells search engines not to include that page in their index. It's often left on by accident after a site migration or staging environment goes live."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why would a canonical tag block indexing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A canonical tag tells search engines which URL is the 'main' version of a page. If a page's canonical tag points to a different URL, search engines usually index that other URL instead and treat the current page as a duplicate, even if the content is unique."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this tool free to use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The indexability checker is completely free, requires no API key or account, and has no daily usage limit."
+      }
+    }
+  ]
+}
+</script>
+
 <style>
   :root{
     --bg:#0b0e16;
@@ -32,7 +149,9 @@
   .wrap{max-width:1400px;margin:0 auto;}
   .card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:34px;margin-top:28px;}
   h1{font-family:var(--display);font-size:26px;margin:0 0 8px;font-weight:700;}
-  .sub{color:var(--muted);font-size:13.5px;margin:0 0 22px;line-height:1.5;}
+  h2{font-family:var(--display);font-size:17px;margin:0 0 18px;font-weight:700;}
+  h3{font-family:var(--display);font-weight:700;font-size:14.5px;color:var(--accent);}
+  .sub{color:var(--muted);font-size:13.5px;margin:0 0 22px;line-height:1.6;}
   .sub b{color:var(--text);}
   .sub a{color:var(--accent);}
   textarea{width:100%;min-height:130px;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:var(--accent);font-family:var(--mono);font-size:13.5px;padding:14px;resize:vertical;}
@@ -60,16 +179,15 @@
   summary:before{content:"▶ ";}
   details[open] summary:before{content:"▼ ";}
   .details-body{color:var(--muted);font-size:12.5px;line-height:1.7;margin-top:10px;}
-  h2{font-family:var(--display);font-size:16px;margin:0 0 18px;font-weight:700;}
   .table-actions{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
   .dl-btn{background:transparent;border:1px solid var(--border);color:var(--accent);padding:7px 14px;border-radius:6px;font-family:var(--mono);font-size:12px;cursor:pointer;}
   .dl-btn:hover{border-color:var(--accent-dim);}
   .dl-btn:disabled{opacity:.4;cursor:not-allowed;}
   table{width:100%;border-collapse:collapse;font-size:13px;}
   th{text-align:left;color:var(--muted);font-weight:500;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:10px 8px;border-bottom:1px solid var(--border);}
-  td{padding:11px 8px;border-bottom:1px solid var(--border-soft);vertical-align:top;word-break:break-all;}
+  td{padding:11px 8px;border-bottom:1px solid var(--border-soft);vertical-align:top;word-break:break-word;}
   tr:last-child td{border-bottom:none;}
-  .url-cell{color:var(--text);max-width:340px;}
+  .url-cell{color:var(--text);max-width:340px;word-break:break-all;}
   .host-cell{color:var(--muted);}
   .badge{display:inline-block;padding:3px 9px;border-radius:5px;font-size:11px;font-weight:700;text-transform:uppercase;}
   .badge.yes{background:rgba(51,214,166,.12);color:var(--success);}
@@ -87,6 +205,29 @@
   .main-nav .nav-link.active{color:var(--text);border-bottom-color:var(--accent);}
   .breadcrumbs{max-width:1400px;margin:14px auto 0;padding:0 20px;}
   .breadcrumbs ol{list-style:none;display:flex;gap:6px;margin:0;padding:0;font-size:11.5px;color:var(--muted);}
+  .breadcrumbs a{color:var(--muted);text-decoration:none;}
+  .breadcrumbs a:hover{color:var(--accent);}
+
+  .checks-table th, .checks-table td{font-size:12.5px;}
+  .checks-table .signal-cell{color:var(--text);font-weight:600;}
+  .checks-table code{background:var(--bg);padding:2px 6px;border-radius:4px;color:var(--accent);font-size:11.5px;}
+
+  .faq-panel .faq-item{border-top:1px dashed var(--border-soft);padding:15px 0;margin:0;}
+  .faq-panel .faq-item summary{font-family:var(--display);font-weight:600;color:var(--text);}
+  .faq-panel .faq-item summary:before{color:var(--amber);}
+  .faq-panel .faq-item p{color:var(--muted);font-size:13.5px;line-height:1.75;margin:10px 0 0;}
+
+  .cta-box{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    border:1px solid var(--accent-dim);border-radius:8px;padding:18px 22px;
+    background:rgba(124,108,255,.06);margin-top:26px;
+  }
+  .cta-box p{margin:0;font-size:13px;color:var(--muted);}
+  .cta-box a.cta-link{
+    color:#0b0e16;background:var(--accent);text-decoration:none;font-family:var(--display);
+    font-weight:700;font-size:13px;padding:9px 18px;border-radius:6px;white-space:nowrap;
+  }
+  .cta-box a.cta-link:hover{background:#8f81ff;}
 </style>
 </head>
 <body>
@@ -101,7 +242,7 @@
 
 <nav class="breadcrumbs" aria-label="Breadcrumb">
   <ol>
-    <li><a href="/index.html" style="color:var(--muted);text-decoration:none;">Home</a></li>
+    <li><a href="/index.html">Home</a></li>
     <li>›</li>
     <li aria-current="page">Check Indexability</li>
   </ol>
@@ -109,8 +250,8 @@
 
 <div class="wrap">
   <div class="card">
-    <h1>Can Google actually index this page?</h1>
-    <p class="sub">Paste URLs below, one per line — <b>or</b> upload a <b>.txt / .csv</b> file with one URL per line. Every URL gets checked against Google's index.</p>
+    <h1>Can this page actually be indexed?</h1>
+    <p class="sub">Paste URLs below, one per line — <b>or</b> upload a <b>.txt / .csv / .xlsx</b> file with one URL per line. Each URL is scanned for the technical signals that determine whether a search engine is allowed to index it. Free, no API key, no daily limit.</p>
 
     <textarea id="urlText" placeholder="https://example.com/new-page-1
 https://example.com/new-page-2
@@ -133,16 +274,13 @@ https://example.com/blog/my-post"></textarea>
       <span class="progress-text" id="progressText"></span>
     </div>
 
-    <details>
-      <summary>What this actually does (read before you rely on it)</summary>
+    <details open>
+      <summary>What this actually checks (read before you rely on it)</summary>
       <div class="details-body">
-        This does <b>not</b> tell you whether Google has already indexed the page (that would require the
-        Search Console API, which needs domain ownership). Instead, it tells you whether the page is
-        <b>technically eligible</b> to be indexed right now — which is usually the more actionable question.
-        It checks: robots.txt rules, a <code>&lt;meta name="robots"&gt;</code> tag with "noindex", an
-        <code>X-Robots-Tag</code> HTTP header with "noindex", the page's HTTP status code, and whether its
-        canonical tag points somewhere else. If any of these block indexing, Google won't index the page no
-        matter how many times you submit it.
+        This does <b>not</b> tell you whether a search engine has already indexed the page — that requires
+        access to the search engine's own index data, such as Google Search Console. Instead, it tells you
+        whether the page is <b>technically eligible</b> to be indexed right now, which is usually the more
+        actionable question when a page isn't showing up in search results.
       </div>
     </details>
   </div>
@@ -160,6 +298,76 @@ https://example.com/blog/my-post"></textarea>
         <tr><td colspan="4"><div class="empty">No results yet — paste URLs or upload a file above.</div></td></tr>
       </tbody>
     </table>
+  </div>
+
+  <div class="card">
+    <h2>What gets checked, and why it matters</h2>
+    <table class="checks-table">
+      <thead>
+        <tr><th>Signal</th><th>What it means</th><th>If it blocks indexing</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="signal-cell">HTTP status code</td>
+          <td>Whether the page loads successfully (<code>200</code>) or returns an error/redirect.</td>
+          <td>A <code>4xx</code> or <code>5xx</code> status means there's no valid page to index at all.</td>
+        </tr>
+        <tr>
+          <td class="signal-cell">robots.txt</td>
+          <td>A file at your site's root that tells crawlers which paths they may or may not visit.</td>
+          <td>A <code>Disallow</code> rule matching the page's path stops crawlers from even fetching it.</td>
+        </tr>
+        <tr>
+          <td class="signal-cell">Meta robots tag</td>
+          <td>A <code>&lt;meta name="robots"&gt;</code> tag inside the page's own HTML.</td>
+          <td>A value containing <code>noindex</code> explicitly tells search engines to exclude the page.</td>
+        </tr>
+        <tr>
+          <td class="signal-cell">X-Robots-Tag header</td>
+          <td>The same kind of directive as meta robots, but sent as an HTTP response header instead.</td>
+          <td>Often missed because it's invisible in the page source — it only shows up in response headers.</td>
+        </tr>
+        <tr>
+          <td class="signal-cell">Canonical tag</td>
+          <td>A <code>&lt;link rel="canonical"&gt;</code> tag declaring which URL is the "main" version.</td>
+          <td>If it points to a different URL, search engines usually index that URL instead of this one.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card faq-panel">
+    <h2>Frequently asked questions</h2>
+
+    <details class="faq-item">
+      <summary>What does "indexable" mean?</summary>
+      <p>A page is indexable when nothing is technically blocking a search engine from adding it to its index: it returns a successful HTTP status, robots.txt doesn't disallow it, there's no noindex meta tag or X-Robots-Tag header, and its canonical tag points to itself rather than another URL.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>Does this tool tell me if my page is already indexed?</summary>
+      <p>No. Checking whether a page has already been indexed requires access to a search engine's own index data, such as through Google Search Console. This tool instead checks eligibility — whether the page is technically allowed to be indexed right now, which is usually the more actionable question when a page isn't showing up in search.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>What is a noindex tag and why does it block indexing?</summary>
+      <p>A noindex directive — set either as a meta robots tag in the page's HTML or as an X-Robots-Tag HTTP header — explicitly tells search engines not to include that page in their index. It's often left on by accident after a site migration or staging environment goes live.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>Why would a canonical tag block indexing?</summary>
+      <p>A canonical tag tells search engines which URL is the "main" version of a page. If a page's canonical tag points to a different URL, search engines usually index that other URL instead and treat the current page as a duplicate, even if the content is unique.</p>
+    </details>
+
+    <details class="faq-item">
+      <summary>Is this tool free to use?</summary>
+      <p>Yes. The indexability checker is completely free, requires no API key or account, and has no daily usage limit.</p>
+    </details>
+  </div>
+
+  <div class="cta-box">
+    <p>Once a page checks out as indexable, notify crawlers right away instead of waiting for the next scheduled crawl.</p>
+    <a href="/index.html" class="cta-link">Submit URLs →</a>
   </div>
 </div>
 
