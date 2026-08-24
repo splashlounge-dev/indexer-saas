@@ -3,249 +3,106 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free Indexability Checker — See Why Google Won't Index Your Page | QuickIndex</title>
-<meta name="description" content="Paste any URL and instantly see whether Google can actually index it. We check robots.txt, meta robots tags, X-Robots-Tag headers, and canonical tags — no API key, no sign-up, no daily limit.">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://indexer-saas-production.up.railway.app/check-index.html">
-<link rel="icon" href="QI-favicon.ico" />
-
-<meta property="og:title" content="Free Indexability Checker — QuickIndex">
-<meta property="og:description" content="Paste any URL and instantly see whether Google can actually index it. Checks robots.txt, meta robots, X-Robots-Tag, and canonical tags.">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="QuickIndex">
-<meta property="og:url" content="https://indexer-saas-production.up.railway.app/check-index.html">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Free Indexability Checker — QuickIndex">
-<meta name="twitter:description" content="Paste any URL and instantly see whether Google can actually index it. Checks robots.txt, meta robots, X-Robots-Tag, and canonical tags.">
-
-<!-- ============ SCHEMA: WebSite / Organization ============ -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "QuickIndex",
-  "url": "https://indexer-saas-production.up.railway.app/index.html",
-  "description": "A bulk URL indexing tool that submits pages to Bing, Yandex, and DuckDuckGo via the IndexNow protocol.",
-  "publisher": {
-    "@type": "Organization",
-    "name": "QuickIndex"
-  }
-}
-</script>
-
-<!-- ============ SCHEMA: SoftwareApplication (this tool) ============ -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "QuickIndex Indexability Checker",
-  "applicationCategory": "SEO Tool",
-  "operatingSystem": "Web",
-  "url": "https://indexer-saas-production.up.railway.app/check-index.html",
-  "description": "A free tool that checks whether a URL is technically eligible to be indexed by Google, scanning robots.txt rules, meta robots tags, X-Robots-Tag headers, and canonical tags, and shows the results in a signal-by-signal table.",
-  "isPartOf": {
-    "@type": "WebSite",
-    "name": "QuickIndex",
-    "url": "https://indexer-saas-production.up.railway.app/index.html"
-  },
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "featureList": [
-    "Robots.txt disallow/allow rule checking",
-    "Meta robots noindex detection",
-    "X-Robots-Tag HTTP header detection",
-    "Canonical tag mismatch detection",
-    "HTTP status and redirect tracking",
-    "Signal-by-signal results table",
-    "Bulk URL checking with Excel export"
-  ]
-}
-</script>
-
-<!-- ============ SCHEMA: BreadcrumbList ============ -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://indexer-saas-production.up.railway.app/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Check Indexability",
-      "item": "https://indexer-saas-production.up.railway.app/check-index.html"
-    }
-  ]
-}
-</script>
-
-<!-- ============ SCHEMA: FAQPage (AEO / GEO) ============ -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Does this tool tell me if Google has already indexed my page?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. Confirming that a page is already sitting in Google's index requires the Search Console API, which only works for domains you own and verify. This tool checks whether a page is technically eligible to be indexed right now — which is the part you can actually fix."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Why isn't my page getting indexed by Google?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The most common reasons are a noindex tag in the page's meta robots or X-Robots-Tag header, a robots.txt rule blocking the URL, a canonical tag pointing to a different page, or the page returning a non-200 HTTP status. This tool checks all four automatically and lists them in the results table."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is this indexability checker free?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. There's no API key, no account, and no daily limit on how many URLs you can check."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What does the \"Likely blocked\" verdict mean?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "\"Likely blocked\" means the page passed some checks but tripped a signal that often, though not always, keeps a page out of the index — for example a soft redirect, a canonical pointing to a similar-but-different URL, or a robots.txt rule that only partially matches the path. Check the details column for the exact signal before assuming the page is fine."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do I need to verify domain ownership to use this tool?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. Because this tool only reads what's publicly available on the page and in robots.txt, you can check any URL, on any domain, without proving you own it. Ownership verification is only required for tools that read data out of Google's own index, like Search Console."
-      }
-    }
-  ]
-}
-</script>
-
+<title>QuickIndex — Indexability Checker</title>
 <style>
   :root{
-    --bg:#0a0f0d;
-    --panel:#0f1613;
-    --border:#1c2622;
-    --border-soft:#182420;
-    --text:#e8f0ec;
-    --muted:#5f7a70;
-    --green:#3ddc84;
-    --green-dim:#1f6b45;
-    --red:#ff6b6b;
-    --amber:#e0a03c;
+    --bg:#0b0e16;
+    --panel:#131728;
+    --border:#232a42;
+    --border-soft:#1b2036;
+    --text:#eef1f9;
+    --muted:#7d87a8;
+    --accent:#7c6cff;
+    --accent-dim:#4a3fb0;
+    --amber:#ff9d5c;
+    --success:#33d6a6;
+    --danger:#ff6b81;
     --mono:'JetBrains Mono','Fira Code',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --display:'Space Grotesk', ui-sans-serif, sans-serif;
   }
   *{box-sizing:border-box;}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--mono);padding:0 20px 60px;}
-  header{display:flex;align-items:center;justify-content:space-between;padding:22px 4px;border-bottom:1px solid var(--border);max-width:1400px;margin:0 auto;flex-wrap:wrap;gap:14px;}
-  .brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;}
-  .brand a{color:var(--text);text-decoration:none;display:flex;align-items:center;gap:10px;}
-  .dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);}
-  .nav-links{display:flex;align-items:center;gap:22px;}
-  .nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;padding:6px 2px;border-bottom:2px solid transparent;transition:color .15s ease, border-color .15s ease;}
-  .nav-links a:hover{color:var(--text);}
-  .nav-links a.active{color:var(--text);border-bottom-color:var(--green);}
-  .breadcrumbs{max-width:1400px;margin:14px auto 0;padding:0 20px;}
-  .breadcrumbs ol{list-style:none;display:flex;gap:6px;margin:0;padding:0;font-size:12px;color:var(--muted);}
-  .breadcrumbs a{color:var(--muted);text-decoration:none;}
-  .breadcrumbs a:hover{color:var(--text);}
-  .breadcrumbs li:not(:last-child)::after{content:"/";margin-left:6px;color:var(--border);}
+  body{margin:0;background:
+      radial-gradient(circle at 15% 0%, rgba(124,108,255,.08), transparent 40%),
+      radial-gradient(circle at 85% 15%, rgba(255,157,92,.05), transparent 35%),
+      var(--bg);
+    color:var(--text);font-family:var(--mono);padding:0 20px 60px;}
+  header{display:flex;align-items:center;justify-content:space-between;padding:22px 4px;border-bottom:1px solid var(--border);max-width:1400px;margin:0 auto;}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:19px;font-weight:700;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);}
   .wrap{max-width:1400px;margin:0 auto;}
-  .card{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:34px;margin-top:28px;}
-  h1{font-size:26px;margin:0 0 8px;font-weight:700;}
-  h2{font-size:16px;margin:0 0 18px;font-weight:700;}
-  h3{font-size:14.5px;margin:0 0 8px;font-weight:700;color:var(--text);}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:34px;margin-top:28px;}
+  h1{font-family:var(--display);font-size:26px;margin:0 0 8px;font-weight:700;}
   .sub{color:var(--muted);font-size:13.5px;margin:0 0 22px;line-height:1.5;}
   .sub b{color:var(--text);}
-  textarea{width:100%;min-height:110px;background:#0a0f0d;border:1px solid var(--border);border-radius:5px;color:var(--green);font-family:var(--mono);font-size:13.5px;padding:14px;resize:vertical;}
-  textarea::placeholder{color:#33443c;}
-  textarea:focus{outline:none;border-color:var(--green-dim);}
+  .sub a{color:var(--accent);}
+  textarea{width:100%;min-height:130px;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:var(--accent);font-family:var(--mono);font-size:13.5px;padding:14px;resize:vertical;}
+  textarea::placeholder{color:#333c58;}
+  textarea:focus{outline:none;border-color:var(--accent-dim);}
+  .drop{margin-top:14px;border:1px dashed var(--border);border-radius:7px;padding:18px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;transition:border-color .15s;}
+  .drop.drag{border-color:var(--accent);background:rgba(124,108,255,.08);}
+  .drop-left{display:flex;align-items:center;gap:12px;}
+  .drop-icon{color:var(--muted);font-size:18px;}
+  .drop-text{font-size:12.5px;color:var(--muted);}
+  .drop-text b{color:var(--text);}
+  .file-btn{background:transparent;border:1px solid var(--border);color:var(--text);padding:9px 16px;border-radius:6px;font-family:var(--mono);font-size:12.5px;cursor:pointer;}
+  .file-btn:hover{border-color:var(--accent-dim);}
+  #fileInput{display:none;}
+  .file-chip{display:none;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--accent-dim);padding:6px 10px;border-radius:5px;font-size:12px;color:var(--accent);}
+  .file-chip button{background:none;border:none;color:var(--muted);cursor:pointer;font-family:var(--mono);font-size:13px;}
   .actions{display:flex;align-items:center;gap:16px;margin-top:20px;flex-wrap:wrap;}
-  button.submit{background:var(--green);color:#08130d;border:none;padding:12px 26px;font-weight:700;font-family:var(--mono);font-size:14px;border-radius:5px;cursor:pointer;}
-  button.submit:hover{background:#4ee897;}
-  button.submit:disabled{background:#1f6b45;color:#0a1a12;cursor:not-allowed;}
+  button.submit{background:var(--accent);color:#0b0e16;border:none;padding:12px 26px;font-weight:700;font-family:var(--display);font-size:14px;border-radius:7px;cursor:pointer;transition:transform .12s ease, background .15s ease;}
+  button.submit:hover{background:#8f81ff;transform:translateY(-1px);}
+  button.submit:disabled{background:var(--accent-dim);color:#151a2c;cursor:not-allowed;transform:none;}
   .progress-text{color:var(--muted);font-size:12.5px;}
-
-  /* live usage strip */
-  .live-strip{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin-top:18px;padding:12px 16px;border:1px solid var(--border-soft);border-radius:5px;background:rgba(61,220,132,.03);}
-  .live-stat{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);}
-  .live-stat b{color:var(--green);font-size:13.5px;font-weight:700;}
-  .live-pulse{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 1.8s ease-in-out infinite;}
-  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
-  .live-strip.is-hidden{display:none;}
-
   details{margin-top:22px;border-top:1px dashed var(--border-soft);padding-top:16px;}
   summary{color:var(--amber);cursor:pointer;font-size:13px;list-style:none;}
   summary::-webkit-details-marker{display:none;}
   summary:before{content:"▶ ";}
   details[open] summary:before{content:"▼ ";}
   .details-body{color:var(--muted);font-size:12.5px;line-height:1.7;margin-top:10px;}
-  .results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px;}
-  .results-header h2{margin:0;}
-  button.export{background:transparent;color:var(--green);border:1px solid var(--green-dim);padding:8px 18px;font-weight:700;font-family:var(--mono);font-size:12.5px;border-radius:5px;cursor:pointer;display:flex;align-items:center;gap:6px;}
-  button.export:hover{background:rgba(61,220,132,.08);border-color:var(--green);}
-  button.export:disabled{opacity:.4;cursor:not-allowed;}
+  h2{font-family:var(--display);font-size:16px;margin:0 0 18px;font-weight:700;}
+  .table-actions{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .dl-btn{background:transparent;border:1px solid var(--border);color:var(--accent);padding:7px 14px;border-radius:6px;font-family:var(--mono);font-size:12px;cursor:pointer;}
+  .dl-btn:hover{border-color:var(--accent-dim);}
+  .dl-btn:disabled{opacity:.4;cursor:not-allowed;}
   table{width:100%;border-collapse:collapse;font-size:13px;}
-  th{text-align:left;color:var(--muted);font-weight:500;font-size:10.5px;letter-spacing:.06em;padding:10px 8px;border-bottom:1px solid var(--border);}
+  th{text-align:left;color:var(--muted);font-weight:500;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:10px 8px;border-bottom:1px solid var(--border);}
   td{padding:11px 8px;border-bottom:1px solid var(--border-soft);vertical-align:top;word-break:break-all;}
   tr:last-child td{border-bottom:none;}
-  .url-cell{color:var(--text);max-width:300px;}
-  .badge{display:inline-block;padding:3px 9px;border-radius:4px;font-size:11px;font-weight:700;}
-  .badge.yes{background:rgba(61,220,132,.12);color:var(--green);}
-  .badge.no{background:rgba(255,107,107,.12);color:var(--red);}
-  .badge.maybe{background:rgba(224,160,60,.12);color:var(--amber);}
-  .badge.pending{background:rgba(95,122,112,.15);color:var(--muted);}
+  .url-cell{color:var(--text);max-width:340px;}
+  .host-cell{color:var(--muted);}
+  .badge{display:inline-block;padding:3px 9px;border-radius:5px;font-size:11px;font-weight:700;text-transform:uppercase;}
+  .badge.yes{background:rgba(51,214,166,.12);color:var(--success);}
+  .badge.no{background:rgba(255,107,129,.12);color:var(--danger);}
+  .badge.err{background:rgba(255,157,92,.12);color:var(--amber);}
+  .badge.maybe{background:rgba(255,157,92,.12);color:var(--amber);}
+  .badge.pending{background:rgba(125,135,168,.15);color:var(--muted);}
+  .err-msg{color:var(--amber);font-size:11px;margin-top:4px;display:block;}
   .reasons{color:var(--muted);font-size:11px;margin-top:4px;line-height:1.6;}
   .reasons span{display:block;color:var(--amber);}
   .empty{text-align:center;color:var(--muted);padding:40px 0;font-size:13px;}
-
-  .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:6px;}
-  .info-item{border:1px solid var(--border-soft);border-radius:5px;padding:16px 18px;}
-  .info-item p{color:var(--muted);font-size:12.5px;line-height:1.6;margin:0;}
-
-  /* signals reference table */
-  .signals-table td, .signals-table th{word-break:normal;}
-  .signals-table td.sig-name{color:var(--text);font-weight:700;white-space:nowrap;}
-  .signals-table td.sig-fix{color:var(--muted);}
-  code{background:#0a0f0d;border:1px solid var(--border-soft);border-radius:3px;padding:1px 5px;color:var(--green);font-size:.95em;}
-
-  .faq-item{border-bottom:1px solid var(--border-soft);padding:16px 0;}
-  .faq-item:last-child{border-bottom:none;}
-  .faq-item p{color:var(--muted);font-size:13px;line-height:1.65;margin:6px 0 0;}
-
-  footer{max-width:1400px;margin:40px auto 0;padding-top:20px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;text-align:center;}
-  footer a{color:var(--muted);}
+  .main-nav{display:flex;align-items:center;gap:22px;}
+  .main-nav .nav-link{color:var(--muted);text-decoration:none;font-family:var(--display);font-size:13px;font-weight:500;padding:6px 2px;border-bottom:2px solid transparent;transition:color .15s ease, border-color .15s ease;}
+  .main-nav .nav-link:hover{color:var(--text);}
+  .main-nav .nav-link.active{color:var(--text);border-bottom-color:var(--accent);}
+  .breadcrumbs{max-width:1400px;margin:14px auto 0;padding:0 20px;}
+  .breadcrumbs ol{list-style:none;display:flex;gap:6px;margin:0;padding:0;font-size:11.5px;color:var(--muted);}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="brand"><a href="/index.html"><span class="dot"></span>QuickIndex</a></div>
-  <nav class="nav-links" aria-label="Main navigation">
-    <a href="https://indexer-saas-production.up.railway.app/">Submit URLs</a>
-    <a href="/check-index.html" class="active">Check Indexability</a>
+  <div class="brand"><span class="dot"></span>QuickIndex</div>
+  <nav class="main-nav" aria-label="Main navigation">
+    <a href="/index.html" class="nav-link">Submit URLs</a>
+    <a href="/check-index.html" class="nav-link active">Check Indexability</a>
   </nav>
 </header>
 
 <nav class="breadcrumbs" aria-label="Breadcrumb">
   <ol>
-    <li><a href="/index.html">Home</a></li>
+    <li><a href="/index.html" style="color:var(--muted);text-decoration:none;">Home</a></li>
+    <li>›</li>
     <li aria-current="page">Check Indexability</li>
   </ol>
 </nav>
@@ -253,20 +110,27 @@
 <div class="wrap">
   <div class="card">
     <h1>Can Google actually index this page?</h1>
-    <p class="sub">Paste URLs below, one per line. We check <b>robots.txt</b>, <b>meta robots tags</b>, <b>X-Robots-Tag headers</b>, and <b>canonical tags</b> — the real reasons pages don't get indexed — and lay every signal out in a table below. 100% free, no API key, no daily limit.</p>
+    <p class="sub">Paste URLs below, one per line — <b>or</b> upload a <b>.txt / .csv</b> file with one URL per line. Every URL gets checked against Google's index.</p>
 
-    <textarea id="urlText" placeholder="https://example.com/page-1
-https://example.com/page-2" aria-label="URLs to check"></textarea>
+    <textarea id="urlText" placeholder="https://example.com/new-page-1
+https://example.com/new-page-2
+https://example.com/blog/my-post"></textarea>
+
+    <div class="drop" id="dropZone">
+      <div class="drop-left">
+        <span class="drop-icon">⇪</span>
+        <span class="drop-text"><b>Drop a file here</b> or click browse — .txt, .csv or .xlsx, one URL per line (or any column)</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span class="file-chip" id="fileChip"><span id="fileName"></span><button id="fileClear" title="Remove file">✕</button></span>
+        <button class="file-btn" id="browseBtn" type="button">Browse file</button>
+        <input type="file" id="fileInput" accept=".txt,.csv,.xlsx,.xls">
+      </div>
+    </div>
 
     <div class="actions">
       <button class="submit" id="submitBtn">Check Indexability</button>
       <span class="progress-text" id="progressText"></span>
-    </div>
-
-    <div class="live-strip is-hidden" id="liveStrip">
-      <div class="live-stat"><span class="live-pulse"></span> Live now: <b id="liveNowStat">—</b></div>
-      <div class="live-stat">Checks today: <b id="checksTodayStat">—</b></div>
-      <div class="live-stat">URLs checked today: <b id="urlsTodayStat">—</b></div>
     </div>
 
     <details>
@@ -284,168 +148,125 @@ https://example.com/page-2" aria-label="URLs to check"></textarea>
   </div>
 
   <div class="card">
-    <div class="results-header">
+    <div class="table-actions">
       <h2>Results</h2>
-      <button class="export" id="exportBtn" disabled>⬇ Export to Excel</button>
+      <button class="dl-btn" id="downloadBtn" disabled>⭳ Download CSV</button>
     </div>
     <table>
       <thead>
         <tr><th>URL</th><th>STATUS</th><th>VERDICT</th><th>DETAILS</th></tr>
       </thead>
       <tbody id="resultsBody">
-        <tr><td colspan="4"><div class="empty">No results yet — paste URLs above.</div></td></tr>
+        <tr><td colspan="4"><div class="empty">No results yet — paste URLs or upload a file above.</div></td></tr>
       </tbody>
     </table>
-  </div>
-
-  <div class="card">
-    <h2>Indexability signals we check</h2>
-    <p class="sub">Every URL you paste is scored against these four signals. This is the same logic behind the verdicts in the results table above.</p>
-    <table class="signals-table">
-      <thead>
-        <tr><th>Signal</th><th>What it means</th><th>How to fix it</th></tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="sig-name">robots.txt</td>
-          <td>A <code>Disallow</code> rule matches the page's path, so Google's crawler never fetches it.</td>
-          <td class="sig-fix">Remove or narrow the matching <code>Disallow</code> rule in robots.txt.</td>
-        </tr>
-        <tr>
-          <td class="sig-name">Meta robots</td>
-          <td><code>&lt;meta name="robots" content="noindex"&gt;</code> is present in the page's HTML.</td>
-          <td class="sig-fix">Delete the tag, or change <code>noindex</code> to <code>index</code>.</td>
-        </tr>
-        <tr>
-          <td class="sig-name">X-Robots-Tag</td>
-          <td>The HTTP response header sends <code>noindex</code> at the server level, outside the HTML.</td>
-          <td class="sig-fix">Update the server or CDN config that sets this response header.</td>
-        </tr>
-        <tr>
-          <td class="sig-name">Canonical</td>
-          <td>The <code>&lt;link rel="canonical"&gt;</code> tag names a different URL as the preferred version.</td>
-          <td class="sig-fix">Point the canonical at itself, or confirm the other URL really is the one you want indexed.</td>
-        </tr>
-        <tr>
-          <td class="sig-name">HTTP status</td>
-          <td>The page returns a redirect, 404, or server error instead of a 200 response.</td>
-          <td class="sig-fix">Fix the broken response, or check the redirect's final destination instead.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="card">
-    <h2>Why pages don't get indexed</h2>
-    <div class="info-grid">
-      <div class="info-item">
-        <h3>Blocked by robots.txt</h3>
-        <p>If a Disallow rule in your robots.txt file matches the page's path, Google's crawler won't fetch the page at all — so it can't be indexed, regardless of anything else on the page.</p>
-      </div>
-      <div class="info-item">
-        <h3>Noindex tag</h3>
-        <p>A <code>&lt;meta name="robots" content="noindex"&gt;</code> tag in the page's HTML, or an equivalent <code>X-Robots-Tag: noindex</code> HTTP header, tells Google directly to leave the page out of search results.</p>
-      </div>
-      <div class="info-item">
-        <h3>Canonical pointing elsewhere</h3>
-        <p>If the page's canonical tag names a different URL, Google treats that other URL as the "real" version and typically indexes it instead of the one you're checking.</p>
-      </div>
-      <div class="info-item">
-        <h3>Non-200 response</h3>
-        <p>Redirects, 404s, and server errors all prevent indexing of the original URL. A redirect isn't necessarily a problem — but it means the destination URL is what gets indexed, not the one you submitted.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Frequently asked questions</h2>
-    <div class="faq-item">
-      <h3>Does this tool tell me if Google has already indexed my page?</h3>
-      <p>No. Confirming that a page is already sitting in Google's index requires the Search Console API, which only works for domains you own and verify. This tool checks whether a page is technically eligible to be indexed right now — which is the part you can actually fix.</p>
-    </div>
-    <div class="faq-item">
-      <h3>Why isn't my page getting indexed by Google?</h3>
-      <p>The most common reasons are a noindex tag in the page's meta robots or X-Robots-Tag header, a robots.txt rule blocking the URL, a canonical tag pointing to a different page, or the page returning a non-200 HTTP status. This tool checks all four automatically and lists them in the results table.</p>
-    </div>
-    <div class="faq-item">
-      <h3>Is this indexability checker free?</h3>
-      <p>Yes. There's no API key, no account, and no daily limit on how many URLs you can check.</p>
-    </div>
-    <div class="faq-item">
-      <h3>Can I check more than one URL at once?</h3>
-      <p>Yes — paste as many URLs as you want, one per line, and each one is checked individually. When results are ready, you can export the full table to an Excel file.</p>
-    </div>
-    <div class="faq-item">
-      <h3>What does the "Likely blocked" verdict mean?</h3>
-      <p>It means the page passed some checks but tripped a signal that often, though not always, keeps a page out of the index — for example a soft redirect, a canonical pointing to a similar-but-different URL, or a robots.txt rule that only partially matches the path. Check the details column for the exact signal before assuming the page is fine.</p>
-    </div>
-    <div class="faq-item">
-      <h3>Do I need to verify domain ownership to use this tool?</h3>
-      <p>No. Because this tool only reads what's publicly available on the page and in robots.txt, you can check any URL, on any domain, without proving you own it. Ownership verification is only required for tools that read data out of Google's own index, like Search Console.</p>
-    </div>
   </div>
 </div>
-
-<footer>
-  <p>QuickIndex — <a href="/index.html">Submit URLs to Bing, Yandex &amp; DuckDuckGo</a> · <a href="/check-index.html">Check Indexability</a></p>
-</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 const urlText = document.getElementById('urlText');
+const fileInput = document.getElementById('fileInput');
+const browseBtn = document.getElementById('browseBtn');
+const dropZone = document.getElementById('dropZone');
+const fileChip = document.getElementById('fileChip');
+const fileName = document.getElementById('fileName');
+const fileClear = document.getElementById('fileClear');
 const submitBtn = document.getElementById('submitBtn');
 const progressText = document.getElementById('progressText');
 const resultsBody = document.getElementById('resultsBody');
-const exportBtn = document.getElementById('exportBtn');
-const liveStrip = document.getElementById('liveStrip');
-const liveNowStat = document.getElementById('liveNowStat');
-const checksTodayStat = document.getElementById('checksTodayStat');
-const urlsTodayStat = document.getElementById('urlsTodayStat');
+const downloadBtn = document.getElementById('downloadBtn');
 
+let uploadedFileText = null;
 let results = [];
 
+browseBtn.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', () => { if (fileInput.files.length) readFile(fileInput.files[0]); });
+['dragover','dragenter'].forEach(evt => dropZone.addEventListener(evt, e => { e.preventDefault(); dropZone.classList.add('drag'); }));
+['dragleave','drop'].forEach(evt => dropZone.addEventListener(evt, e => { e.preventDefault(); dropZone.classList.remove('drag'); }));
+dropZone.addEventListener('drop', e => { if (e.dataTransfer.files.length) readFile(e.dataTransfer.files[0]); });
+
+function readFile(file){
+  const isExcel = /\.(xlsx|xls)$/i.test(file.name);
+  if (isExcel){
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        let allText = '';
+        workbook.SheetNames.forEach(sheetName => {
+          const sheet = workbook.Sheets[sheetName];
+          const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+          rows.forEach(row => { allText += row.join(' ') + '\n'; });
+        });
+        uploadedFileText = allText;
+        fileName.textContent = file.name;
+        fileChip.style.display = 'inline-flex';
+        progressText.textContent = '';
+      } catch(err){
+        progressText.textContent = 'Could not read that Excel file — try saving it as .csv instead.';
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  } else {
+    const reader = new FileReader();
+    reader.onload = () => {
+      uploadedFileText = reader.result;
+      fileName.textContent = file.name;
+      fileChip.style.display = 'inline-flex';
+      progressText.textContent = '';
+    };
+    reader.readAsText(file);
+  }
+}
+
+fileClear.addEventListener('click', () => {
+  uploadedFileText = null;
+  fileInput.value = '';
+  fileChip.style.display = 'none';
+});
+
 function extractUrls(){
+  const combined = [urlText.value, uploadedFileText || ''].join('\n');
   const urlRegex = /https?:\/\/[^\s,"'<>]+/gi;
-  const found = urlText.value.match(urlRegex) || [];
+  const found = combined.match(urlRegex) || [];
   return [...new Set(found.map(u => u.trim()))];
 }
 
-function verdictBadge(r){
-  if (r.status === 'pending') return '<span class="badge pending">checking…</span>';
-  if (r.status === 'error') return `<span class="badge maybe">error</span>`;
-  if (r.verdict === 'indexable') return '<span class="badge yes">✓ Indexable</span>';
-  if (r.verdict === 'likely_not_indexable') return '<span class="badge maybe">⚠ Likely blocked</span>';
-  return '<span class="badge no">✕ Not indexable</span>';
-}
-
-function verdictLabel(r){
-  if (r.status === 'pending') return 'Checking…';
-  if (r.status === 'error') return 'Error';
-  if (r.verdict === 'indexable') return 'Indexable';
-  if (r.verdict === 'likely_not_indexable') return 'Likely blocked';
-  return 'Not indexable';
-}
+function hostOf(url){ try { return new URL(url).host; } catch(e){ return '—'; } }
 
 function renderResults(){
   if (!results.length){
-    resultsBody.innerHTML = '<tr><td colspan="4"><div class="empty">No results yet — paste URLs above.</div></td></tr>';
-    exportBtn.disabled = true;
+    resultsBody.innerHTML = '<tr><td colspan="4"><div class="empty">No results yet — paste URLs or upload a file above.</div></td></tr>';
+    downloadBtn.disabled = true;
     return;
   }
   resultsBody.innerHTML = results.map(r => {
+    let badge;
+    if (r.status === 'pending') {
+      badge = '<span class="badge pending">checking…</span>';
+    } else if (r.status === 'error') {
+      badge = `<span class="badge err">error</span>`;
+      if (r.errorMessage) badge += `<span class="err-msg">${r.errorMessage}</span>`;
+    } else if (r.verdict === 'indexable') {
+      badge = '<span class="badge yes">✓ Indexable</span>';
+    } else if (r.verdict === 'likely_not_indexable') {
+      badge = '<span class="badge maybe">⚠ Likely blocked</span>';
+    } else {
+      badge = '<span class="badge no">✕ Not indexable</span>';
+    }
     const reasonsHtml = (r.reasons && r.reasons.length)
       ? `<div class="reasons">${r.reasons.map(x => `<span>• ${x}</span>`).join('')}</div>`
-      : (r.errorMessage || r.error ? `<div class="reasons"><span>${r.errorMessage || r.error}</span></div>` : '');
+      : '';
     return `<tr>
       <td class="url-cell">${r.url}</td>
-      <td>${r.httpStatus || '—'}</td>
-      <td>${verdictBadge(r)}</td>
-      <td>${reasonsHtml || '<span style="color:var(--muted)">No issues found</span>'}</td>
+      <td class="host-cell">${r.httpStatus || '—'}</td>
+      <td>${badge}</td>
+      <td>${reasonsHtml || (r.errorMessage ? '' : '<span style="color:var(--muted)">No issues found</span>')}</td>
     </tr>`;
   }).join('');
-
-  const allDone = results.every(r => r.status !== 'pending');
-  exportBtn.disabled = !allDone;
+  downloadBtn.disabled = results.every(r => r.status === 'pending');
 }
 
 async function checkOne(url){
@@ -485,73 +306,22 @@ submitBtn.addEventListener('click', async () => {
 
   progressText.textContent = `Done — checked ${results.length} URL(s).`;
   submitBtn.disabled = false;
-
-  // refresh live stats right after a batch finishes, so the strip reflects this run
-  refreshStats();
 });
 
-exportBtn.addEventListener('click', () => {
-  if (!results.length) return;
-
-  const rows = results.map(r => ({
-    URL: r.url,
-    'HTTP Status': r.httpStatus || '—',
-    Verdict: verdictLabel(r),
-    'Robots.txt Blocked': r.robotsTxtBlocked === true ? 'Yes' : (r.robotsTxtBlocked === false ? 'No' : '—'),
-    'Meta Robots': r.metaRobots || '—',
-    'X-Robots-Tag': r.xRobotsTag || '—',
-    'Canonical URL': r.canonical || '—',
-    'Canonical Mismatch': r.canonicalMismatch ? 'Yes' : 'No',
-    'Redirected': r.redirected ? 'Yes' : 'No',
-    'Final URL': r.finalUrl || '—',
-    Details: (r.reasons && r.reasons.length) ? r.reasons.join(' | ') : (r.errorMessage || r.error || 'No issues found'),
-  }));
-
-  const ws = XLSX.utils.json_to_sheet(rows);
-  ws['!cols'] = [
-    { wch: 40 }, { wch: 12 }, { wch: 16 }, { wch: 18 },
-    { wch: 20 }, { wch: 18 }, { wch: 40 }, { wch: 18 },
-    { wch: 12 }, { wch: 40 }, { wch: 50 },
-  ];
-
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, 'Indexability Results');
-
-  const timestamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
-  XLSX.writeFile(wb, `quickindex-results-${timestamp}.xlsx`);
+downloadBtn.addEventListener('click', () => {
+  const rows = [['URL','Host','Verdict','Details']];
+  results.forEach(r => {
+    let verdict = 'error';
+    if (r.status === 'done') verdict = r.verdict || 'unknown';
+    rows.push([r.url, hostOf(r.url), verdict, (r.reasons || []).join('; ')]);
+  });
+  const csv = rows.map(row => row.map(cell => `"${String(cell).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type:'text/csv' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'index-check-results.csv';
+  link.click();
 });
-
-/* ============ live usage widget ============
-   Registers this visit and polls a stats endpoint so the strip shows
-   today's checks and how many people are on the page right now.
-   Requires two backend endpoints that don't exist in this static file yet:
-     POST /api/track-visit  -> { ok: true }
-     GET  /api/stats        -> { liveNow, checksToday, urlsCheckedToday }
-   The widget hides itself silently if those endpoints aren't there yet,
-   so it's safe to ship before the backend work lands. */
-async function registerVisit(){
-  try {
-    await fetch('/api/track-visit', { method: 'POST' });
-  } catch(e){ /* non-fatal, stats just won't include this visit */ }
-}
-
-async function refreshStats(){
-  try {
-    const res = await fetch('/api/stats');
-    if (!res.ok) throw new Error('stats endpoint not available');
-    const data = await res.json();
-    liveNowStat.textContent = data.liveNow ?? '—';
-    checksTodayStat.textContent = data.checksToday ?? '—';
-    urlsTodayStat.textContent = data.urlsCheckedToday ?? '—';
-    liveStrip.classList.remove('is-hidden');
-  } catch(e){
-    liveStrip.classList.add('is-hidden');
-  }
-}
-
-registerVisit();
-refreshStats();
-setInterval(refreshStats, 20000);
 </script>
 
 </body>
