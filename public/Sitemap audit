@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickIndex — Sitemap Waste Auditor (Free)</title>
+<meta name="description" content="Scan your sitemap.xml and find pages that will never get indexed — blocked by robots.txt, noindex tags, or bad canonicals. Free, no API key, no signup.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://indexer-saas-production.up.railway.app/sitemap-audit.html">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="QuickIndex">
+<meta property="og:title" content="QuickIndex — Sitemap Waste Auditor">
+<meta property="og:description" content="Scan your sitemap.xml and find pages that will never get indexed — blocked by robots.txt, noindex tags, or bad canonicals.">
+<meta property="og:url" content="https://indexer-saas-production.up.railway.app/sitemap-audit.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="QuickIndex — Sitemap Waste Auditor">
+<meta name="twitter:description" content="Find sitemap pages that will never get indexed. Free, no limits.">
+
+<link rel="icon" href="QI-favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="QI-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="QI-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="QI-apple-touch-icon.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "QuickIndex Sitemap Waste Auditor",
+  "applicationCategory": "SEO Tool",
+  "operatingSystem": "Web",
+  "url": "https://indexer-saas-production.up.railway.app/sitemap-audit.html",
+  "description": "A free tool that scans every URL in a sitemap.xml and reports which pages are technically blocked from being indexed, due to robots.txt rules, noindex tags, or canonical mismatches.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": [
+    "Automatic sitemap.xml URL extraction",
+    "Bulk indexability scan of every URL in the sitemap",
+    "Breakdown of indexable vs blocked pages",
+    "Per-URL reasons for blocked pages"
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://indexer-saas-production.up.railway.app/" },
+    { "@type": "ListItem", "position": 2, "name": "Sitemap Waste Auditor", "item": "https://indexer-saas-production.up.railway.app/sitemap-audit.html" }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is sitemap waste?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Sitemap waste refers to URLs listed in a sitemap.xml that can never actually be indexed — because they're blocked by robots.txt, carry a noindex tag, or have a canonical tag pointing elsewhere. Submitting these URLs to search engines or spending crawl budget on them accomplishes nothing." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why would my sitemap contain pages that can't be indexed?",
+      "acceptedAnswer": { "@type": "Answer", "text": "This commonly happens after a site migration, a CMS plugin auto-generating the sitemap without checking robots directives, or noindex tags being added to pages without removing them from the sitemap afterward." }
+    },
+    {
+      "@type": "Question",
+      "name": "How many URLs can be audited at once?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Up to 200 URLs per sitemap are checked in a single audit to keep the tool fast and free. Larger sitemaps are sampled from the first 200 entries." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this tool free?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, the Sitemap Waste Auditor is free to use with no API key, account, or daily limit." }
+    }
+  ]
+}
+</script>
+
+<style>
+  :root{
+    --bg:#0b0e16; --panel:#131728; --border:#232a42; --border-soft:#1b2036;
+    --text:#eef1f9; --muted:#7d87a8; --accent:#7c6cff; --accent-dim:#4a3fb0;
+    --amber:#ff9d5c; --success:#33d6a6; --danger:#ff6b81;
+    --mono:'JetBrains Mono','Fira Code',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --display:'Space Grotesk', ui-sans-serif, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:
+      radial-gradient(circle at 15% 0%, rgba(124,108,255,.08), transparent 40%),
+      radial-gradient(circle at 85% 15%, rgba(255,157,92,.05), transparent 35%),
+      var(--bg);
+    color:var(--text);font-family:var(--mono);padding:0 20px 60px;}
+  header{display:flex;align-items:center;justify-content:space-between;padding:22px 4px;border-bottom:1px solid var(--border);max-width:1400px;margin:0 auto;}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:19px;font-weight:700;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);}
+  .main-nav{display:flex;align-items:center;gap:22px;}
+  .main-nav .nav-link{color:var(--muted);text-decoration:none;font-family:var(--display);font-size:13px;font-weight:500;padding:6px 2px;border-bottom:2px solid transparent;}
+  .main-nav .nav-link:hover{color:var(--text);}
+  .main-nav .nav-link.active{color:var(--text);border-bottom-color:var(--accent);}
+  .breadcrumbs{max-width:1400px;margin:14px auto 0;padding:0 20px;}
+  .breadcrumbs ol{list-style:none;display:flex;gap:6px;margin:0;padding:0;font-size:11.5px;color:var(--muted);}
+  .breadcrumbs a{color:var(--muted);text-decoration:none;}
+  .breadcrumbs a:hover{color:var(--accent);}
+  .wrap{max-width:1400px;margin:0 auto;}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:34px;margin-top:28px;}
+  h1{font-family:var(--display);font-size:26px;margin:0 0 8px;font-weight:700;}
+  h2{font-family:var(--display);font-size:17px;margin:0 0 18px;font-weight:700;}
+  .sub{color:var(--muted);font-size:13.5px;margin:0 0 22px;line-height:1.6;}
+  .sub b{color:var(--text);}
+  input[type="text"]{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:var(--accent);font-family:var(--mono);font-size:13.5px;padding:14px;}
+  input[type="text"]::placeholder{color:#333c58;}
+  input[type="text"]:focus{outline:none;border-color:var(--accent-dim);}
+  .actions{display:flex;align-items:center;gap:16px;margin-top:18px;flex-wrap:wrap;}
+  button.submit{background:var(--accent);color:#0b0e16;border:none;padding:12px 26px;font-weight:700;font-family:var(--display);font-size:14px;border-radius:7px;cursor:pointer;transition:transform .12s ease, background .15s ease;}
+  button.submit:hover{background:#8f81ff;transform:translateY(-1px);}
+  button.submit:disabled{background:var(--accent-dim);color:#151a2c;cursor:not-allowed;transform:none;}
+  .progress-text{color:var(--muted);font-size:12.5px;}
+
+  .summary-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:12px;margin-top:18px;}
+  .summary-stat{border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;background:var(--bg);}
+  .summary-stat .num{font-family:var(--display);font-size:24px;font-weight:700;display:block;}
+  .summary-stat .label{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;}
+  .summary-stat.indexable .num{color:var(--success);}
+  .summary-stat.blocked .num{color:var(--danger);}
+  .summary-stat.likely .num{color:var(--amber);}
+  .summary-stat.error .num{color:var(--muted);}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{text-align:left;color:var(--muted);font-weight:500;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:10px 8px;border-bottom:1px solid var(--border);}
+  td{padding:11px 8px;border-bottom:1px solid var(--border-soft);vertical-align:top;word-break:break-word;}
+  tr:last-child td{border-bottom:none;}
+  .url-cell{color:var(--text);max-width:400px;word-break:break-all;}
+  .badge{display:inline-block;padding:3px 9px;border-radius:5px;font-size:11px;font-weight:700;text-transform:uppercase;}
+  .badge.yes{background:rgba(51,214,166,.12);color:var(--success);}
+  .badge.no{background:rgba(255,107,129,.12);color:var(--danger);}
+  .badge.maybe{background:rgba(255,157,92,.12);color:var(--amber);}
+  .badge.err{background:rgba(125,135,168,.15);color:var(--muted);}
+  .reasons{color:var(--muted);font-size:11px;margin-top:4px;line-height:1.6;}
+  .reasons span{display:block;color:var(--amber);}
+  .empty{text-align:center;color:var(--muted);padding:40px 0;font-size:13px;}
+  .truncated-note{color:var(--amber);font-size:12px;margin-top:10px;}
+
+  details{margin-top:22px;border-top:1px dashed var(--border-soft);padding-top:16px;}
+  summary{color:var(--amber);cursor:pointer;font-size:13px;list-style:none;}
+  summary::-webkit-details-marker{display:none;}
+  summary:before{content:"▶ ";}
+  details[open] summary:before{content:"▼ ";}
+  .details-body{color:var(--muted);font-size:12.5px;line-height:1.7;margin-top:10px;}
+
+  .faq-panel .faq-item{border-top:1px dashed var(--border-soft);padding:15px 0;margin:0;}
+  .faq-panel .faq-item summary{font-family:var(--display);font-weight:600;color:var(--text);}
+  .faq-panel .faq-item p{color:var(--muted);font-size:13.5px;line-height:1.75;margin:10px 0 0;}
+
+  .cta-box{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border:1px solid var(--accent-dim);border-radius:8px;padding:18px 22px;background:rgba(124,108,255,.06);margin-top:26px;}
+  .cta-box p{margin:0;font-size:13px;color:var(--muted);}
+  .cta-box a.cta-link{color:#0b0e16;background:var(--accent);text-decoration:none;font-family:var(--display);font-weight:700;font-size:13px;padding:9px 18px;border-radius:6px;white-space:nowrap;}
+  .cta-box a.cta-link:hover{background:#8f81ff;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand"><span class="dot"></span>QuickIndex</div>
+  <nav class="main-nav" aria-label="Main navigation">
+    <a href="/index.html" class="nav-link">Submit URLs</a>
+    <a href="/check-index.html" class="nav-link">Check Indexability</a>
+    <a href="/sitemap-audit.html" class="nav-link active">Sitemap Auditor</a>
+  </nav>
+</header>
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/index.html">Home</a></li>
+    <li>›</li>
+    <li aria-current="page">Sitemap Waste Auditor</li>
+  </ol>
+</nav>
+
+<div class="wrap">
+  <div class="card">
+    <h1>Find the pages your sitemap is wasting on nothing.</h1>
+    <p class="sub">Paste your sitemap.xml URL below. Every page listed in it gets scanned for the same signals that block indexing — <b>robots.txt rules, noindex tags, and canonical mismatches</b> — so you know exactly which URLs are dead weight. Free, up to 200 URLs per scan.</p>
+
+    <input type="text" id="sitemapUrl" placeholder="https://example.com/sitemap.xml">
+
+    <div class="actions">
+      <button class="submit" id="auditBtn">Audit Sitemap</button>
+      <span class="progress-text" id="progressText"></span>
+    </div>
+
+    <details>
+      <summary>What this actually does (read before you rely on it)</summary>
+      <div class="details-body">
+        This fetches your sitemap.xml, extracts every <code>&lt;loc&gt;</code> URL, and runs each one through
+        the same technical checks as the Indexability Checker: HTTP status, robots.txt rules, meta robots
+        "noindex", the X-Robots-Tag header, and canonical tag mismatches. It does not tell you whether a page
+        is already indexed — only whether it's technically eligible to be. Sitemaps larger than 200 URLs are
+        sampled from the first 200 entries to keep the scan fast.
+      </div>
+    </details>
+  </div>
+
+  <div class="card" id="resultsCard" style="display:none;">
+    <h2>Audit results</h2>
+    <div class="summary-grid" id="summaryGrid"></div>
+    <div id="truncatedNote"></div>
+    <div style="margin-top:20px;">
+      <table>
+        <thead><tr><th>URL</th><th>HTTP</th><th>VERDICT</th><th>REASON</th></tr></thead>
+        <tbody id="resultsBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card faq-panel">
+    <h2>Frequently asked questions</h2>
+    <details class="faq-item">
+      <summary>What is sitemap waste?</summary>
+      <p>Sitemap waste refers to URLs listed in a sitemap.xml that can never actually be indexed — because they're blocked by robots.txt, carry a noindex tag, or have a canonical tag pointing elsewhere. Submitting these URLs to search engines or spending crawl budget on them accomplishes nothing.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Why would my sitemap contain pages that can't be indexed?</summary>
+      <p>This commonly happens after a site migration, a CMS plugin auto-generating the sitemap without checking robots directives, or noindex tags being added to pages without removing them from the sitemap afterward.</p>
+    </details>
+    <details class="faq-item">
+      <summary>How many URLs can be audited at once?</summary>
+      <p>Up to 200 URLs per sitemap are checked in a single audit to keep the tool fast and free. Larger sitemaps are sampled from the first 200 entries.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Is this tool free?</summary>
+      <p>Yes, the Sitemap Waste Auditor is free to use with no API key, account, or daily limit.</p>
+    </details>
+  </div>
+
+  <div class="cta-box">
+    <p>Found pages that are actually indexable? Notify crawlers about them right away.</p>
+    <a href="/index.html" class="cta-link">Submit URLs →</a>
+  </div>
+</div>
+
+<script>
+const sitemapUrlInput = document.getElementById('sitemapUrl');
+const auditBtn = document.getElementById('auditBtn');
+const progressText = document.getElementById('progressText');
+const resultsCard = document.getElementById('resultsCard');
+const summaryGrid = document.getElementById('summaryGrid');
+const truncatedNote = document.getElementById('truncatedNote');
+const resultsBody = document.getElementById('resultsBody');
+
+function verdictBadge(verdict){
+  if (verdict === 'indexable') return '<span class="badge yes">✓ Indexable</span>';
+  if (verdict === 'likely_not_indexable') return '<span class="badge maybe">⚠ Likely blocked</span>';
+  if (verdict === 'error') return '<span class="badge err">error</span>';
+  return '<span class="badge no">✕ Not indexable</span>';
+}
+
+auditBtn.addEventListener('click', async () => {
+  const sitemapUrl = sitemapUrlInput.value.trim();
+  if (!sitemapUrl || !/^https?:\/\//i.test(sitemapUrl)) {
+    progressText.textContent = 'Enter a valid sitemap URL first.';
+    return;
+  }
+
+  auditBtn.disabled = true;
+  progressText.textContent = 'Fetching sitemap and scanning URLs — this can take a moment for larger sitemaps…';
+  resultsCard.style.display = 'none';
+
+  try {
+    const res = await fetch('/api/audit-sitemap', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ sitemapUrl })
+    });
+    const data = await res.json();
+
+    if (!res.ok || data.error) {
+      progressText.textContent = data.error || `HTTP ${res.status}`;
+      return;
+    }
+
+    progressText.textContent = `Done — scanned ${data.summary.total} URL(s).`;
+    resultsCard.style.display = 'block';
+
+    summaryGrid.innerHTML = `
+      <div class="summary-stat"><span class="num">${data.summary.total}</span><span class="label">Total scanned</span></div>
+      <div class="summary-stat indexable"><span class="num">${data.summary.indexable}</span><span class="label">Indexable</span></div>
+      <div class="summary-stat likely"><span class="num">${data.summary.likelyBlocked}</span><span class="label">Likely blocked</span></div>
+      <div class="summary-stat blocked"><span class="num">${data.summary.blocked}</span><span class="label">Blocked</span></div>
+      <div class="summary-stat error"><span class="num">${data.summary.errors}</span><span class="label">Errors</span></div>
+    `;
+
+    truncatedNote.innerHTML = data.truncated
+      ? `<div class="truncated-note">This sitemap has ${data.totalFoundInSitemap} URLs — only the first 200 were scanned to keep this free tool fast.</div>`
+      : '';
+
+    resultsBody.innerHTML = data.results.map(r => {
+      const reasonsHtml = (r.reasons && r.reasons.length)
+        ? `<div class="reasons">${r.reasons.map(x => `<span>• ${x}</span>`).join('')}</div>`
+        : '<span style="color:var(--muted)">No issues found</span>';
+      return `<tr>
+        <td class="url-cell">${r.url}</td>
+        <td>${r.httpStatus || '—'}</td>
+        <td>${verdictBadge(r.verdict)}</td>
+        <td>${reasonsHtml}</td>
+      </tr>`;
+    }).join('') || '<tr><td colspan="4"><div class="empty">No results.</div></td></tr>';
+
+  } catch (err) {
+    progressText.textContent = 'Network error — is the server running?';
+  } finally {
+    auditBtn.disabled = false;
+  }
+});
+</script>
+
+</body>
+</html>
