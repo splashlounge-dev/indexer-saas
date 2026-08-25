@@ -156,6 +156,8 @@ async function submitByHost(urlsByHost) {
 
   const results = [];
 
+  const MIN_VISIBLE_MS = 900; // just so the live counter is actually perceivable, not a fake result
+
   for (const host of hosts) {
     const row = document.getElementById(`row-${cssSafe(host)}`);
     const timerEl = document.getElementById(`timer-${cssSafe(host)}`);
@@ -166,6 +168,7 @@ async function submitByHost(urlsByHost) {
       timerEl.textContent = `${elapsed}s`;
     }, 100);
 
+    let outcome;
     try {
       const res = await fetch("/api/submit", {
         method: "POST",
@@ -173,21 +176,24 @@ async function submitByHost(urlsByHost) {
         body: JSON.stringify({ urls: urlsByHost[host] }),
       });
       const data = await res.json();
-      clearInterval(tick);
-
-      const elapsed = ((performance.now() - startedAt) / 1000).toFixed(1);
-      const batch = (data.batches && data.batches[0]) || { result: "network_error" };
-
-      timerEl.textContent = `${elapsed}s — ${batch.result}`;
-      row.classList.add("done");
-      results.push({ host, ...batch });
+      outcome = (data.batches && data.batches[0]) || { result: "network_error" };
     } catch (err) {
-      clearInterval(tick);
-      const elapsed = ((performance.now() - startedAt) / 1000).toFixed(1);
-      timerEl.textContent = `${elapsed}s — network_error`;
-      row.classList.add("done");
-      results.push({ host, result: "network_error", urlCount: urlsByHost[host].length });
+      outcome = { result: "network_error", urlCount: urlsByHost[host].length };
     }
+
+    // Wait out the remainder of the minimum visible window, if the real
+    // request finished faster than that - this doesn't change the elapsed
+    // time shown, it just lets the tick actually be seen counting up.
+    const alreadyElapsed = performance.now() - startedAt;
+    if (alreadyElapsed < MIN_VISIBLE_MS) {
+      await new Promise((r) => setTimeout(r, MIN_VISIBLE_MS - alreadyElapsed));
+    }
+
+    clearInterval(tick);
+    const elapsed = ((performance.now() - startedAt) / 1000).toFixed(1);
+    timerEl.textContent = `${elapsed}s — ${outcome.result}`;
+    row.classList.add("done");
+    results.push({ host, ...outcome });
   }
 
   return results;
