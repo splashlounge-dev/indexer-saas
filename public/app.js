@@ -193,7 +193,7 @@ async function submitByHost(urlsByHost) {
     const elapsed = ((performance.now() - startedAt) / 1000).toFixed(1);
     timerEl.textContent = `${elapsed}s — ${outcome.result}`;
     row.classList.add("done");
-    results.push({ host, ...outcome });
+    results.push({ host, elapsedSeconds: elapsed, ...outcome });
   }
 
   return results;
@@ -217,12 +217,34 @@ function renderSummary(results) {
     .map((r) => `${r.host}: ${badgeFor(r.result)} (${r.urlCount} URL${r.urlCount === 1 ? "" : "s"})`)
     .join(" &nbsp;·&nbsp; ");
 
+  const perUrlRows = results
+    .map((r) => {
+      const urls = lastUrlsByHost[r.host] || [];
+      return urls
+        .map(
+          (u) => `
+        <tr>
+          <td class="url-cell">${u}</td>
+          <td style="font-variant-numeric:tabular-nums;">${r.elapsedSeconds ?? "—"}s</td>
+          <td>${badgeFor(r.result)}</td>
+        </tr>`
+        )
+        .join("");
+    })
+    .join("");
+
   resultSummary.style.display = "block";
   resultSummary.innerHTML = `
     <div class="summary-line">
       <span class="accepted-count">${acceptedUrls}</span> of ${totalUrls} URL${totalUrls === 1 ? "" : "s"} accepted
     </div>
-    <div style="font-size:12.5px; color:var(--muted,#5f7a70); line-height:1.8;">${breakdownLines}</div>
+    <div style="font-size:12.5px; color:var(--muted,#5f7a70); line-height:1.8; margin-bottom:12px;">${breakdownLines}</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>URL</th><th>TIME</th><th>RESULT</th></tr></thead>
+        <tbody>${perUrlRows}</tbody>
+      </table>
+    </div>
     ${lastFailedHosts.length ? `<button class="retry-btn" id="retryBtn">Retry ${lastFailedHosts.length} failed host${lastFailedHosts.length === 1 ? "" : "s"}</button>` : ""}
   `;
 
