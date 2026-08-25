@@ -7,18 +7,21 @@ const CACHE_TTL_MS = 1000 * 60 * 60 * 6; // 6 hours
 
 // ---------- Reused indexability logic ----------
 function isBlockedByRobotsTxt(robotsTxt, pathToCheck) {
-  const lines = robotsTxt.split('\n').map(l => l.trim());
-  let currentGroupApplies = false;
-  let matchedDisallow = null;
-  let matchedAllow = null;
+  const lines = robotsTxt.split('\n').map(function (l) { return l.trim(); });
+  var currentGroupApplies = false;
+  var matchedDisallow = null;
+  var matchedAllow = null;
 
-  for (const rawLine of lines) {
-    const line = rawLine.split('#')[0].trim();
+  for (var i = 0; i < lines.length; i++) {
+    var rawLine = lines[i];
+    var line = rawLine.split('#')[0].trim();
     if (!line) continue;
-    const [rawKey, ...rest] = line.split(':');
-    if (!rawKey || rest.length === 0) continue;
-    const key = rawKey.trim().toLowerCase();
-    const value = rest.join(':').trim();
+
+    var colonIndex = line.indexOf(':');
+    if (colonIndex === -1) continue;
+    var rawKey = line.slice(0, colonIndex);
+    var value = line.slice(colonIndex + 1).trim();
+    var key = rawKey.trim().toLowerCase();
 
     if (key === 'user-agent') {
       currentGroupApplies = (value === '*' || value.toLowerCase() === 'googlebot');
@@ -27,12 +30,12 @@ function isBlockedByRobotsTxt(robotsTxt, pathToCheck) {
     if (!currentGroupApplies) continue;
 
     if (key === 'disallow' && value) {
-      if (pathToCheck.startsWith(value)) {
+      if (pathToCheck.indexOf(value) === 0) {
         if (!matchedDisallow || value.length > matchedDisallow.length) matchedDisallow = value;
       }
     }
     if (key === 'allow' && value) {
-      if (pathToCheck.startsWith(value)) {
+      if (pathToCheck.indexOf(value) === 0) {
         if (!matchedAllow || value.length > matchedAllow.length) matchedAllow = value;
       }
     }
@@ -44,63 +47,64 @@ function isBlockedByRobotsTxt(robotsTxt, pathToCheck) {
 }
 
 function extractMetaRobots(html) {
-  const match = html.match(/<meta\s+[^>]*name=["']robots["'][^>]*content=["']([^"']+)["'][^>]*>/i);
+  var match = html.match(/<meta\s+[^>]*name=["']robots["'][^>]*content=["']([^"']+)["'][^>]*>/i);
   return match ? match[1].toLowerCase() : null;
 }
 
 function extractCanonical(html) {
-  const match = html.match(/<link\s+[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["'][^>]*>/i);
+  var match = html.match(/<link\s+[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["'][^>]*>/i);
   return match ? match[1] : null;
 }
 
 async function checkOneUrl(url, robotsTxtCache) {
-  const result = {
-    url,
+  var result = {
+    url: url,
     httpStatus: null,
     verdict: 'unknown',
     reasons: [],
   };
 
   try {
-    const host = new URL(url).host;
+    var host = new URL(url).host;
 
     if (!robotsTxtCache.has(host)) {
       try {
-        const robotsRes = await fetch(https://${host}/robots.txt, { timeout: 8000 });
+        var robotsUrl = 'https://' + host + '/robots.txt';
+        var robotsRes = await fetch(robotsUrl, { timeout: 8000 });
         robotsTxtCache.set(host, robotsRes.ok ? await robotsRes.text() : '');
       } catch (e) {
         robotsTxtCache.set(host, '');
       }
     }
-    const robotsTxt = robotsTxtCache.get(host);
-    const pathToCheck = new URL(url).pathname || '/';
-    const robotsBlocked = robotsTxt ? isBlockedByRobotsTxt(robotsTxt, pathToCheck) : false;
+    var robotsTxt = robotsTxtCache.get(host);
+    var pathToCheck = new URL(url).pathname || '/';
+    var robotsBlocked = robotsTxt ? isBlockedByRobotsTxt(robotsTxt, pathToCheck) : false;
     if (robotsBlocked) result.reasons.push('Blocked by robots.txt');
 
-    const pageRes = await fetch(url, {
+    var pageRes = await fetch(url, {
       redirect: 'follow',
       timeout: 10000,
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; QuickIndexBot/1.0)' },
     });
     result.httpStatus = pageRes.status;
 
-    const xRobots = pageRes.headers.get('x-robots-tag');
-    const xRobotsBlocked = xRobots ? xRobots.toLowerCase().includes('noindex') : false;
+    var xRobots = pageRes.headers.get('x-robots-tag');
+    var xRobotsBlocked = xRobots ? xRobots.toLowerCase().indexOf('noindex') !== -1 : false;
     if (xRobotsBlocked) result.reasons.push('X-Robots-Tag header contains "noindex"');
 
-    let metaBlocked = false;
-    let canonicalMismatch = false;
+    var metaBlocked = false;
+    var canonicalMismatch = false;
     if (pageRes.ok) {
-      const html = await pageRes.text();
-      const metaRobots = extractMetaRobots(html);
-      if (metaRobots && metaRobots.includes('noindex')) {
+      var html = await pageRes.text();
+      var metaRobots = extractMetaRobots(html);
+      if (metaRobots && metaRobots.indexOf('noindex') !== -1) {
         metaBlocked = true;
         result.reasons.push('Meta robots tag contains "noindex"');
       }
-      const canonical = extractCanonical(html);
+      var canonical = extractCanonical(html);
       if (canonical) {
         try {
-          const canonicalNorm = new URL(canonical, url).href.replace(/\/$/, '');
+          var canonicalNorm = new URL(canonical, url).href.replace(/\/$/, '');
           if (canonicalNorm !== url.replace(/\/$/, '')) {
             canonicalMismatch = true;
             result.reasons.push('Canonical tag points to a different URL');
@@ -108,7 +112,7 @@ async function checkOneUrl(url, robotsTxtCache) {
         } catch (e) { /* ignore */ }
       }
     } else {
-      result.reasons.push(Page returned HTTP ${pageRes.status});
+      result.reasons.push('Page returned HTTP ' + pageRes.status);
     }
 
     if (result.httpStatus >= 400) {
@@ -130,55 +134,63 @@ async function checkOneUrl(url, robotsTxtCache) {
 
 // ---------- Sitemap parsing ----------
 function extractUrlsFromSitemap(xml) {
-  const locMatches = xml.match(/<loc>(.*?)<\/loc>/gi) || [];
+  var locMatches = xml.match(/<loc>(.*?)<\/loc>/gi) || [];
   return locMatches
-    .map(tag => tag.replace(/<\/?loc>/gi, '').trim())
+    .map(function (tag) { return tag.replace(/<\/?loc>/gi, '').trim(); })
     .filter(Boolean);
 }
 
 router.post('/api/audit-sitemap', async (req, res) => {
-  const { sitemapUrl } = req.body;
+  var sitemapUrl = req.body.sitemapUrl;
 
   if (!sitemapUrl || !/^https?:\/\//i.test(sitemapUrl)) {
     return res.status(400).json({ error: 'Provide a valid sitemap URL (must start with http:// or https://)' });
   }
 
-  const cached = cache.get(sitemapUrl);
+  var cached = cache.get(sitemapUrl);
   if (cached && Date.now() - cached.time < CACHE_TTL_MS) {
-    return res.json({ ...cached.result, cached: true });
+    var cachedResponse = Object.assign({}, cached.result, { cached: true });
+    return res.json(cachedResponse);
   }
 
   try {
-    const sitemapRes = await fetch(sitemapUrl, { timeout: 10000 });
+    var sitemapRes = await fetch(sitemapUrl, { timeout: 10000 });
     if (!sitemapRes.ok) {
-      return res.status(400).json({ error: Could not fetch sitemap (HTTP ${sitemapRes.status}) });
+      return res.status(400).json({ error: 'Could not fetch sitemap (HTTP ' + sitemapRes.status + ')' });
     }
-    const xml = await sitemapRes.text();
-    let urls = extractUrlsFromSitemap(xml);
+    var xml = await sitemapRes.text();
+    var urls = extractUrlsFromSitemap(xml);
 
     if (urls.length === 0) {
-      return res.status(400).json({ error: 'No <loc> URLs found — is this a valid sitemap.xml?' });
+      return res.status(400).json({ error: 'No <loc> URLs found - is this a valid sitemap.xml?' });
     }
 
-    const MAX_URLS = 200; // keep this free tool responsive; larger sitemaps get sampled
-    const truncated = urls.length > MAX_URLS;
+    var MAX_URLS = 200; // keep this free tool responsive; larger sitemaps get sampled
+    var totalFound = urls.length;
+    var truncated = urls.length > MAX_URLS;
     if (truncated) urls = urls.slice(0, MAX_URLS);
 
-    const robotsTxtCache = new Map();
-    const results = [];
-    for (const url of urls) {
-      results.push(await checkOneUrl(url, robotsTxtCache));
+    var robotsTxtCache = new Map();
+    var results = [];
+    for (var i = 0; i < urls.length; i++) {
+      results.push(await checkOneUrl(urls[i], robotsTxtCache));
     }
 
-    const summary = {
+    var summary = {
       total: results.length,
-      indexable: results.filter(r => r.verdict === 'indexable').length,
-      likelyBlocked: results.filter(r => r.verdict === 'likely_not_indexable').length,
-      blocked: results.filter(r => r.verdict === 'not_indexable').length,
-      errors: results.filter(r => r.verdict === 'error').length,
+      indexable: results.filter(function (r) { return r.verdict === 'indexable'; }).length,
+      likelyBlocked: results.filter(function (r) { return r.verdict === 'likely_not_indexable'; }).length,
+      blocked: results.filter(function (r) { return r.verdict === 'not_indexable'; }).length,
+      errors: results.filter(function (r) { return r.verdict === 'error'; }).length,
     };
 
-    const responseBody = { sitemapUrl, truncated, totalFoundInSitemap: extractUrlsFromSitemap(xml).length, summary, results };
+    var responseBody = {
+      sitemapUrl: sitemapUrl,
+      truncated: truncated,
+      totalFoundInSitemap: totalFound,
+      summary: summary,
+      results: results,
+    };
     cache.set(sitemapUrl, { result: responseBody, time: Date.now() });
     res.json(responseBody);
   } catch (err) {
