@@ -21,6 +21,7 @@ const fetch = require("node-fetch");
 const { v4: uuidv4 } = require("uuid");
 const checkIndexRoute = require("./check-index-route");
 const sitemapAuditRoute = require("./sitemap-audit-route");
+const seoAuditRoute = require("./seo-audit-route"); // <-- ADDED
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -33,6 +34,13 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(checkIndexRoute);
 app.use(sitemapAuditRoute);
+app.use(seoAuditRoute); // <-- ADDED: mounts POST /api/seo-audit
+
+// Serve the seo-audit.html page itself (it lives in the project root,
+// not inside /public, so express.static won't find it automatically).
+app.get(["/seo-audit", "/seo-audit.html"], (req, res) => {
+  res.sendFile(path.join(__dirname, "seo-audit.html"));
+}); // <-- ADDED
 
 // ---------- Database ----------
 const db = new Database(path.join(__dirname, "quickindex.db"));
