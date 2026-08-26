@@ -123,24 +123,24 @@
 
 <style>
   :root{
-    --bg:#0b0e16;
-    --panel:#131728;
-    --border:#232a42;
-    --border-soft:#1b2036;
-    --text:#eef1f9;
-    --muted:#7d87a8;
-    --accent:#7c6cff;
-    --accent-dim:#4a3fb0;
-    --amber:#ff9d5c;
-    --success:#33d6a6;
-    --danger:#ff6b81;
+    --bg:#f3f8fd;
+    --panel:#ffffff;
+    --border:#dbe7f4;
+    --border-soft:#e9f1fa;
+    --text:#0f1e33;
+    --muted:#5c7089;
+    --accent:#2f7de1;
+    --accent-dim:#1c5cb3;
+    --amber:#dd8a34;
+    --success:#0fa968;
+    --danger:#e5484d;
     --mono:'JetBrains Mono','Fira Code',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
     --display:'Space Grotesk', ui-sans-serif, sans-serif;
   }
   *{box-sizing:border-box;}
   body{margin:0;background:
-      radial-gradient(circle at 15% 0%, rgba(124,108,255,.08), transparent 40%),
-      radial-gradient(circle at 85% 15%, rgba(255,157,92,.05), transparent 35%),
+      radial-gradient(circle at 15% 0%, rgba(47,125,225,.05), transparent 40%),
+      radial-gradient(circle at 85% 15%, rgba(221,138,52,.04), transparent 35%),
       var(--bg);
     color:var(--text);font-family:var(--mono);padding:0 20px 60px;}
   header{display:flex;align-items:center;justify-content:space-between;padding:22px 4px;border-bottom:1px solid var(--border);max-width:1400px;margin:0 auto;}
@@ -158,20 +158,20 @@
   textarea::placeholder{color:#333c58;}
   textarea:focus{outline:none;border-color:var(--accent-dim);}
   .drop{margin-top:14px;border:1px dashed var(--border);border-radius:7px;padding:18px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;transition:border-color .15s;}
-  .drop.drag{border-color:var(--accent);background:rgba(124,108,255,.08);}
+  .drop.drag{border-color:var(--accent);background:rgba(47,125,225,.06);}
   .drop-left{display:flex;align-items:center;gap:12px;}
   .drop-icon{color:var(--muted);font-size:18px;}
   .drop-text{font-size:12.5px;color:var(--muted);}
   .drop-text b{color:var(--text);}
-  .file-btn{background:transparent;border:1px solid var(--border);color:var(--text);padding:9px 16px;border-radius:6px;font-family:var(--mono);font-size:12.5px;cursor:pointer;}
+  .file-btn{background:#ffffff;border:1px solid var(--border);color:var(--text);padding:9px 16px;border-radius:6px;font-family:var(--mono);font-size:12.5px;cursor:pointer;}
   .file-btn:hover{border-color:var(--accent-dim);}
   #fileInput{display:none;}
-  .file-chip{display:none;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--accent-dim);padding:6px 10px;border-radius:5px;font-size:12px;color:var(--accent);}
+  .file-chip{display:none;align-items:center;gap:8px;background:#ffffff;border:1px solid var(--accent-dim);padding:6px 10px;border-radius:5px;font-size:12px;color:var(--accent-dim);}
   .file-chip button{background:none;border:none;color:var(--muted);cursor:pointer;font-family:var(--mono);font-size:13px;}
   .actions{display:flex;align-items:center;gap:16px;margin-top:20px;flex-wrap:wrap;}
-  button.submit{background:var(--accent);color:#0b0e16;border:none;padding:12px 26px;font-weight:700;font-family:var(--display);font-size:14px;border-radius:7px;cursor:pointer;transition:transform .12s ease, background .15s ease;}
-  button.submit:hover{background:#8f81ff;transform:translateY(-1px);}
-  button.submit:disabled{background:var(--accent-dim);color:#151a2c;cursor:not-allowed;transform:none;}
+  button.submit{background:var(--accent);color:#ffffff;border:none;padding:12px 26px;font-weight:700;font-family:var(--display);font-size:14px;border-radius:7px;cursor:pointer;transition:transform .12s ease, background .15s ease;}
+  button.submit:hover{background:var(--accent-dim);transform:translateY(-1px);}
+  button.submit:disabled{background:#a9c3e6;cursor:not-allowed;transform:none;}
   .progress-text{color:var(--muted);font-size:12.5px;}
   details{margin-top:22px;border-top:1px dashed var(--border-soft);padding-top:16px;}
   summary{color:var(--amber);cursor:pointer;font-size:13px;list-style:none;}
@@ -235,15 +235,14 @@
 <header>
   <div class="brand"><span class="dot"></span>QuickIndex</div>
   <nav class="main-nav" aria-label="Main navigation">
-    <a href="https://indexer-saas-production.up.railway.app/" class="nav-link">Submit URLs</a>
+    <a href="/index.html" class="nav-link">Submit URLs</a>
     <a href="/check-index.html" class="nav-link active">Check Indexability</a>
-    <a href="/sitemap-audit.html" class="nav-link">Sitemap Auditor</a>
   </nav>
 </header>
 
 <nav class="breadcrumbs" aria-label="Breadcrumb">
   <ol>
-    <li><a href="https://indexer-saas-production.up.railway.app/">Home</a></li>
+    <li><a href="/index.html">Home</a></li>
     <li>›</li>
     <li aria-current="page">Check Indexability</li>
   </ol>
@@ -368,7 +367,7 @@ https://example.com/blog/my-post"></textarea>
 
   <div class="cta-box">
     <p>Once a page checks out as indexable, notify crawlers right away instead of waiting for the next scheduled crawl.</p>
-    <a href="https://indexer-saas-production.up.railway.app/" class="cta-link">Submit URLs →</a>
+    <a href="/index.html" class="cta-link">Submit URLs →</a>
   </div>
 </div>
 
