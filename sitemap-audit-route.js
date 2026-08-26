@@ -1,13 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const fetch = require('node-fetch');
+const { v4: uuidv4 } = require('uuid');
 
-const cache = new Map();
-const CACHE_TTL_MS = 1000 * 60 * 60 * 6; // 6 hours
+const MAX_URLS = 10000;
+const CONCURRENCY = 15; // how many URLs are checked in parallel
 
-// ---------- Reused indexability logic ----------
+var jobs = new Map(); // jobId -> job state
+
+// ---------- Indexability logic ----------
 function isBlockedByRobotsTxt(robotsTxt, pathToCheck) {
-  const lines = robotsTxt.split('\n').map(function (l) { return l.trim(); });
+  var lines = robotsTxt.split('\n').map(function (l) { return l.trim(); });
   var currentGroupApplies = false;
   var matchedDisallow = null;
   var matchedAllow = null;
@@ -57,11 +60,15 @@ function extractCanonical(html) {
 }
 
 async function checkOneUrl(url, robotsTxtCache) {
+  var startedAt = Date.now();
   var result = {
     url: url,
+    finalUrl: url,
+    redirected: false,
     httpStatus: null,
     verdict: 'unknown',
     reasons: [],
+    elapsedMs: 0,
   };
 
   try {
@@ -87,6 +94,11 @@ async function checkOneUrl(url, robotsTxtCache) {
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; QuickIndexBot/1.0)' },
     });
     result.httpStatus = pageRes.status;
+    result.finalUrl = pageRes.url;
+    result.redirected = pageRes.url.replace(/\/$/, '') !== url.replace(/\/$/, '');
+    if (result.redirected) {
+      result.reasons.push('Redirects to ' + pageRes.url);
+    }
 
     var xRobots = pageRes.headers.get('x-robots-tag');
     var xRobotsBlocked = xRobots ? xRobots.toLowerCase().indexOf('noindex') !== -1 : false;
@@ -129,10 +141,10 @@ async function checkOneUrl(url, robotsTxtCache) {
     result.reasons.push(err.message || 'Fetch failed');
   }
 
+  result.elapsedMs = Date.now() - startedAt;
   return result;
 }
 
-// ---------- Sitemap parsing ----------
 function extractUrlsFromSitemap(xml) {
   var locMatches = xml.match(/<loc>(.*?)<\/loc>/gi) || [];
   return locMatches
@@ -140,17 +152,45 @@ function extractUrlsFromSitemap(xml) {
     .filter(Boolean);
 }
 
-router.post('/api/audit-sitemap', async (req, res) => {
+// ---------- Concurrency-limited processing with live job updates ----------
+async function processJob(job) {
+  var robotsTxtCache = new Map();
+  var urls = job.urls;
+  var nextIndex = 0;
+
+  async function worker() {
+    while (nextIndex < urls.length) {
+      var currentIndex = nextIndex++;
+      var url = urls[currentIndex];
+      var result = await checkOneUrl(url, robotsTxtCache);
+      job.results[currentIndex] = result;
+      job.checked++;
+
+      if (result.verdict === 'indexable') job.summary.indexable++;
+      else if (result.verdict === 'likely_not_indexable') job.summary.likelyBlocked++;
+      else if (result.verdict === 'not_indexable') job.summary.blocked++;
+      else job.summary.errors++;
+
+      if (result.redirected) job.summary.redirected++;
+    }
+  }
+
+  var workers = [];
+  var workerCount = Math.min(CONCURRENCY, urls.length);
+  for (var w = 0; w < workerCount; w++) {
+    workers.push(worker());
+  }
+  await Promise.all(workers);
+
+  job.done = true;
+  job.finishedAt = Date.now();
+}
+
+router.post('/api/audit-sitemap/start', async (req, res) => {
   var sitemapUrl = req.body.sitemapUrl;
 
   if (!sitemapUrl || !/^https?:\/\//i.test(sitemapUrl)) {
     return res.status(400).json({ error: 'Provide a valid sitemap URL (must start with http:// or https://)' });
-  }
-
-  var cached = cache.get(sitemapUrl);
-  if (cached && Date.now() - cached.time < CACHE_TTL_MS) {
-    var cachedResponse = Object.assign({}, cached.result, { cached: true });
-    return res.json(cachedResponse);
   }
 
   try {
@@ -159,44 +199,85 @@ router.post('/api/audit-sitemap', async (req, res) => {
       return res.status(400).json({ error: 'Could not fetch sitemap (HTTP ' + sitemapRes.status + ')' });
     }
     var xml = await sitemapRes.text();
-    var urls = extractUrlsFromSitemap(xml);
+    var allUrls = extractUrlsFromSitemap(xml);
 
-    if (urls.length === 0) {
+    if (allUrls.length === 0) {
       return res.status(400).json({ error: 'No <loc> URLs found - is this a valid sitemap.xml?' });
     }
 
-    var MAX_URLS = 200; // keep this free tool responsive; larger sitemaps get sampled
-    var totalFound = urls.length;
-    var truncated = urls.length > MAX_URLS;
-    if (truncated) urls = urls.slice(0, MAX_URLS);
+    var totalFound = allUrls.length;
+    var truncated = allUrls.length > MAX_URLS;
+    var urls = truncated ? allUrls.slice(0, MAX_URLS) : allUrls;
 
-    var robotsTxtCache = new Map();
-    var results = [];
-    for (var i = 0; i < urls.length; i++) {
-      results.push(await checkOneUrl(urls[i], robotsTxtCache));
-    }
-
-    var summary = {
-      total: results.length,
-      indexable: results.filter(function (r) { return r.verdict === 'indexable'; }).length,
-      likelyBlocked: results.filter(function (r) { return r.verdict === 'likely_not_indexable'; }).length,
-      blocked: results.filter(function (r) { return r.verdict === 'not_indexable'; }).length,
-      errors: results.filter(function (r) { return r.verdict === 'error'; }).length,
-    };
-
-    var responseBody = {
+    var jobId = uuidv4();
+    var job = {
+      id: jobId,
       sitemapUrl: sitemapUrl,
-      truncated: truncated,
+      urls: urls,
       totalFoundInSitemap: totalFound,
-      summary: summary,
-      results: results,
+      truncated: truncated,
+      total: urls.length,
+      checked: 0,
+      results: new Array(urls.length),
+      summary: { indexable: 0, likelyBlocked: 0, blocked: 0, errors: 0, redirected: 0 },
+      startedAt: Date.now(),
+      finishedAt: null,
+      done: false,
     };
-    cache.set(sitemapUrl, { result: responseBody, time: Date.now() });
-    res.json(responseBody);
+    jobs.set(jobId, job);
+
+    // fire and forget - client polls for progress
+    processJob(job).catch(function (err) {
+      job.done = true;
+      job.error = err.message || 'Audit failed';
+    });
+
+    // clean up old jobs after 30 minutes to avoid unbounded memory growth
+    setTimeout(function () { jobs.delete(jobId); }, 30 * 60 * 1000);
+
+    res.json({
+      jobId: jobId,
+      total: job.total,
+      totalFoundInSitemap: totalFound,
+      truncated: truncated,
+    });
   } catch (err) {
-    console.error('audit-sitemap error:', err);
-    res.status(500).json({ error: err.message || 'Failed to audit sitemap' });
+    console.error('audit-sitemap start error:', err);
+    res.status(500).json({ error: err.message || 'Failed to start audit' });
   }
+});
+
+router.get('/api/audit-sitemap/status/:jobId', (req, res) => {
+  var job = jobs.get(req.params.jobId);
+  if (!job) {
+    return res.status(404).json({ error: 'Job not found (it may have expired).' });
+  }
+
+  var now = job.finishedAt || Date.now();
+  var elapsedMs = now - job.startedAt;
+  var avgMsPerUrl = job.checked > 0 ? elapsedMs / job.checked : null;
+  var remaining = job.total - job.checked;
+  var estimatedRemainingMs = avgMsPerUrl !== null ? Math.round(avgMsPerUrl * remaining) : null;
+
+  var payload = {
+    jobId: job.id,
+    total: job.total,
+    checked: job.checked,
+    done: job.done,
+    error: job.error || null,
+    elapsedMs: elapsedMs,
+    estimatedRemainingMs: job.done ? 0 : estimatedRemainingMs,
+    summary: job.summary,
+    totalFoundInSitemap: job.totalFoundInSitemap,
+    truncated: job.truncated,
+    sitemapUrl: job.sitemapUrl,
+  };
+
+  if (job.done) {
+    payload.results = job.results;
+  }
+
+  res.json(payload);
 });
 
 module.exports = router;
