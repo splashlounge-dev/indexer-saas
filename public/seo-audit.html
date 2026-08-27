@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HFMX99GFCJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-HFMX99GFCJ');
+</script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Free On-Page SEO Auditor — Check Titles, Headings &amp; Alt Tags | QuickIndex</title>
@@ -98,16 +107,16 @@
 
 <style>
   :root{
-    --bg:#0a0f0d;
-    --panel:#0f1613;
-    --border:#1c2622;
-    --border-soft:#182420;
-    --text:#e8f0ec;
-    --muted:#5f7a70;
-    --green:#3ddc84;
-    --green-dim:#1f6b45;
-    --red:#ff6b6b;
-    --amber:#e0a03c;
+    --bg:#f5f9fd;
+    --panel:#ffffff;
+    --border:#d8e6f5;
+    --border-soft:#e9f2fb;
+    --text:#152238;
+    --muted:#64758f;
+    --green:#2f8fe6;
+    --green-dim:#1c6fc2;
+    --red:#dc2626;
+    --amber:#b45309;
     --mono:'JetBrains Mono','Fira Code',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   }
   *{box-sizing:border-box;}
@@ -132,13 +141,13 @@
   h3{font-size:14.5px;margin:0 0 8px;font-weight:700;color:var(--text);}
   .sub{color:var(--muted);font-size:13.5px;margin:0 0 22px;line-height:1.5;}
   .sub b{color:var(--text);}
-  textarea{width:100%;min-height:110px;background:#0a0f0d;border:1px solid var(--border);border-radius:5px;color:var(--green);font-family:var(--mono);font-size:13.5px;padding:14px;resize:vertical;}
+  textarea{width:100%;min-height:110px;background:var(--bg);border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:var(--mono);font-size:13.5px;padding:14px;resize:vertical;}
   textarea::placeholder{color:#33443c;}
   textarea:focus{outline:none;border-color:var(--green-dim);}
   .actions{display:flex;align-items:center;gap:16px;margin-top:20px;flex-wrap:wrap;}
-  button.submit{background:var(--green);color:#08130d;border:none;padding:12px 26px;font-weight:700;font-family:var(--mono);font-size:14px;border-radius:5px;cursor:pointer;}
-  button.submit:hover{background:#4ee897;}
-  button.submit:disabled{background:#1f6b45;color:#0a1a12;cursor:not-allowed;}
+  button.submit{background:var(--green-dim);color:#ffffff;border:none;padding:12px 26px;font-weight:700;font-family:var(--mono);font-size:14px;border-radius:5px;cursor:pointer;}
+  button.submit:hover{background:#155fa8;}
+  button.submit:disabled{background:#a9d3f5;color:#5c7896;cursor:not-allowed;}
   .progress-text{color:var(--muted);font-size:12.5px;}
   details{margin-top:22px;border-top:1px dashed var(--border-soft);padding-top:16px;}
   summary{color:var(--amber);cursor:pointer;font-size:13px;list-style:none;}
@@ -149,7 +158,7 @@
   .results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px;}
   .results-header h2{margin:0;}
   button.export{background:transparent;color:var(--green);border:1px solid var(--green-dim);padding:8px 18px;font-weight:700;font-family:var(--mono);font-size:12.5px;border-radius:5px;cursor:pointer;display:flex;align-items:center;gap:6px;}
-  button.export:hover{background:rgba(61,220,132,.08);border-color:var(--green);}
+  button.export:hover{background:rgba(47,143,230,.08);border-color:var(--green);}
   button.export:disabled{opacity:.4;cursor:not-allowed;}
 
   .result-card{border:1px solid var(--border-soft);border-radius:5px;padding:20px 22px;margin-bottom:16px;}
@@ -157,10 +166,10 @@
   .result-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
   .result-url{color:var(--text);font-size:13.5px;word-break:break-all;}
   .score-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap;}
-  .score-badge.good{background:rgba(61,220,132,.12);color:var(--green);}
-  .score-badge.needs_work{background:rgba(224,160,60,.12);color:var(--amber);}
-  .score-badge.poor{background:rgba(255,107,107,.12);color:var(--red);}
-  .score-badge.pending{background:rgba(95,122,112,.15);color:var(--muted);}
+  .score-badge.good{background:rgba(22,163,74,.10);color:#16a34a;}
+  .score-badge.needs_work{background:rgba(180,83,9,.10);color:var(--amber);}
+  .score-badge.poor{background:rgba(220,38,38,.10);color:var(--red);}
+  .score-badge.pending{background:rgba(100,116,143,.12);color:var(--muted);}
 
   .metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px;}
   .metric{font-size:12px;}
@@ -193,6 +202,7 @@
     <a href="/index.html">Submit URLs</a>
     <a href="/check-index.html">Check Indexability</a>
     <a href="/seo-audit.html" class="active">SEO Auditor</a>
+    <a href="/sitemap-audit.html">Sitemap Auditor</a>
   </nav>
 </header>
 
