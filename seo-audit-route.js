@@ -86,7 +86,7 @@ router.post('/api/seo-audit', async (req, res) => {
     hasViewport: false,
     issues: [],
     score: 0,
-    scoreMax: 8,
+    scoreMax: 9,
   };
 
   try {
@@ -193,7 +193,7 @@ router.post('/api/seo-audit', async (req, res) => {
     }
 
     result.score = score;
-    result.grade = score >= 7 ? 'good' : score >= 4 ? 'needs_work' : 'poor';
+    result.grade = score >= 8 ? 'good' : score >= 4 ? 'needs_work' : 'poor';
 
     cache.set(url, { result, time: Date.now() });
     res.json(result);
