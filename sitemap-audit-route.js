@@ -1,30 +1,34 @@
 const express = require('express');
 const router = express.Router();
 const fetch = require('node-fetch');
-const { v4: uuidv4 } = require('uuid');
 
 const MAX_URLS = 10000;
-const CONCURRENCY = 15; // how many URLs are checked in parallel
+const MAX_SUBSITEMAPS = 100;
+const CONCURRENCY = 25;
+const FETCH_TIMEOUT_MS = 9000;
 
-var jobs = new Map(); // jobId -> job state
+const urlCache = new Map();
+const URL_CACHE_TTL_MS = 1000 * 60 * 60 * 6; // 6 hours
 
-// ---------- Indexability logic ----------
+function getHost(url) {
+  try { return new URL(url).host; } catch (e) { return null; }
+}
+
+// ---------- robots.txt parsing (same logic as check-index-route.js) ----------
 function isBlockedByRobotsTxt(robotsTxt, pathToCheck) {
-  var lines = robotsTxt.split('\n').map(function (l) { return l.trim(); });
-  var currentGroupApplies = false;
-  var matchedDisallow = null;
-  var matchedAllow = null;
+  const lines = robotsTxt.split('\n').map(l => l.trim());
+  let currentGroupApplies = false;
+  let matchedDisallow = null;
+  let matchedAllow = null;
 
-  for (var i = 0; i < lines.length; i++) {
-    var rawLine = lines[i];
-    var line = rawLine.split('#')[0].trim();
+  for (const rawLine of lines) {
+    const line = rawLine.split('#')[0].trim();
     if (!line) continue;
 
-    var colonIndex = line.indexOf(':');
-    if (colonIndex === -1) continue;
-    var rawKey = line.slice(0, colonIndex);
-    var value = line.slice(colonIndex + 1).trim();
-    var key = rawKey.trim().toLowerCase();
+    const [rawKey, ...rest] = line.split(':');
+    if (!rawKey || rest.length === 0) continue;
+    const key = rawKey.trim().toLowerCase();
+    const value = rest.join(':').trim();
 
     if (key === 'user-agent') {
       currentGroupApplies = (value === '*' || value.toLowerCase() === 'googlebot');
@@ -33,12 +37,12 @@ function isBlockedByRobotsTxt(robotsTxt, pathToCheck) {
     if (!currentGroupApplies) continue;
 
     if (key === 'disallow' && value) {
-      if (pathToCheck.indexOf(value) === 0) {
+      if (pathToCheck.startsWith(value)) {
         if (!matchedDisallow || value.length > matchedDisallow.length) matchedDisallow = value;
       }
     }
     if (key === 'allow' && value) {
-      if (pathToCheck.indexOf(value) === 0) {
+      if (pathToCheck.startsWith(value)) {
         if (!matchedAllow || value.length > matchedAllow.length) matchedAllow = value;
       }
     }
@@ -50,234 +54,251 @@ function isBlockedByRobotsTxt(robotsTxt, pathToCheck) {
 }
 
 function extractMetaRobots(html) {
-  var match = html.match(/<meta\s+[^>]*name=["']robots["'][^>]*content=["']([^"']+)["'][^>]*>/i);
+  const match = html.match(/<meta\s+[^>]*name=["']robots["'][^>]*content=["']([^"']+)["'][^>]*>/i);
   return match ? match[1].toLowerCase() : null;
 }
 
 function extractCanonical(html) {
-  var match = html.match(/<link\s+[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["'][^>]*>/i);
+  const match = html.match(/<link\s+[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["'][^>]*>/i);
   return match ? match[1] : null;
 }
 
-async function checkOneUrl(url, robotsTxtCache) {
-  var startedAt = Date.now();
-  var result = {
-    url: url,
-    finalUrl: url,
-    redirected: false,
-    httpStatus: null,
-    verdict: 'unknown',
-    reasons: [],
-    elapsedMs: 0,
-  };
-
+// ---------- per-host robots.txt cache (shared across one audit run) ----------
+async function getRobotsTxt(host, robotsCacheForRun) {
+  if (robotsCacheForRun.has(host)) return robotsCacheForRun.get(host);
   try {
-    var host = new URL(url).host;
+    const robotsRes = await fetchWithTimeout(`https://${host}/robots.txt`);
+    const text = robotsRes.ok ? await robotsRes.text() : null;
+    robotsCacheForRun.set(host, text);
+    return text;
+  } catch (e) {
+    robotsCacheForRun.set(host, null);
+    return null;
+  }
+}
 
-    if (!robotsTxtCache.has(host)) {
-      try {
-        var robotsUrl = 'https://' + host + '/robots.txt';
-        var robotsRes = await fetch(robotsUrl, { timeout: 8000 });
-        robotsTxtCache.set(host, robotsRes.ok ? await robotsRes.text() : '');
-      } catch (e) {
-        robotsTxtCache.set(host, '');
-      }
+function fetchWithTimeout(url, options = {}) {
+  return fetch(url, { ...options, timeout: FETCH_TIMEOUT_MS });
+}
+
+// ---------- sitemap XML parsing ----------
+function extractLocs(xml) {
+  const matches = [...xml.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/gi)];
+  return matches.map(m => m[1].trim());
+}
+
+function isSitemapIndex(xml) {
+  return /<sitemapindex[\s>]/i.test(xml);
+}
+
+async function fetchAllSitemapUrls(rootSitemapUrl) {
+  const seenSitemaps = new Set();
+  const allUrls = [];
+  const queue = [rootSitemapUrl];
+
+  while (queue.length > 0 && seenSitemaps.size < MAX_SUBSITEMAPS && allUrls.length < MAX_URLS) {
+    const sitemapUrl = queue.shift();
+    if (seenSitemaps.has(sitemapUrl)) continue;
+    seenSitemaps.add(sitemapUrl);
+
+    let xml;
+    try {
+      const res = await fetchWithTimeout(sitemapUrl, {
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; QuickIndexBot/1.0)' },
+      });
+      if (!res.ok) continue;
+      xml = await res.text();
+    } catch (e) {
+      continue;
     }
-    var robotsTxt = robotsTxtCache.get(host);
-    var pathToCheck = new URL(url).pathname || '/';
-    var robotsBlocked = robotsTxt ? isBlockedByRobotsTxt(robotsTxt, pathToCheck) : false;
-    if (robotsBlocked) result.reasons.push('Blocked by robots.txt');
 
-    var pageRes = await fetch(url, {
-      redirect: 'follow',
-      timeout: 10000,
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; QuickIndexBot/1.0)' },
-    });
-    result.httpStatus = pageRes.status;
-    result.finalUrl = pageRes.url;
-    result.redirected = pageRes.url.replace(/\/$/, '') !== url.replace(/\/$/, '');
-    if (result.redirected) {
-      result.reasons.push('Redirects to ' + pageRes.url);
-    }
-
-    var xRobots = pageRes.headers.get('x-robots-tag');
-    var xRobotsBlocked = xRobots ? xRobots.toLowerCase().indexOf('noindex') !== -1 : false;
-    if (xRobotsBlocked) result.reasons.push('X-Robots-Tag header contains "noindex"');
-
-    var metaBlocked = false;
-    var canonicalMismatch = false;
-    if (pageRes.ok) {
-      var html = await pageRes.text();
-      var metaRobots = extractMetaRobots(html);
-      if (metaRobots && metaRobots.indexOf('noindex') !== -1) {
-        metaBlocked = true;
-        result.reasons.push('Meta robots tag contains "noindex"');
-      }
-      var canonical = extractCanonical(html);
-      if (canonical) {
-        try {
-          var canonicalNorm = new URL(canonical, url).href.replace(/\/$/, '');
-          if (canonicalNorm !== url.replace(/\/$/, '')) {
-            canonicalMismatch = true;
-            result.reasons.push('Canonical tag points to a different URL');
-          }
-        } catch (e) { /* ignore */ }
+    if (isSitemapIndex(xml)) {
+      const subSitemaps = extractLocs(xml);
+      for (const s of subSitemaps) {
+        if (!seenSitemaps.has(s)) queue.push(s);
       }
     } else {
-      result.reasons.push('Page returned HTTP ' + pageRes.status);
+      const locs = extractLocs(xml);
+      for (const u of locs) {
+        allUrls.push(u);
+        if (allUrls.length >= MAX_URLS) break;
+      }
+    }
+  }
+
+  return allUrls;
+}
+
+// ---------- single URL check (same signals as check-index-route.js) ----------
+async function checkUrl(url, robotsCacheForRun) {
+  const cached = urlCache.get(url);
+  if (cached && Date.now() - cached.time < URL_CACHE_TTL_MS) {
+    return cached.result;
+  }
+
+  const host = getHost(url);
+  const result = {
+    url,
+    httpStatus: null,
+    finalUrl: url,
+    redirected: false,
+    robotsTxtBlocked: null,
+    metaRobots: null,
+    metaRobotsBlocked: false,
+    xRobotsTag: null,
+    xRobotsBlocked: false,
+    canonical: null,
+    canonicalMismatch: false,
+    verdict: 'unknown',
+    reasons: [],
+  };
+
+  if (!host) {
+    result.verdict = 'error';
+    result.reasons.push('Could not parse host from URL');
+    return result;
+  }
+
+  try {
+    const robotsTxt = await getRobotsTxt(host, robotsCacheForRun);
+    if (robotsTxt) {
+      const pathToCheck = new URL(url).pathname || '/';
+      result.robotsTxtBlocked = isBlockedByRobotsTxt(robotsTxt, pathToCheck);
+      if (result.robotsTxtBlocked) result.reasons.push('Blocked by robots.txt');
+    } else {
+      result.robotsTxtBlocked = false;
+    }
+
+    const pageRes = await fetchWithTimeout(url, {
+      redirect: 'follow',
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; QuickIndexBot/1.0)' },
+    });
+
+    result.httpStatus = pageRes.status;
+    result.finalUrl = pageRes.url;
+    result.redirected = pageRes.url !== url;
+    if (result.redirected) {
+      result.reasons.push(`Redirects to a different URL (${pageRes.status}) → ${pageRes.url}`);
+    }
+
+    const xRobotsHeader = pageRes.headers.get('x-robots-tag');
+    if (xRobotsHeader) {
+      result.xRobotsTag = xRobotsHeader.toLowerCase();
+      if (result.xRobotsTag.includes('noindex')) {
+        result.xRobotsBlocked = true;
+        result.reasons.push('X-Robots-Tag header contains "noindex"');
+      }
+    }
+
+    if (pageRes.ok) {
+      const html = await pageRes.text();
+
+      const metaRobots = extractMetaRobots(html);
+      if (metaRobots) {
+        result.metaRobots = metaRobots;
+        if (metaRobots.includes('noindex')) {
+          result.metaRobotsBlocked = true;
+          result.reasons.push('Meta robots tag contains "noindex"');
+        }
+      }
+
+      const canonical = extractCanonical(html);
+      if (canonical) {
+        result.canonical = canonical;
+        try {
+          const canonicalNormalized = new URL(canonical, url).href.replace(/\/$/, '');
+          const originalNormalized = url.replace(/\/$/, '');
+          if (canonicalNormalized !== originalNormalized) {
+            result.canonicalMismatch = true;
+            result.reasons.push('Canonical tag points to a different URL');
+          }
+        } catch (e) { /* ignore malformed canonical */ }
+      }
+    } else {
+      result.reasons.push(`Page returned HTTP ${pageRes.status}`);
     }
 
     if (result.httpStatus >= 400) {
       result.verdict = 'not_indexable';
-    } else if (robotsBlocked || metaBlocked || xRobotsBlocked) {
+    } else if (result.robotsTxtBlocked || result.metaRobotsBlocked || result.xRobotsBlocked) {
       result.verdict = 'not_indexable';
-    } else if (canonicalMismatch) {
+    } else if (result.canonicalMismatch) {
       result.verdict = 'likely_not_indexable';
     } else {
       result.verdict = 'indexable';
     }
+
+    urlCache.set(url, { result, time: Date.now() });
+    return result;
   } catch (err) {
     result.verdict = 'error';
-    result.reasons.push(err.message || 'Fetch failed');
+    result.reasons.push(err.message || 'Lookup failed');
+    return result;
   }
-
-  result.elapsedMs = Date.now() - startedAt;
-  return result;
 }
 
-function extractUrlsFromSitemap(xml) {
-  var locMatches = xml.match(/<loc>(.*?)<\/loc>/gi) || [];
-  return locMatches
-    .map(function (tag) { return tag.replace(/<\/?loc>/gi, '').trim(); })
-    .filter(Boolean);
-}
-
-// ---------- Concurrency-limited processing with live job updates ----------
-async function processJob(job) {
-  var robotsTxtCache = new Map();
-  var urls = job.urls;
-  var nextIndex = 0;
+// ---------- concurrency-limited batch runner ----------
+async function runWithConcurrency(items, limit, workerFn) {
+  const results = new Array(items.length);
+  let nextIndex = 0;
 
   async function worker() {
-    while (nextIndex < urls.length) {
-      var currentIndex = nextIndex++;
-      var url = urls[currentIndex];
-      var result = await checkOneUrl(url, robotsTxtCache);
-      job.results[currentIndex] = result;
-      job.checked++;
-
-      if (result.verdict === 'indexable') job.summary.indexable++;
-      else if (result.verdict === 'likely_not_indexable') job.summary.likelyBlocked++;
-      else if (result.verdict === 'not_indexable') job.summary.blocked++;
-      else job.summary.errors++;
-
-      if (result.redirected) job.summary.redirected++;
+    while (nextIndex < items.length) {
+      const currentIndex = nextIndex++;
+      results[currentIndex] = await workerFn(items[currentIndex]);
     }
   }
 
-  var workers = [];
-  var workerCount = Math.min(CONCURRENCY, urls.length);
-  for (var w = 0; w < workerCount; w++) {
-    workers.push(worker());
-  }
+  const workers = Array.from({ length: Math.min(limit, items.length) }, () => worker());
   await Promise.all(workers);
-
-  job.done = true;
-  job.finishedAt = Date.now();
+  return results;
 }
 
-router.post('/api/audit-sitemap/start', async (req, res) => {
-  var sitemapUrl = req.body.sitemapUrl;
+router.post('/api/audit-sitemap', async (req, res) => {
+  const { sitemapUrl } = req.body;
 
   if (!sitemapUrl || !/^https?:\/\//i.test(sitemapUrl)) {
-    return res.status(400).json({ error: 'Provide a valid sitemap URL (must start with http:// or https://)' });
+    return res.status(400).json({ error: 'Invalid sitemap URL' });
   }
+
+  const startTime = Date.now();
 
   try {
-    var sitemapRes = await fetch(sitemapUrl, { timeout: 10000 });
-    if (!sitemapRes.ok) {
-      return res.status(400).json({ error: 'Could not fetch sitemap (HTTP ' + sitemapRes.status + ')' });
-    }
-    var xml = await sitemapRes.text();
-    var allUrls = extractUrlsFromSitemap(xml);
+    const allUrls = await fetchAllSitemapUrls(sitemapUrl);
 
     if (allUrls.length === 0) {
-      return res.status(400).json({ error: 'No <loc> URLs found - is this a valid sitemap.xml?' });
+      return res.status(400).json({ error: 'No URLs found in that sitemap (check the URL and try again).' });
     }
 
-    var totalFound = allUrls.length;
-    var truncated = allUrls.length > MAX_URLS;
-    var urls = truncated ? allUrls.slice(0, MAX_URLS) : allUrls;
+    const truncated = allUrls.length >= MAX_URLS;
+    const urlsToCheck = allUrls.slice(0, MAX_URLS);
 
-    var jobId = uuidv4();
-    var job = {
-      id: jobId,
-      sitemapUrl: sitemapUrl,
-      urls: urls,
-      totalFoundInSitemap: totalFound,
-      truncated: truncated,
-      total: urls.length,
-      checked: 0,
-      results: new Array(urls.length),
-      summary: { indexable: 0, likelyBlocked: 0, blocked: 0, errors: 0, redirected: 0 },
-      startedAt: Date.now(),
-      finishedAt: null,
-      done: false,
+    const robotsCacheForRun = new Map();
+    const results = await runWithConcurrency(urlsToCheck, CONCURRENCY, (url) => checkUrl(url, robotsCacheForRun));
+
+    const summary = {
+      total: results.length,
+      indexable: results.filter(r => r.verdict === 'indexable').length,
+      likelyBlocked: results.filter(r => r.verdict === 'likely_not_indexable').length,
+      blocked: results.filter(r => r.verdict === 'not_indexable').length,
+      errors: results.filter(r => r.verdict === 'error').length,
+      redirected: results.filter(r => r.redirected).length,
     };
-    jobs.set(jobId, job);
 
-    // fire and forget - client polls for progress
-    processJob(job).catch(function (err) {
-      job.done = true;
-      job.error = err.message || 'Audit failed';
-    });
-
-    // clean up old jobs after 30 minutes to avoid unbounded memory growth
-    setTimeout(function () { jobs.delete(jobId); }, 30 * 60 * 1000);
+    const durationMs = Date.now() - startTime;
 
     res.json({
-      jobId: jobId,
-      total: job.total,
-      totalFoundInSitemap: totalFound,
-      truncated: truncated,
+      sitemapUrl,
+      totalFoundInSitemap: allUrls.length,
+      truncated,
+      summary,
+      durationMs,
+      results,
     });
   } catch (err) {
-    console.error('audit-sitemap start error:', err);
-    res.status(500).json({ error: err.message || 'Failed to start audit' });
+    console.error('audit-sitemap error:', err);
+    res.status(500).json({ error: err.message || 'Sitemap audit failed' });
   }
-});
-
-router.get('/api/audit-sitemap/status/:jobId', (req, res) => {
-  var job = jobs.get(req.params.jobId);
-  if (!job) {
-    return res.status(404).json({ error: 'Job not found (it may have expired).' });
-  }
-
-  var now = job.finishedAt || Date.now();
-  var elapsedMs = now - job.startedAt;
-  var avgMsPerUrl = job.checked > 0 ? elapsedMs / job.checked : null;
-  var remaining = job.total - job.checked;
-  var estimatedRemainingMs = avgMsPerUrl !== null ? Math.round(avgMsPerUrl * remaining) : null;
-
-  var payload = {
-    jobId: job.id,
-    total: job.total,
-    checked: job.checked,
-    done: job.done,
-    error: job.error || null,
-    elapsedMs: elapsedMs,
-    estimatedRemainingMs: job.done ? 0 : estimatedRemainingMs,
-    summary: job.summary,
-    totalFoundInSitemap: job.totalFoundInSitemap,
-    truncated: job.truncated,
-    sitemapUrl: job.sitemapUrl,
-  };
-
-  if (job.done) {
-    payload.results = job.results;
-  }
-
-  res.json(payload);
 });
 
 module.exports = router;
