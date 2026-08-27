@@ -1,30 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
+<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HFMX99GFCJ"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-HFMX99GFCJ');
 </script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QuickIndex — Sitemap Waste Auditor (Free, up to 10,000 URLs)</title>
-<meta name="description" content="Scan your entire sitemap.xml — up to 10,000 URLs — and find pages that will never get indexed: robots.txt blocks, noindex tags, bad canonicals, and redirect chains. Free, live progress, CSV export.">
+<title>Free Sitemap Waste Auditor — Find Pages That Will Never Get Indexed | QuickIndex</title>
+<meta name="description" content="Scan your sitemap.xml and find pages that will never get indexed — blocked by robots.txt, noindex tags, redirects, or bad canonicals. Free, up to 10,000 URLs, no API key.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://indexer-saas-production.up.railway.app/sitemap-audit.html">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="QuickIndex">
 <meta property="og:title" content="QuickIndex — Sitemap Waste Auditor">
-<meta property="og:description" content="Scan up to 10,000 sitemap URLs for indexing blockers and redirect chains. Free, with live progress and CSV export.">
+<meta property="og:description" content="Scan your sitemap.xml and find pages that will never get indexed — blocked by robots.txt, noindex tags, redirects, or bad canonicals.">
 <meta property="og:url" content="https://indexer-saas-production.up.railway.app/sitemap-audit.html">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="QuickIndex — Sitemap Waste Auditor">
-<meta name="twitter:description" content="Find sitemap pages that will never get indexed, at scale. Free.">
+<meta name="twitter:description" content="Find sitemap pages that will never get indexed. Free, up to 10,000 URLs per scan.">
 
 <link rel="icon" href="QI-favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="QI-32x32.png">
@@ -39,14 +39,31 @@
   "applicationCategory": "SEO Tool",
   "operatingSystem": "Web",
   "url": "https://indexer-saas-production.up.railway.app/sitemap-audit.html",
-  "description": "A free tool that scans up to 10,000 URLs from a sitemap.xml in parallel and reports which pages are technically blocked from being indexed, due to robots.txt rules, noindex tags, canonical mismatches, or redirect chains.",
+  "description": "A free tool that scans every URL in a sitemap.xml (including sitemap index files) and reports which pages are technically blocked from being indexed, due to robots.txt rules, noindex tags, redirects, or canonical mismatches.",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "featureList": [
-    "Audits up to 10,000 URLs per sitemap",
-    "Parallel processing with live progress and time estimate",
-    "Redirect chain detection and highlighting",
-    "Per-URL check timing",
-    "CSV export of full results"
+    "Automatic sitemap.xml and sitemap index URL extraction",
+    "Bulk indexability scan of up to 10,000 URLs per sitemap",
+    "Concurrent scanning with per-host robots.txt caching for speed",
+    "Breakdown of indexable, blocked, and redirected pages",
+    "Per-URL reasons for blocked pages",
+    "Scan duration timer",
+    "Excel export of full results"
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to audit a sitemap for pages that can't be indexed",
+  "description": "Steps to find sitemap URLs that are technically blocked from being indexed by search engines.",
+  "step": [
+    { "@type": "HowToStep", "name": "Paste your sitemap URL", "text": "Enter the full URL of your sitemap.xml, or a sitemap index file that lists multiple sitemaps." },
+    { "@type": "HowToStep", "name": "Run the audit", "text": "Click Audit Sitemap. The tool fetches every URL listed and checks robots.txt rules, noindex tags, redirects, and canonical tags for each one." },
+    { "@type": "HowToStep", "name": "Review the results", "text": "See a summary of how many URLs are indexable, likely blocked, blocked, or redirected, plus the specific reason for each blocked URL." },
+    { "@type": "HowToStep", "name": "Export or act on the results", "text": "Download the full results as an Excel file, or submit the indexable URLs directly through the Submit URLs tool." }
   ]
 }
 </script>
@@ -70,27 +87,27 @@
     {
       "@type": "Question",
       "name": "What is sitemap waste?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Sitemap waste refers to URLs listed in a sitemap.xml that can never actually be indexed - because they're blocked by robots.txt, carry a noindex tag, redirect elsewhere, or have a canonical tag pointing to a different URL. Submitting these URLs or spending crawl budget on them accomplishes nothing." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Sitemap waste refers to URLs listed in a sitemap.xml that can never actually be indexed — because they're blocked by robots.txt, carry a noindex tag, redirect elsewhere, or have a canonical tag pointing elsewhere. Submitting these URLs to search engines or spending crawl budget on them accomplishes nothing." }
     },
     {
       "@type": "Question",
-      "name": "Why does a redirect count as sitemap waste?",
-      "acceptedAnswer": { "@type": "Answer", "text": "A sitemap should only list the final, canonical URLs you want indexed. If a listed URL redirects somewhere else, search engines will typically index the destination instead, making the original entry redundant and a sign the sitemap needs cleanup." }
+      "name": "Why would my sitemap contain pages that can't be indexed?",
+      "acceptedAnswer": { "@type": "Answer", "text": "This commonly happens after a site migration, a CMS plugin auto-generating the sitemap without checking robots directives, redirects being added without updating the sitemap, or noindex tags being added to pages without removing them from the sitemap afterward." }
     },
     {
       "@type": "Question",
       "name": "How many URLs can be audited at once?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Up to 10,000 URLs per sitemap can be audited in a single run. URLs are checked in parallel with live progress and a time estimate shown throughout." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Up to 10,000 URLs per scan, including sitemap index files that reference multiple sub-sitemaps. Very large sitemaps are processed concurrently to keep scan time reasonable, but scans of several thousand URLs can still take a few minutes." }
     },
     {
       "@type": "Question",
-      "name": "How long does a large audit take?",
-      "acceptedAnswer": { "@type": "Answer", "text": "It depends on how many URLs are in the sitemap and how fast the target server responds. The tool shows a live, continuously updated time estimate based on the actual speed of the checks completed so far, rather than a fixed guess." }
+      "name": "Why does a redirect count as sitemap waste?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A redirecting URL isn't necessarily broken, but listing it in your sitemap wastes crawl budget — the destination URL is what actually gets indexed, not the one you listed. Sitemaps should generally list only final, canonical URLs." }
     },
     {
       "@type": "Question",
       "name": "Is this tool free?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Yes. The Sitemap Waste Auditor is free, with no API key, account, or daily limit." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, the Sitemap Waste Auditor is free to use with no API key, account, or daily limit." }
     }
   ]
 }
@@ -98,19 +115,19 @@
 
 <style>
   :root{
-    --bg:#f3f8fd; --panel:#ffffff; --border:#dbe7f4; --border-soft:#e9f1fa;
-    --text:#0f1e33; --muted:#5c7089; --accent:#2f7de1; --accent-dim:#1c5cb3;
-    --amber:#dd8a34; --success:#0fa968; --danger:#e5484d;
+    --bg:#f5f9fd; --panel:#ffffff; --border:#d8e6f5; --border-soft:#e9f2fb;
+    --text:#152238; --muted:#64758f; --accent:#2f8fe6; --accent-dim:#1c6fc2;
+    --amber:#b45309; --success:#16a34a; --danger:#dc2626;
     --mono:'JetBrains Mono','Fira Code',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
     --display:'Space Grotesk', ui-sans-serif, sans-serif;
   }
   *{box-sizing:border-box;}
   body{margin:0;background:
-      radial-gradient(circle at 15% 0%, rgba(47,125,225,.05), transparent 40%),
-      radial-gradient(circle at 85% 15%, rgba(221,138,52,.04), transparent 35%),
+      radial-gradient(circle at 15% 0%, rgba(47,143,230,.06), transparent 40%),
+      radial-gradient(circle at 85% 15%, rgba(100,181,246,.05), transparent 35%),
       var(--bg);
     color:var(--text);font-family:var(--mono);padding:0 20px 60px;}
-  header{display:flex;align-items:center;justify-content:space-between;padding:22px 4px;border-bottom:1px solid var(--border);max-width:1400px;margin:0 auto;flex-wrap:wrap;gap:12px;}
+  header{display:flex;align-items:center;justify-content:space-between;padding:22px 4px;border-bottom:1px solid var(--border);max-width:1400px;margin:0 auto;flex-wrap:wrap;gap:14px;}
   .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:19px;font-weight:700;}
   .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);}
   .main-nav{display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
@@ -125,55 +142,52 @@
   .card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:34px;margin-top:28px;}
   h1{font-family:var(--display);font-size:26px;margin:0 0 8px;font-weight:700;}
   h2{font-family:var(--display);font-size:17px;margin:0 0 18px;font-weight:700;}
+  h3{font-family:var(--display);font-size:14.5px;margin:0 0 8px;font-weight:700;color:var(--text);}
   .sub{color:var(--muted);font-size:13.5px;margin:0 0 22px;line-height:1.6;}
   .sub b{color:var(--text);}
   input[type="text"]{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:var(--accent);font-family:var(--mono);font-size:13.5px;padding:14px;}
   input[type="text"]::placeholder{color:#333c58;}
   input[type="text"]:focus{outline:none;border-color:var(--accent-dim);}
   .actions{display:flex;align-items:center;gap:16px;margin-top:18px;flex-wrap:wrap;}
-  button.submit{background:var(--accent);color:#ffffff;border:none;padding:12px 26px;font-weight:700;font-family:var(--display);font-size:14px;border-radius:7px;cursor:pointer;transition:transform .12s ease, background .15s ease;}
-  button.submit:hover{background:var(--accent-dim);transform:translateY(-1px);}
-  button.submit:disabled{background:#a9c3e6;cursor:not-allowed;transform:none;}
-  .progress-text{color:var(--muted);font-size:12.5px;}
+  button.submit{background:var(--accent-dim);color:#ffffff;border:none;padding:12px 26px;font-weight:700;font-family:var(--display);font-size:14px;border-radius:7px;cursor:pointer;transition:transform .12s ease, background .15s ease;}
+  button.submit:hover{background:#155fa8;transform:translateY(-1px);}
+  button.submit:disabled{background:#a9d3f5;color:#5c7896;cursor:not-allowed;transform:none;}
+  .progress-text{color:var(--muted);font-size:12.5px;display:flex;align-items:center;gap:8px;}
+  .spinner{width:12px;height:12px;border-radius:50%;border:2px solid var(--border);border-top-color:var(--accent);animation:spin .7s linear infinite;display:inline-block;}
+  @keyframes spin{to{transform:rotate(360deg);}}
 
-  .progress-box{
-    margin-top:18px;border:1px solid var(--border);border-radius:8px;padding:18px;background:var(--bg);display:none;
-  }
-  .progress-bar-track{width:100%;height:8px;border-radius:4px;background:var(--border-soft);overflow:hidden;}
-  .progress-bar-fill{height:100%;background:linear-gradient(90deg, var(--accent), var(--amber));width:0%;transition:width .3s ease;}
-  .progress-meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:10px;font-size:12px;color:var(--muted);}
-  .progress-meta b{color:var(--text);}
-
-  .summary-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:12px;margin-top:18px;}
+  .summary-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:12px;margin-top:18px;}
   .summary-stat{border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;background:var(--bg);}
-  .summary-stat .num{font-family:var(--display);font-size:22px;font-weight:700;display:block;}
-  .summary-stat .label{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.06em;}
+  .summary-stat .num{font-family:var(--display);font-size:24px;font-weight:700;display:block;}
+  .summary-stat .label{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;}
   .summary-stat.indexable .num{color:var(--success);}
   .summary-stat.blocked .num{color:var(--danger);}
   .summary-stat.likely .num{color:var(--amber);}
-  .summary-stat.redirected .num{color:var(--amber);}
   .summary-stat.error .num{color:var(--muted);}
+  .summary-stat.redirected .num{color:#1c7ed6;}
 
-  .table-actions{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:10px;}
-  .dl-btn{background:transparent;border:1px solid var(--border);color:var(--accent);padding:7px 14px;border-radius:6px;font-family:var(--mono);font-size:12px;cursor:pointer;}
-  .dl-btn:hover{border-color:var(--accent-dim);}
-  .dl-btn:disabled{opacity:.4;cursor:not-allowed;}
+  .meta-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:16px;}
+  .duration-note{color:var(--muted);font-size:12px;}
+  .duration-note b{color:var(--text);}
+  button.export{background:transparent;color:var(--accent);border:1px solid var(--accent-dim);padding:8px 18px;font-weight:700;font-family:var(--display);font-size:12.5px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:6px;}
+  button.export:hover{background:rgba(47,143,230,.08);border-color:var(--accent);}
+  button.export:disabled{opacity:.4;cursor:not-allowed;}
 
-  table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
   th{text-align:left;color:var(--muted);font-weight:500;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:10px 8px;border-bottom:1px solid var(--border);}
-  td{padding:10px 8px;border-bottom:1px solid var(--border-soft);vertical-align:top;word-break:break-word;}
+  td{padding:11px 8px;border-bottom:1px solid var(--border-soft);vertical-align:top;word-break:break-word;}
   tr:last-child td{border-bottom:none;}
-  tr.redirect-row{background:rgba(255,157,92,.05);}
-  .url-cell{color:var(--text);max-width:340px;word-break:break-all;}
-  .badge{display:inline-block;padding:3px 9px;border-radius:5px;font-size:10.5px;font-weight:700;text-transform:uppercase;margin-right:4px;}
-  .badge.yes{background:rgba(51,214,166,.12);color:var(--success);}
-  .badge.no{background:rgba(255,107,129,.12);color:var(--danger);}
-  .badge.maybe{background:rgba(255,157,92,.12);color:var(--amber);}
-  .badge.err{background:rgba(125,135,168,.15);color:var(--muted);}
-  .badge.redirect{background:rgba(255,157,92,.16);color:var(--amber);}
+  tr.is-redirected{background:rgba(28,126,214,.04);}
+  .url-cell{color:var(--text);max-width:400px;word-break:break-all;}
+  .redirect-note{color:#1c7ed6;font-size:11px;margin-top:4px;}
+  .badge{display:inline-block;padding:3px 9px;border-radius:5px;font-size:11px;font-weight:700;text-transform:uppercase;}
+  .badge.yes{background:rgba(22,163,74,.10);color:var(--success);}
+  .badge.no{background:rgba(220,38,38,.10);color:var(--danger);}
+  .badge.maybe{background:rgba(180,83,9,.10);color:var(--amber);}
+  .badge.err{background:rgba(100,116,143,.12);color:var(--muted);}
+  .badge.redirect{background:rgba(28,126,214,.10);color:#1c7ed6;margin-left:6px;}
   .reasons{color:var(--muted);font-size:11px;margin-top:4px;line-height:1.6;}
   .reasons span{display:block;color:var(--amber);}
-  .time-cell{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;}
   .empty{text-align:center;color:var(--muted);padding:40px 0;font-size:13px;}
   .truncated-note{color:var(--amber);font-size:12px;margin-top:10px;}
 
@@ -184,18 +198,26 @@
   details[open] summary:before{content:"▼ ";}
   .details-body{color:var(--muted);font-size:12.5px;line-height:1.7;margin-top:10px;}
 
-  .checks-table th, .checks-table td{font-size:12.5px;}
-  .checks-table .signal-cell{color:var(--text);font-weight:600;}
-  .checks-table code{background:var(--bg);padding:2px 6px;border-radius:4px;color:var(--accent);font-size:11.5px;}
+  .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:6px;}
+  .info-item{border:1px solid var(--border-soft);border-radius:8px;padding:16px 18px;}
+  .info-item p{color:var(--muted);font-size:12.5px;line-height:1.6;margin:0;}
+
+  .ref-table{margin-top:6px;}
+  .ref-table th{color:var(--muted);}
+  .ref-table td{color:var(--muted);font-size:12.5px;}
+  .ref-table td:first-child{color:var(--text);font-weight:600;}
 
   .faq-panel .faq-item{border-top:1px dashed var(--border-soft);padding:15px 0;margin:0;}
   .faq-panel .faq-item summary{font-family:var(--display);font-weight:600;color:var(--text);}
   .faq-panel .faq-item p{color:var(--muted);font-size:13.5px;line-height:1.75;margin:10px 0 0;}
 
-  .cta-box{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border:1px solid var(--accent-dim);border-radius:8px;padding:18px 22px;background:rgba(47,125,225,.05);margin-top:26px;}
+  .cta-box{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border:1px solid var(--accent-dim);border-radius:8px;padding:18px 22px;background:rgba(47,143,230,.05);margin-top:26px;}
   .cta-box p{margin:0;font-size:13px;color:var(--muted);}
-  .cta-box a.cta-link{color:#ffffff;background:var(--accent);text-decoration:none;font-family:var(--display);font-weight:700;font-size:13px;padding:9px 18px;border-radius:6px;white-space:nowrap;}
-  .cta-box a.cta-link:hover{background:var(--accent-dim);}
+  .cta-box a.cta-link{color:#ffffff;background:var(--accent-dim);text-decoration:none;font-family:var(--display);font-weight:700;font-size:13px;padding:9px 18px;border-radius:6px;white-space:nowrap;}
+  .cta-box a.cta-link:hover{background:#155fa8;}
+
+  footer{max-width:1400px;margin:40px auto 0;padding-top:20px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;text-align:center;}
+  footer a{color:var(--muted);}
 </style>
 </head>
 <body>
@@ -203,8 +225,9 @@
 <header>
   <div class="brand"><span class="dot"></span>QuickIndex</div>
   <nav class="main-nav" aria-label="Main navigation">
-    <a href="https://indexer-saas-production.up.railway.app" class="nav-link">Submit URLs</a>
+    <a href="/index.html" class="nav-link">Submit URLs</a>
     <a href="/check-index.html" class="nav-link">Check Indexability</a>
+    <a href="/seo-audit.html" class="nav-link">SEO Auditor</a>
     <a href="/sitemap-audit.html" class="nav-link active">Sitemap Auditor</a>
   </nav>
 </header>
@@ -212,7 +235,6 @@
 <nav class="breadcrumbs" aria-label="Breadcrumb">
   <ol>
     <li><a href="/index.html">Home</a></li>
-    <li>›</li>
     <li aria-current="page">Sitemap Waste Auditor</li>
   </ol>
 </nav>
@@ -220,7 +242,7 @@
 <div class="wrap">
   <div class="card">
     <h1>Find the pages your sitemap is wasting on nothing.</h1>
-    <p class="sub">Paste your sitemap.xml URL below. Every page listed in it gets scanned in parallel for <b>robots.txt rules, noindex tags, canonical mismatches, and redirect chains</b>. Free, up to <b>10,000 URLs</b> per audit, with a live progress bar and time estimate.</p>
+    <p class="sub">Paste your sitemap.xml URL below (a regular sitemap or a sitemap index file). Every page listed gets scanned for the same signals that block indexing — <b>robots.txt rules, noindex tags, redirects, and canonical mismatches</b> — so you know exactly which URLs are dead weight. Free, up to <b>10,000 URLs</b> per scan.</p>
 
     <input type="text" id="sitemapUrl" placeholder="https://example.com/sitemap.xml">
 
@@ -229,25 +251,16 @@
       <span class="progress-text" id="progressText"></span>
     </div>
 
-    <div class="progress-box" id="progressBox">
-      <div class="progress-bar-track"><div class="progress-bar-fill" id="progressBarFill"></div></div>
-      <div class="progress-meta">
-        <span>Checked <b id="checkedCount">0</b> of <b id="totalCount">0</b></span>
-        <span>Elapsed <b id="elapsedTime">0s</b></span>
-        <span>Est. remaining <b id="etaTime">—</b></span>
-      </div>
-    </div>
-
     <details>
       <summary>What this actually does (read before you rely on it)</summary>
       <div class="details-body">
-        This fetches your sitemap.xml, extracts every <code>&lt;loc&gt;</code> URL, and checks each one for:
-        HTTP status, robots.txt rules, meta robots "noindex", the X-Robots-Tag header, canonical tag
-        mismatches, and whether the URL redirects elsewhere. URLs are checked in parallel (up to 15 at a
-        time), so total time depends on how many URLs there are and how fast the target server responds —
-        the live estimate updates continuously based on the actual speed observed so far, it isn't a fixed
-        guess. This does not tell you whether a page is already indexed, only whether it's technically
-        eligible to be.
+        This fetches your sitemap.xml (following sitemap index files to their sub-sitemaps automatically),
+        extracts every <code>&lt;loc&gt;</code> URL, and runs each one through the same technical checks as
+        the Indexability Checker: HTTP status, robots.txt rules, meta robots "noindex", the X-Robots-Tag
+        header, redirects, and canonical tag mismatches. It does not tell you whether a page is already
+        indexed — only whether it's technically eligible to be. URLs are checked concurrently and robots.txt
+        is cached per host during the scan to keep things fast, but scans of several thousand URLs can still
+        take a few minutes — keep this tab open until it finishes. Up to 10,000 URLs are scanned per sitemap.
       </div>
     </details>
   </div>
@@ -255,50 +268,47 @@
   <div class="card" id="resultsCard" style="display:none;">
     <h2>Audit results</h2>
     <div class="summary-grid" id="summaryGrid"></div>
-    <div id="truncatedNote"></div>
-    <div class="table-actions" style="margin-top:20px;">
-      <input type="text" id="urlFilter" placeholder="Search URLs (e.g. paste part of a URL or type a keyword)" style="max-width:360px;">
-      <button class="dl-btn" id="downloadBtn" disabled>⭳ Download CSV</button>
+    <div class="meta-row">
+      <div class="duration-note" id="durationNote"></div>
+      <button class="export" id="exportBtn" disabled>⬇ Export to Excel</button>
     </div>
-    <div class="sub" id="filterCount" style="margin:8px 0 0;"></div>
-    <div style="overflow-x:auto;">
+    <div id="truncatedNote"></div>
+    <div style="margin-top:20px;overflow-x:auto;">
       <table>
-        <thead><tr><th>URL</th><th>HTTP</th><th>Time</th><th>Verdict</th><th>Details</th></tr></thead>
+        <thead><tr><th>URL</th><th>HTTP</th><th>VERDICT</th><th>REASON</th></tr></thead>
         <tbody id="resultsBody"></tbody>
       </table>
     </div>
   </div>
 
   <div class="card">
-    <h2>What gets checked, and why it matters</h2>
-    <table class="checks-table">
-      <thead><tr><th>Signal</th><th>What it means</th><th>If it blocks indexing</th></tr></thead>
+    <h2>Common sitemap waste patterns</h2>
+    <div class="info-grid">
+      <div class="info-item">
+        <h3>Stale redirects</h3>
+        <p>After a URL structure change, old URLs often stay in the sitemap pointing through a 301 redirect. Search engines index the destination, not the listed URL — so the listing itself does nothing.</p>
+      </div>
+      <div class="info-item">
+        <h3>Noindex leftovers</h3>
+        <p>Pages marked noindex during a staging or A/B test phase sometimes never get removed from the sitemap afterward, silently wasting crawl budget indefinitely.</p>
+      </div>
+      <div class="info-item">
+        <h3>Robots.txt drift</h3>
+        <p>A robots.txt rule added for one reason (blocking a filter parameter, for example) can accidentally match paths that are still listed in the sitemap.</p>
+      </div>
+      <div class="info-item">
+        <h3>Canonical conflicts</h3>
+        <p>Auto-generated sitemaps sometimes list every URL variant, even ones whose canonical tag points elsewhere — meaning the sitemap entry and the page's own preference disagree.</p>
+      </div>
+    </div>
+
+    <table class="ref-table" style="margin-top:22px;">
+      <thead><tr><th>Signal</th><th>What it means</th><th>Fix</th></tr></thead>
       <tbody>
-        <tr>
-          <td class="signal-cell">HTTP status code</td>
-          <td>Whether the page loads successfully (<code>200</code>) or returns an error.</td>
-          <td>A <code>4xx</code> or <code>5xx</code> status means there's no valid page to index.</td>
-        </tr>
-        <tr>
-          <td class="signal-cell">Redirect chain</td>
-          <td>Whether the sitemap URL actually resolves to a different final URL.</td>
-          <td>Search engines usually index the destination instead — the sitemap entry is redundant.</td>
-        </tr>
-        <tr>
-          <td class="signal-cell">robots.txt</td>
-          <td>A file at your site's root that tells crawlers which paths they may visit.</td>
-          <td>A <code>Disallow</code> rule matching the page's path stops crawlers from fetching it.</td>
-        </tr>
-        <tr>
-          <td class="signal-cell">Meta robots / X-Robots-Tag</td>
-          <td>A <code>noindex</code> directive, either in the page's HTML or its HTTP headers.</td>
-          <td>Explicitly tells search engines to exclude the page from the index.</td>
-        </tr>
-        <tr>
-          <td class="signal-cell">Canonical tag</td>
-          <td>Declares which URL is the "main" version of a page.</td>
-          <td>If it points elsewhere, search engines usually index that URL instead.</td>
-        </tr>
+        <tr><td>Blocked by robots.txt</td><td>Crawlers can't fetch the page at all</td><td>Remove the Disallow rule, or remove the URL from the sitemap</td></tr>
+        <tr><td>Noindex tag</td><td>Page is fetchable but explicitly excluded</td><td>Remove the noindex tag if the page should rank, or drop it from the sitemap</td></tr>
+        <tr><td>Redirected</td><td>Listed URL isn't the one that gets indexed</td><td>Replace the sitemap entry with the final destination URL</td></tr>
+        <tr><td>Canonical mismatch</td><td>Page defers to a different URL as authoritative</td><td>List the canonical URL in the sitemap instead</td></tr>
       </tbody>
     </table>
   </div>
@@ -307,88 +317,51 @@
     <h2>Frequently asked questions</h2>
     <details class="faq-item">
       <summary>What is sitemap waste?</summary>
-      <p>Sitemap waste refers to URLs listed in a sitemap.xml that can never actually be indexed — because they're blocked by robots.txt, carry a noindex tag, redirect elsewhere, or have a canonical tag pointing to a different URL.</p>
+      <p>Sitemap waste refers to URLs listed in a sitemap.xml that can never actually be indexed — because they're blocked by robots.txt, carry a noindex tag, redirect elsewhere, or have a canonical tag pointing elsewhere. Submitting these URLs to search engines or spending crawl budget on them accomplishes nothing.</p>
     </details>
     <details class="faq-item">
-      <summary>Why does a redirect count as sitemap waste?</summary>
-      <p>A sitemap should only list the final, canonical URLs you want indexed. If a listed URL redirects somewhere else, search engines will typically index the destination instead, making the original entry redundant and a sign the sitemap needs cleanup.</p>
+      <summary>Why would my sitemap contain pages that can't be indexed?</summary>
+      <p>This commonly happens after a site migration, a CMS plugin auto-generating the sitemap without checking robots directives, redirects being added without updating the sitemap, or noindex tags being added to pages without removing them from the sitemap afterward.</p>
     </details>
     <details class="faq-item">
       <summary>How many URLs can be audited at once?</summary>
-      <p>Up to 10,000 URLs per sitemap can be audited in a single run. URLs are checked in parallel with live progress and a time estimate shown throughout.</p>
+      <p>Up to 10,000 URLs per scan, including sitemap index files that reference multiple sub-sitemaps. Very large sitemaps are processed concurrently to keep scan time reasonable, but scans of several thousand URLs can still take a few minutes.</p>
     </details>
     <details class="faq-item">
-      <summary>How long does a large audit take?</summary>
-      <p>It depends on how many URLs are in the sitemap and how fast the target server responds. The tool shows a live, continuously updated time estimate based on the actual speed of the checks completed so far, rather than a fixed guess.</p>
+      <summary>Why does a redirect count as sitemap waste?</summary>
+      <p>A redirecting URL isn't necessarily broken, but listing it in your sitemap wastes crawl budget — the destination URL is what actually gets indexed, not the one you listed. Sitemaps should generally list only final, canonical URLs.</p>
     </details>
     <details class="faq-item">
       <summary>Is this tool free?</summary>
-      <p>Yes. The Sitemap Waste Auditor is free, with no API key, account, or daily limit.</p>
+      <p>Yes, the Sitemap Waste Auditor is free to use with no API key, account, or daily limit.</p>
     </details>
   </div>
 
   <div class="cta-box">
     <p>Found pages that are actually indexable? Notify crawlers about them right away.</p>
-    <a href="https://indexer-saas-production.up.railway.app" class="cta-link">Submit URLs →</a>
+    <a href="/index.html" class="cta-link">Submit URLs →</a>
   </div>
 </div>
 
+<footer>
+  <p>QuickIndex — <a href="/index.html">Submit URLs</a> · <a href="/check-index.html">Check Indexability</a> · <a href="/seo-audit.html">SEO Auditor</a> · <a href="/sitemap-audit.html">Sitemap Auditor</a></p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 const sitemapUrlInput = document.getElementById('sitemapUrl');
 const auditBtn = document.getElementById('auditBtn');
 const progressText = document.getElementById('progressText');
-const progressBox = document.getElementById('progressBox');
-const progressBarFill = document.getElementById('progressBarFill');
-const checkedCount = document.getElementById('checkedCount');
-const totalCount = document.getElementById('totalCount');
-const elapsedTime = document.getElementById('elapsedTime');
-const etaTime = document.getElementById('etaTime');
 const resultsCard = document.getElementById('resultsCard');
 const summaryGrid = document.getElementById('summaryGrid');
 const truncatedNote = document.getElementById('truncatedNote');
 const resultsBody = document.getElementById('resultsBody');
-const downloadBtn = document.getElementById('downloadBtn');
-const urlFilter = document.getElementById('urlFilter');
-const filterCount = document.getElementById('filterCount');
+const durationNote = document.getElementById('durationNote');
+const exportBtn = document.getElementById('exportBtn');
 
 let lastResults = [];
-
-function renderTable(results){
-  resultsBody.innerHTML = results.map(function(r){
-    const reasonsHtml = (r.reasons && r.reasons.length)
-      ? '<div class="reasons">' + r.reasons.map(function(x){ return '<span>• ' + x + '</span>'; }).join('') + '</div>'
-      : '<span style="color:var(--muted)">No issues found</span>';
-    const redirectBadge = r.redirected ? '<span class="badge redirect">↪ Redirected</span>' : '';
-    const rowClass = r.redirected ? ' class="redirect-row"' : '';
-    return '<tr' + rowClass + '>' +
-      '<td class="url-cell">' + r.url + '</td>' +
-      '<td>' + (r.httpStatus || '—') + '</td>' +
-      '<td class="time-cell">' + (r.elapsedMs != null ? (r.elapsedMs / 1000).toFixed(2) + 's' : '—') + '</td>' +
-      '<td>' + redirectBadge + verdictBadge(r.verdict) + '</td>' +
-      '<td>' + reasonsHtml + '</td>' +
-      '</tr>';
-  }).join('') || '<tr><td colspan="5"><div class="empty">No results.</div></td></tr>';
-}
-
-urlFilter.addEventListener('input', () => {
-  const query = urlFilter.value.trim().toLowerCase();
-  const filtered = query
-    ? lastResults.filter(r => r.url.toLowerCase().includes(query))
-    : lastResults;
-  renderTable(filtered);
-  filterCount.textContent = query
-    ? 'Showing ' + filtered.length + ' of ' + lastResults.length + ' URL(s) matching "' + urlFilter.value.trim() + '"'
-    : '';
-});
-
-function fmtSeconds(ms){
-  if (ms === null || ms === undefined) return '—';
-  const s = ms / 1000;
-  if (s < 60) return s.toFixed(1) + 's';
-  const m = Math.floor(s / 60);
-  const rem = Math.round(s % 60);
-  return m + 'm ' + rem + 's';
-}
+let elapsedTimer = null;
+let elapsedSeconds = 0;
 
 function verdictBadge(verdict){
   if (verdict === 'indexable') return '<span class="badge yes">✓ Indexable</span>';
@@ -397,58 +370,31 @@ function verdictBadge(verdict){
   return '<span class="badge no">✕ Not indexable</span>';
 }
 
-async function pollJob(jobId){
-  try {
-    const res = await fetch('/api/audit-sitemap/status/' + jobId);
-    const data = await res.json();
+function formatDuration(ms){
+  if (ms < 1000) return `${ms}ms`;
+  const totalSeconds = ms / 1000;
+  if (totalSeconds < 60) return `${totalSeconds.toFixed(1)}s`;
+  const mins = Math.floor(totalSeconds / 60);
+  const secs = Math.round(totalSeconds % 60);
+  return `${mins}m ${secs}s`;
+}
 
-    if (!res.ok || data.error) {
-      progressText.textContent = data.error || 'Something went wrong.';
-      auditBtn.disabled = false;
-      return;
-    }
+function startElapsedTimer(){
+  elapsedSeconds = 0;
+  updateProgressWithTimer();
+  elapsedTimer = setInterval(() => {
+    elapsedSeconds++;
+    updateProgressWithTimer();
+  }, 1000);
+}
 
-    const pct = data.total > 0 ? Math.round((data.checked / data.total) * 100) : 0;
-    progressBarFill.style.width = pct + '%';
-    checkedCount.textContent = data.checked;
-    totalCount.textContent = data.total;
-    elapsedTime.textContent = fmtSeconds(data.elapsedMs);
-    etaTime.textContent = data.done ? '0s' : fmtSeconds(data.estimatedRemainingMs);
+function updateProgressWithTimer(){
+  progressText.innerHTML = `<span class="spinner"></span> Fetching sitemap and scanning URLs… (${elapsedSeconds}s elapsed — larger sitemaps can take a few minutes)`;
+}
 
-    if (!data.done) {
-      setTimeout(() => pollJob(jobId), 1000);
-      return;
-    }
-
-    // finished
-    progressText.textContent = 'Done — scanned ' + data.total + ' URL(s) in ' + fmtSeconds(data.elapsedMs) + '.';
-    auditBtn.disabled = false;
-    lastResults = data.results || [];
-
-    resultsCard.style.display = 'block';
-    summaryGrid.innerHTML =
-      '<div class="summary-stat"><span class="num">' + data.total + '</span><span class="label">Total scanned</span></div>' +
-      '<div class="summary-stat indexable"><span class="num">' + data.summary.indexable + '</span><span class="label">Indexable</span></div>' +
-      '<div class="summary-stat likely"><span class="num">' + data.summary.likelyBlocked + '</span><span class="label">Likely blocked</span></div>' +
-      '<div class="summary-stat blocked"><span class="num">' + data.summary.blocked + '</span><span class="label">Blocked</span></div>' +
-      '<div class="summary-stat redirected"><span class="num">' + data.summary.redirected + '</span><span class="label">Redirected</span></div>' +
-      '<div class="summary-stat error"><span class="num">' + data.summary.errors + '</span><span class="label">Errors</span></div>';
-
-    truncatedNote.innerHTML = data.truncated
-      ? '<div class="truncated-note">This sitemap has ' + data.totalFoundInSitemap + ' URLs — only the first 10,000 were scanned.</div>'
-      : '';
-
-    resultsBody.innerHTML = '';
-    urlFilter.value = '';
-    filterCount.textContent = '';
-    renderTable(lastResults);
-
-    downloadBtn.disabled = lastResults.length === 0;
-
-  } catch (err) {
-    progressText.textContent = 'Lost connection while polling — try again.';
-    auditBtn.disabled = false;
-  }
+function stopElapsedTimer(){
+  if (elapsedTimer) clearInterval(elapsedTimer);
+  elapsedTimer = null;
 }
 
 auditBtn.addEventListener('click', async () => {
@@ -459,58 +405,104 @@ auditBtn.addEventListener('click', async () => {
   }
 
   auditBtn.disabled = true;
-  progressText.textContent = 'Fetching sitemap…';
   resultsCard.style.display = 'none';
-  progressBox.style.display = 'block';
-  progressBarFill.style.width = '0%';
-  checkedCount.textContent = '0';
-  totalCount.textContent = '—';
-  elapsedTime.textContent = '0s';
-  etaTime.textContent = '—';
+  startElapsedTimer();
+
+  const clientStart = Date.now();
 
   try {
-    const res = await fetch('/api/audit-sitemap/start', {
+    const res = await fetch('/api/audit-sitemap', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ sitemapUrl })
     });
     const data = await res.json();
 
+    stopElapsedTimer();
+
     if (!res.ok || data.error) {
-      progressText.textContent = data.error || ('HTTP ' + res.status);
-      auditBtn.disabled = false;
+      progressText.textContent = data.error || `HTTP ${res.status}`;
       return;
     }
 
-    totalCount.textContent = data.total;
-    progressText.textContent = 'Scanning ' + data.total + ' URL(s)…';
-    pollJob(data.jobId);
+    lastResults = data.results;
+    const clientElapsed = Date.now() - clientStart;
+
+    progressText.textContent = `Done — scanned ${data.summary.total} URL(s).`;
+    resultsCard.style.display = 'block';
+
+    summaryGrid.innerHTML = `
+      <div class="summary-stat"><span class="num">${data.summary.total}</span><span class="label">Total scanned</span></div>
+      <div class="summary-stat indexable"><span class="num">${data.summary.indexable}</span><span class="label">Indexable</span></div>
+      <div class="summary-stat likely"><span class="num">${data.summary.likelyBlocked}</span><span class="label">Likely blocked</span></div>
+      <div class="summary-stat blocked"><span class="num">${data.summary.blocked}</span><span class="label">Blocked</span></div>
+      <div class="summary-stat redirected"><span class="num">${data.summary.redirected}</span><span class="label">Redirected</span></div>
+      <div class="summary-stat error"><span class="num">${data.summary.errors}</span><span class="label">Errors</span></div>
+    `;
+
+    const serverDuration = data.durationMs ? formatDuration(data.durationMs) : null;
+    durationNote.innerHTML = `Scan completed in <b>${serverDuration || formatDuration(clientElapsed)}</b>`
+      + (data.totalFoundInSitemap ? ` · <b>${data.totalFoundInSitemap}</b> URL(s) found in sitemap` : '');
+
+    truncatedNote.innerHTML = data.truncated
+      ? `<div class="truncated-note">This sitemap has ${data.totalFoundInSitemap}+ URLs — only the first 10,000 were scanned to keep this free tool usable.</div>`
+      : '';
+
+    resultsBody.innerHTML = data.results.map(r => {
+      const reasonsHtml = (r.reasons && r.reasons.length)
+        ? `<div class="reasons">${r.reasons.map(x => `<span>• ${x}</span>`).join('')}</div>`
+        : '<span style="color:var(--muted)">No issues found</span>';
+      const redirectNote = r.redirected
+        ? `<div class="redirect-note">↪ Final destination: ${r.finalUrl}</div>`
+        : '';
+      const rowClass = r.redirected ? ' class="is-redirected"' : '';
+      const redirectBadge = r.redirected ? '<span class="badge redirect">↪ Redirected</span>' : '';
+      return `<tr${rowClass}>
+        <td class="url-cell">${r.url}${redirectNote}</td>
+        <td>${r.httpStatus || '—'}</td>
+        <td>${verdictBadge(r.verdict)}${redirectBadge}</td>
+        <td>${reasonsHtml}</td>
+      </tr>`;
+    }).join('') || '<tr><td colspan="4"><div class="empty">No results.</div></td></tr>';
+
+    exportBtn.disabled = false;
 
   } catch (err) {
+    stopElapsedTimer();
     progressText.textContent = 'Network error — is the server running?';
+  } finally {
     auditBtn.disabled = false;
   }
 });
 
-downloadBtn.addEventListener('click', () => {
-  const rows = [['URL','Final URL','Redirected','HTTP','Time (s)','Verdict','Reasons']];
-  lastResults.forEach(r => {
-    rows.push([
-      r.url,
-      r.finalUrl || '',
-      r.redirected ? 'yes' : 'no',
-      r.httpStatus || '',
-      r.elapsedMs != null ? (r.elapsedMs / 1000).toFixed(2) : '',
-      r.verdict || '',
-      (r.reasons || []).join('; ')
-    ]);
-  });
-  const csv = rows.map(row => row.map(cell => '"' + String(cell).replace(/"/g,'""') + '"').join(',')).join('\n');
-  const blob = new Blob([csv], { type:'text/csv' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = 'sitemap-audit-results.csv';
-  link.click();
+exportBtn.addEventListener('click', () => {
+  if (!lastResults.length) return;
+
+  const rows = lastResults.map(r => ({
+    URL: r.url,
+    'HTTP Status': r.httpStatus || '—',
+    Verdict: r.verdict,
+    Redirected: r.redirected ? 'Yes' : 'No',
+    'Final URL': r.finalUrl || '—',
+    'Robots.txt Blocked': r.robotsTxtBlocked === true ? 'Yes' : (r.robotsTxtBlocked === false ? 'No' : '—'),
+    'Meta Robots': r.metaRobots || '—',
+    'X-Robots-Tag': r.xRobotsTag || '—',
+    'Canonical URL': r.canonical || '—',
+    'Canonical Mismatch': r.canonicalMismatch ? 'Yes' : 'No',
+    Reasons: (r.reasons && r.reasons.length) ? r.reasons.join(' | ') : 'No issues found',
+  }));
+
+  const ws = XLSX.utils.json_to_sheet(rows);
+  ws['!cols'] = [
+    { wch: 45 }, { wch: 12 }, { wch: 18 }, { wch: 12 }, { wch: 45 },
+    { wch: 18 }, { wch: 20 }, { wch: 18 }, { wch: 45 }, { wch: 18 }, { wch: 55 },
+  ];
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Sitemap Audit');
+
+  const timestamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+  XLSX.writeFile(wb, `quickindex-sitemap-audit-${timestamp}.xlsx`);
 });
 </script>
 
