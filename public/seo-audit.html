@@ -357,6 +357,7 @@ function renderResults(){
         <div class="metric"><span class="metric-label">H2 / H3 count</span><span class="metric-value">${r.h2Count} / ${r.h3Count}</span></div>
         <div class="metric"><span class="metric-label">Images missing alt</span><span class="metric-value ${r.imagesMissingAlt > 0 ? 'bad' : ''}">${r.imagesMissingAlt} of ${r.imagesTotal}</span></div>
         <div class="metric"><span class="metric-label">Canonical tag</span><span class="metric-value ${r.hasCanonical ? '' : 'warn'}">${r.hasCanonical ? 'Present' : 'Missing'}</span></div>
+        <div class="metric"><span class="metric-label">Mobile viewport</span><span class="metric-value ${r.hasViewport ? '' : 'warn'}">${r.hasViewport ? 'Present' : 'Missing'}</span></div>
       </div>
       ${issuesHtml}
     </div>`;
