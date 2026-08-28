@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HFMX99GFCJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-HFMX99GFCJ');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Schema Markup Checker — Validate JSON-LD Structured Data | QuickIndex</title>
+<meta name="description" content="Paste a URL and instantly see what structured data (JSON-LD schema.org markup) it has, which @type values it uses, and whether the JSON is valid. Free, no sign-up, no daily limit.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://indexer-saas-production.up.railway.app/schema-checker.html">
+<link rel="icon" href="QI-favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="QI-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="QI-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="QI-apple-touch-icon.png">
+
+<meta property="og:title" content="Free Schema Markup Checker — QuickIndex">
+<meta property="og:description" content="Paste a URL and instantly see what structured data it has, which @type values it uses, and whether the JSON is valid.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="QuickIndex">
+<meta property="og:url" content="https://indexer-saas-production.up.railway.app/schema-checker.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Free Schema Markup Checker — QuickIndex">
+<meta name="twitter:description" content="Paste a URL and instantly see what structured data it has, which @type values it uses, and whether the JSON is valid.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "QuickIndex",
+  "url": "https://indexer-saas-production.up.railway.app/",
+  "description": "A bulk URL indexing tool that submits pages to Bing, Yandex, and DuckDuckGo via the IndexNow protocol.",
+  "publisher": { "@type": "Organization", "name": "QuickIndex" }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "QuickIndex Schema Markup Checker",
+  "applicationCategory": "SEO Tool",
+  "operatingSystem": "Web",
+  "url": "https://indexer-saas-production.up.railway.app/schema-checker.html",
+  "description": "A free tool that scans a page for JSON-LD structured data, lists every schema.org @type found, validates the JSON syntax, and flags pages with no structured data at all.",
+  "isPartOf": { "@type": "WebSite", "name": "QuickIndex", "url": "https://indexer-saas-production.up.railway.app/" },
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": [
+    "JSON-LD structured data detection",
+    "Schema.org @type extraction, including nested @graph blocks",
+    "JSON syntax validation with error messages",
+    "Microdata (itemscope/itemtype) fallback detection",
+    "Bulk URL checking with Excel export"
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://indexer-saas-production.up.railway.app/" },
+    { "@type": "ListItem", "position": 2, "name": "Schema Checker", "item": "https://indexer-saas-production.up.railway.app/schema-checker.html" }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is structured data and why does it matter?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Structured data is machine-readable markup (usually JSON-LD) that tells search engines and AI systems exactly what a page's content means — a recipe, a product, an FAQ, an article. It's what powers rich results in Google and is increasingly what AI-driven search and answer engines rely on to extract accurate information from a page." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this tool check if my structured data is valid?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes — it parses every JSON-LD block on the page and reports whether the JSON itself is syntactically valid, along with the specific parse error if it isn't. It does not validate against every schema.org property requirement the way Google's Rich Results Test does." }
+    },
+    {
+      "@type": "Question",
+      "name": "What if my page has no structured data at all?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The tool will flag the page as having no schema markup. This isn't necessarily an error — not every page needs structured data — but for pages competing for rich results or AI-generated answers, adding relevant schema (FAQPage, Article, Product, HowTo, etc.) is usually worth doing." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this tool free?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, the Schema Markup Checker is free to use with no API key, account, or daily limit." }
+    }
+  ]
+}
+</script>
+
+<style>
+  :root{
+    --bg:#f5f9fd;
+    --panel:#ffffff;
+    --border:#d8e6f5;
+    --border-soft:#e9f2fb;
+    --text:#152238;
+    --muted:#64758f;
+    --green:#2f8fe6;
+    --green-dim:#1c6fc2;
+    --red:#dc2626;
+    --amber:#b45309;
+    --mono:'JetBrains Mono','Fira Code',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--mono);padding:0 20px 60px;}
+  header{display:flex;align-items:center;justify-content:space-between;padding:22px 4px;border-bottom:1px solid var(--border);max-width:1400px;margin:0 auto;flex-wrap:wrap;gap:14px;}
+  .brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;}
+  .brand a{color:var(--text);text-decoration:none;display:flex;align-items:center;gap:10px;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);}
+  .nav-links{display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;padding:6px 2px;border-bottom:2px solid transparent;transition:color .15s ease, border-color .15s ease;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-links a.active{color:var(--text);border-bottom-color:var(--green);}
+  .breadcrumbs{max-width:1400px;margin:14px auto 0;padding:0 20px;}
+  .breadcrumbs ol{list-style:none;display:flex;gap:6px;margin:0;padding:0;font-size:12px;color:var(--muted);}
+  .breadcrumbs a{color:var(--muted);text-decoration:none;}
+  .breadcrumbs a:hover{color:var(--text);}
+  .breadcrumbs li:not(:last-child)::after{content:"/";margin-left:6px;color:var(--border);}
+  .wrap{max-width:1400px;margin:0 auto;}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:34px;margin-top:28px;}
+  h1{font-size:26px;margin:0 0 8px;font-weight:700;}
+  h2{font-size:16px;margin:0 0 18px;font-weight:700;}
+  h3{font-size:14.5px;margin:0 0 8px;font-weight:700;color:var(--text);}
+  .sub{color:var(--muted);font-size:13.5px;margin:0 0 22px;line-height:1.5;}
+  .sub b{color:var(--text);}
+  textarea{width:100%;min-height:110px;background:var(--bg);border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:var(--mono);font-size:13.5px;padding:14px;resize:vertical;}
+  textarea::placeholder{color:#9fb0c8;}
+  textarea:focus{outline:none;border-color:var(--green);}
+  .actions{display:flex;align-items:center;gap:16px;margin-top:20px;flex-wrap:wrap;}
+  button.submit{background:var(--green-dim);color:#ffffff;border:none;padding:12px 26px;font-weight:700;font-family:var(--mono);font-size:14px;border-radius:5px;cursor:pointer;}
+  button.submit:hover{background:#155fa8;}
+  button.submit:disabled{background:#a9d3f5;color:#5c7896;cursor:not-allowed;}
+  .progress-text{color:var(--muted);font-size:12.5px;}
+  details{margin-top:22px;border-top:1px dashed var(--border-soft);padding-top:16px;}
+  summary{color:var(--amber);cursor:pointer;font-size:13px;list-style:none;}
+  summary::-webkit-details-marker{display:none;}
+  summary:before{content:"▶ ";}
+  details[open] summary:before{content:"▼ ";}
+  .details-body{color:var(--muted);font-size:12.5px;line-height:1.7;margin-top:10px;}
+  .results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px;}
+  .results-header h2{margin:0;}
+  button.export{background:transparent;color:var(--green);border:1px solid var(--green-dim);padding:8px 18px;font-weight:700;font-family:var(--mono);font-size:12.5px;border-radius:5px;cursor:pointer;display:flex;align-items:center;gap:6px;}
+  button.export:hover{background:rgba(47,143,230,.08);border-color:var(--green);}
+  button.export:disabled{opacity:.4;cursor:not-allowed;}
+
+  .result-card{border:1px solid var(--border-soft);border-radius:5px;padding:20px 22px;margin-bottom:16px;}
+  .result-card:last-child{margin-bottom:0;}
+  .result-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
+  .result-url{color:var(--text);font-size:13.5px;word-break:break-all;}
+  .verdict-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap;}
+  .verdict-badge.valid{background:rgba(22,163,74,.10);color:#16a34a;}
+  .verdict-badge.has_errors{background:rgba(180,83,9,.10);color:var(--amber);}
+  .verdict-badge.none{background:rgba(100,116,143,.12);color:var(--muted);}
+  .verdict-badge.error{background:rgba(220,38,38,.10);color:var(--red);}
+  .verdict-badge.pending{background:rgba(100,116,143,.12);color:var(--muted);}
+
+  .type-chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;}
+  .type-chip{background:rgba(47,143,230,.10);color:var(--green-dim);border-radius:5px;padding:4px 10px;font-size:12px;font-weight:600;}
+  .type-chip.micro{background:rgba(180,83,9,.08);color:var(--amber);}
+
+  .meta-line{color:var(--muted);font-size:12px;margin-top:4px;}
+  .parse-errors{margin:8px 0 0;padding-left:18px;color:var(--red);font-size:12px;line-height:1.8;}
+  .empty{text-align:center;color:var(--muted);padding:40px 0;font-size:13px;}
+
+  .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:6px;}
+  .info-item{border:1px solid var(--border-soft);border-radius:5px;padding:16px 18px;}
+  .info-item p{color:var(--muted);font-size:12.5px;line-height:1.6;margin:0;}
+
+  .ref-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:16px;}
+  .ref-table th{text-align:left;color:var(--muted);font-weight:600;padding:8px;border-bottom:1px solid var(--border);}
+  .ref-table td{padding:8px;border-bottom:1px solid var(--border-soft);color:var(--muted);}
+  .ref-table td:first-child{color:var(--text);font-weight:600;}
+
+  .faq-item{border-bottom:1px solid var(--border-soft);padding:16px 0;}
+  .faq-item:last-child{border-bottom:none;}
+  .faq-item p{color:var(--muted);font-size:13px;line-height:1.65;margin:6px 0 0;}
+
+  footer{max-width:1400px;margin:40px auto 0;padding-top:20px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;text-align:center;}
+  footer a{color:var(--muted);}
+
+  .cta-box{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border:1px solid var(--green-dim);border-radius:8px;padding:18px 22px;background:rgba(47,143,230,.05);margin-top:28px;}
+  .cta-box p{margin:0;font-size:13px;color:var(--muted);}
+  .cta-box a.cta-link{color:#ffffff;background:var(--green-dim);text-decoration:none;font-weight:700;font-family:var(--mono);font-size:13px;padding:9px 18px;border-radius:6px;white-space:nowrap;}
+  .cta-box a.cta-link:hover{background:#155fa8;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand"><a href="/index.html"><span class="dot"></span>QuickIndex</a></div>
+  <nav class="nav-links" aria-label="Main navigation">
+    <a href="/index.html">Submit URLs</a>
+    <a href="/check-index.html">Check Indexability</a>
+    <a href="/seo-audit.html">SEO Auditor</a>
+    <a href="/sitemap-audit.html">Sitemap Auditor</a>
+    <a href="/schema-checker.html" class="active">Schema Checker</a>
+  </nav>
+</header>
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/index.html">Home</a></li>
+    <li aria-current="page">Schema Checker</li>
+  </ol>
+</nav>
+
+<div class="wrap">
+  <div class="card">
+    <h1>Does your page have structured data AI and Google can actually read?</h1>
+    <p class="sub">Paste URLs below, one per line. We scan for <b>JSON-LD schema.org markup</b>, list every <b>@type</b> found, and validate the JSON syntax — the same structured data that powers rich results and AI-generated answers. Free, no sign-up, no daily limit.</p>
+
+    <textarea id="urlText" placeholder="https://example.com/page-1
+https://example.com/page-2" aria-label="URLs to check"></textarea>
+
+    <div class="actions">
+      <button class="submit" id="submitBtn">Check Schema Markup</button>
+      <span class="progress-text" id="progressText"></span>
+    </div>
+
+    <details>
+      <summary>What this actually checks (read before you rely on it)</summary>
+      <div class="details-body">
+        This scans the page's HTML for <code>&lt;script type="application/ld+json"&gt;</code> blocks, parses
+        each one as JSON, and extracts every <code>@type</code> value — including types nested inside
+        <code>@graph</code> arrays or common properties like <code>mainEntity</code> and <code>author</code>.
+        It reports whether the JSON itself is syntactically valid and shows the parse error if it isn't. It
+        also does a basic check for older microdata markup (<code>itemscope</code>/<code>itemtype</code>) as
+        a fallback signal. This does <b>not</b> validate against every schema.org property requirement the
+        way Google's Rich Results Test does — it's a fast first pass to see what's there and whether it
+        parses at all.
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <div class="results-header">
+      <h2>Results</h2>
+      <button class="export" id="exportBtn" disabled>⬇ Export to Excel</button>
+    </div>
+    <div id="resultsContainer">
+      <div class="empty">No results yet — paste URLs above.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Why structured data matters more than ever</h2>
+    <div class="info-grid">
+      <div class="info-item">
+        <h3>Rich results in Google</h3>
+        <p>FAQPage, Product, Recipe, and Review schema are what let Google show star ratings, prices, and expandable FAQs directly in search results — without it, you're only eligible for a plain blue link.</p>
+      </div>
+      <div class="info-item">
+        <h3>AI answer engines</h3>
+        <p>Tools like Google's AI Overviews and other AI-driven search rely heavily on structured data to extract facts accurately from a page. Clean, valid schema makes a page far easier for these systems to cite correctly.</p>
+      </div>
+      <div class="info-item">
+        <h3>Invalid JSON breaks silently</h3>
+        <p>A single missing comma or unescaped quote in a JSON-LD block makes the entire block unreadable to crawlers — the schema doesn't degrade gracefully, it just gets ignored.</p>
+      </div>
+      <div class="info-item">
+        <h3>Nested types are easy to miss</h3>
+        <p>Many pages define an outer type (like WebPage) but nest the more specific type — an FAQPage or Article — as a sub-property. This tool follows those nested references so you see the full picture.</p>
+      </div>
+    </div>
+
+    <table class="ref-table">
+      <thead><tr><th>Common @type</th><th>What it's for</th></tr></thead>
+      <tbody>
+        <tr><td>Article</td><td>Blog posts and news content, for headline/author/date rich results</td></tr>
+        <tr><td>Product</td><td>Price, availability, and review star ratings in search results</td></tr>
+        <tr><td>FAQPage</td><td>Expandable question/answer accordions directly in search results</td></tr>
+        <tr><td>HowTo</td><td>Step-by-step instructions shown as a structured list</td></tr>
+        <tr><td>BreadcrumbList</td><td>Shows the page's site hierarchy under its search result</td></tr>
+        <tr><td>Organization / WebSite</td><td>Brand identity signals, sitelinks search box eligibility</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Frequently asked questions</h2>
+    <div class="faq-item">
+      <h3>What is structured data and why does it matter?</h3>
+      <p>Structured data is machine-readable markup (usually JSON-LD) that tells search engines and AI systems exactly what a page's content means — a recipe, a product, an FAQ, an article. It's what powers rich results in Google and is increasingly what AI-driven search and answer engines rely on to extract accurate information from a page.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does this tool check if my structured data is valid?</h3>
+      <p>Yes — it parses every JSON-LD block on the page and reports whether the JSON itself is syntactically valid, along with the specific parse error if it isn't. It does not validate against every schema.org property requirement the way Google's Rich Results Test does.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What if my page has no structured data at all?</h3>
+      <p>The tool will flag the page as having no schema markup. This isn't necessarily an error — not every page needs structured data — but for pages competing for rich results or AI-generated answers, adding relevant schema (FAQPage, Article, Product, HowTo, etc.) is usually worth doing.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is this tool free?</h3>
+      <p>Yes, the Schema Markup Checker is free to use with no API key, account, or daily limit.</p>
+    </div>
+  </div>
+
+  <div class="cta-box">
+    <p>Schema looking good? Notify crawlers about your pages right away.</p>
+    <a href="/index.html" class="cta-link">Submit URLs →</a>
+  </div>
+</div>
+
+<footer>
+  <p>QuickIndex — <a href="/index.html">Submit URLs</a> · <a href="/check-index.html">Check Indexability</a> · <a href="/seo-audit.html">SEO Auditor</a> · <a href="/sitemap-audit.html">Sitemap Auditor</a> · <a href="/schema-checker.html">Schema Checker</a></p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+const urlText = document.getElementById('urlText');
+const submitBtn = document.getElementById('submitBtn');
+const progressText = document.getElementById('progressText');
+const resultsContainer = document.getElementById('resultsContainer');
+const exportBtn = document.getElementById('exportBtn');
+
+let results = [];
+
+function extractUrls(){
+  const urlRegex = /https?:\/\/[^\s,"'<>]+/gi;
+  const found = urlText.value.match(urlRegex) || [];
+  return [...new Set(found.map(u => u.trim()))];
+}
+
+function verdictBadge(r){
+  if (r.status === 'pending') return '<span class="verdict-badge pending">checking…</span>';
+  if (r.status === 'error') return '<span class="verdict-badge error">error</span>';
+  if (r.verdict === 'valid') return '<span class="verdict-badge valid">✓ Valid schema found</span>';
+  if (r.verdict === 'has_errors') return '<span class="verdict-badge has_errors">⚠ Invalid JSON found</span>';
+  return '<span class="verdict-badge none">No schema found</span>';
+}
+
+function verdictLabel(r){
+  if (r.status === 'pending') return 'Checking…';
+  if (r.status === 'error') return 'Error';
+  if (r.verdict === 'valid') return 'Valid';
+  if (r.verdict === 'has_errors') return 'Has errors';
+  return 'None found';
+}
+
+function renderResults(){
+  if (!results.length){
+    resultsContainer.innerHTML = '<div class="empty">No results yet — paste URLs above.</div>';
+    exportBtn.disabled = true;
+    return;
+  }
+
+  resultsContainer.innerHTML = results.map(r => {
+    if (r.status === 'pending'){
+      return `<div class="result-card">
+        <div class="result-top"><span class="result-url">${r.url}</span>${verdictBadge(r)}</div>
+      </div>`;
+    }
+    if (r.status === 'error'){
+      return `<div class="result-card">
+        <div class="result-top"><span class="result-url">${r.url}</span>${verdictBadge(r)}</div>
+        <div class="meta-line">${r.errorMessage || 'Lookup failed'}</div>
+      </div>`;
+    }
+
+    const typeChips = (r.types && r.types.length)
+      ? `<div class="type-chips">${r.types.map(t => `<span class="type-chip">${t}</span>`).join('')}${(r.microdataTypes||[]).map(t => `<span class="type-chip micro">${t} (microdata)</span>`).join('')}</div>`
+      : (r.hasMicrodata ? `<div class="type-chips">${r.microdataTypes.map(t => `<span class="type-chip micro">${t} (microdata)</span>`).join('')}</div>` : '');
+
+    const errorsHtml = (r.parseErrors && r.parseErrors.length)
+      ? `<ul class="parse-errors">${r.parseErrors.map(e => `<li>${e}</li>`).join('')}</ul>`
+      : '';
+
+    return `<div class="result-card">
+      <div class="result-top"><span class="result-url">${r.url}</span>${verdictBadge(r)}</div>
+      <div class="meta-line">${r.jsonLdBlockCount} JSON-LD block(s) found · ${r.validBlockCount} valid · ${r.invalidBlockCount} invalid</div>
+      ${typeChips}
+      ${errorsHtml}
+    </div>`;
+  }).join('');
+
+  const allDone = results.every(r => r.status !== 'pending');
+  exportBtn.disabled = !allDone;
+}
+
+async function checkOne(url){
+  try {
+    const res = await fetch('/api/schema-check', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ url })
+    });
+    const data = await res.json();
+    if (!res.ok || data.error) {
+      return { status: 'error', errorMessage: data.error || `HTTP ${res.status}` };
+    }
+    return { status: 'done', ...data };
+  } catch(e){
+    return { status: 'error', errorMessage: e.message || 'Network error' };
+  }
+}
+
+submitBtn.addEventListener('click', async () => {
+  const urls = extractUrls();
+  if (!urls.length){
+    progressText.textContent = 'Add at least one valid URL first.';
+    return;
+  }
+
+  results = urls.map(u => ({ url: u, status: 'pending' }));
+  renderResults();
+  submitBtn.disabled = true;
+
+  for (let i = 0; i < results.length; i++){
+    progressText.textContent = `Checking ${i+1} of ${results.length}…`;
+    const outcome = await checkOne(results[i].url);
+    results[i] = { url: results[i].url, ...outcome };
+    renderResults();
+  }
+
+  progressText.textContent = `Done — checked ${results.length} URL(s).`;
+  submitBtn.disabled = false;
+});
+
+exportBtn.addEventListener('click', () => {
+  if (!results.length) return;
+
+  const rows = results.map(r => ({
+    URL: r.url,
+    Verdict: r.status === 'done' ? verdictLabel(r) : r.status,
+    'JSON-LD Blocks': r.jsonLdBlockCount ?? '—',
+    'Valid Blocks': r.validBlockCount ?? '—',
+    'Invalid Blocks': r.invalidBlockCount ?? '—',
+    'Types Found': (r.types && r.types.length) ? r.types.join(', ') : '—',
+    'Has Microdata': r.hasMicrodata ? 'Yes' : 'No',
+    'Microdata Types': (r.microdataTypes && r.microdataTypes.length) ? r.microdataTypes.join(', ') : '—',
+    'Parse Errors': (r.parseErrors && r.parseErrors.length) ? r.parseErrors.join(' | ') : (r.errorMessage || 'None'),
+  }));
+
+  const ws = XLSX.utils.json_to_sheet(rows);
+  ws['!cols'] = [
+    { wch: 45 }, { wch: 14 }, { wch: 14 }, { wch: 12 }, { wch: 14 },
+    { wch: 35 }, { wch: 14 }, { wch: 25 }, { wch: 50 },
+  ];
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Schema Check');
+
+  const timestamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+  XLSX.writeFile(wb, `quickindex-schema-check-${timestamp}.xlsx`);
+});
+</script>
+
+</body>
+</html>
