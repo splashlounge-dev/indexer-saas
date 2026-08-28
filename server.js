@@ -22,6 +22,7 @@ const { v4: uuidv4 } = require("uuid");
 const checkIndexRoute = require("./check-index-route");
 const seoAuditRoute = require("./seo-audit-route");
 const sitemapAuditRoute = require("./sitemap-audit-route");
+const schemaCheckerRoute = require("./schema-checker-route");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -35,6 +36,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(checkIndexRoute);
 app.use(seoAuditRoute);
 app.use(sitemapAuditRoute);
+app.use(schemaCheckerRoute);
 
 // ---------- Database ----------
 const db = new Database(path.join(__dirname, "quickindex.db"));
