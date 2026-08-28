@@ -208,6 +208,11 @@
 
   footer{max-width:1400px;margin:40px auto 0;padding-top:20px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;text-align:center;}
   footer a{color:var(--muted);}
+
+  .cta-box{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border:1px solid var(--green-dim);border-radius:8px;padding:18px 22px;background:rgba(47,143,230,.05);margin-top:28px;}
+  .cta-box p{margin:0;font-size:13px;color:var(--muted);}
+  .cta-box a.cta-link{color:#ffffff;background:var(--green-dim);text-decoration:none;font-weight:700;font-family:var(--mono);font-size:13px;padding:9px 18px;border-radius:6px;white-space:nowrap;}
+  .cta-box a.cta-link:hover{background:#155fa8;}
 </style>
 </head>
 <body>
@@ -215,10 +220,11 @@
 <header>
   <div class="brand"><a href="/index.html"><span class="dot"></span>QuickIndex</a></div>
   <nav class="nav-links" aria-label="Main navigation">
-    <a href="https://indexer-saas-production.up.railway.app/">Submit URLs</a>
+    <a href="/index.html">Submit URLs</a>
     <a href="/check-index.html" class="active">Check Indexability</a>
     <a href="/seo-audit.html">SEO Auditor</a>
     <a href="/sitemap-audit.html">Sitemap Auditor</a>
+    <a href="/schema-checker.html">Schema Checker</a>
   </nav>
 </header>
 
@@ -311,6 +317,11 @@ https://example.com/page-2" aria-label="URLs to check"></textarea>
       <h3>Can I check more than one URL at once?</h3>
       <p>Yes — paste as many URLs as you want, one per line, and each one is checked individually. When results are ready, you can export the full table to an Excel file.</p>
     </div>
+  </div>
+
+  <div class="cta-box">
+    <p>Found pages that are actually indexable? Notify crawlers about them right away.</p>
+    <a href="/index.html" class="cta-link">Submit URLs →</a>
   </div>
 </div>
 
