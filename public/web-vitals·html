@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HFMX99GFCJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-HFMX99GFCJ');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Core Web Vitals Checker — LCP, INP &amp; CLS Scores | QuickIndex</title>
+<meta name="description" content="Paste a URL and instantly see its Core Web Vitals — LCP, INP, and CLS — straight from Google's PageSpeed Insights data, with pass/fail ratings. Free, no sign-up.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://indexer-saas-production.up.railway.app/web-vitals.html">
+<link rel="icon" href="QI-favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="QI-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="QI-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="QI-apple-touch-icon.png">
+
+<meta property="og:title" content="Free Core Web Vitals Checker — QuickIndex">
+<meta property="og:description" content="Paste a URL and instantly see its Core Web Vitals — LCP, INP, and CLS — straight from Google's PageSpeed Insights data.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="QuickIndex">
+<meta property="og:url" content="https://indexer-saas-production.up.railway.app/web-vitals.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Free Core Web Vitals Checker — QuickIndex">
+<meta name="twitter:description" content="Paste a URL and instantly see its Core Web Vitals — LCP, INP, and CLS — straight from Google's PageSpeed Insights data.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "QuickIndex",
+  "url": "https://indexer-saas-production.up.railway.app/",
+  "description": "A bulk URL indexing tool that submits pages to Bing, Yandex, and DuckDuckGo via the IndexNow protocol.",
+  "publisher": { "@type": "Organization", "name": "QuickIndex" }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "QuickIndex Core Web Vitals Checker",
+  "applicationCategory": "SEO Tool",
+  "operatingSystem": "Web",
+  "url": "https://indexer-saas-production.up.railway.app/web-vitals.html",
+  "description": "A free tool that fetches a page's Core Web Vitals — LCP, INP, and CLS — from Google's PageSpeed Insights API, using real-world field data when available, and rates each metric against Google's official thresholds.",
+  "isPartOf": { "@type": "WebSite", "name": "QuickIndex", "url": "https://indexer-saas-production.up.railway.app/" },
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": [
+    "LCP, INP, and CLS scores from Google PageSpeed Insights",
+    "Real-world field data (CrUX) when available, lab data fallback",
+    "Mobile and desktop scanning",
+    "Good / Needs Improvement / Poor ratings per Google's official thresholds",
+    "Bulk URL checking with Excel export"
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://indexer-saas-production.up.railway.app/" },
+    { "@type": "ListItem", "position": 2, "name": "Core Web Vitals Checker", "item": "https://indexer-saas-production.up.railway.app/web-vitals.html" }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What are Core Web Vitals?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Core Web Vitals are three metrics Google uses to measure real-world page experience: LCP (how fast the main content loads), INP (how quickly the page responds to user interaction), and CLS (how much the layout visually shifts while loading). They are a confirmed Google ranking factor." }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the difference between field data and lab data?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Field data comes from real Chrome users who visited the page (Google's CrUX dataset) and reflects actual experience. Lab data comes from a single simulated Lighthouse test run. Field data is more representative but only exists for pages with enough real traffic; this tool uses field data when available and falls back to lab data otherwise." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my INP score missing?",
+      "acceptedAnswer": { "@type": "Answer", "text": "INP requires a real user interacting with the page, so it can only come from field data (CrUX). If a page doesn't have enough real-world traffic for Google to have field data, INP will show as unavailable rather than being estimated from a lab test." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this tool free?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, the Core Web Vitals Checker is free to use with no sign-up and no daily limit." }
+    }
+  ]
+}
+</script>
+
+<style>
+  :root{
+    --bg:#f5f9fd;
+    --panel:#ffffff;
+    --border:#d8e6f5;
+    --border-soft:#e9f2fb;
+    --text:#152238;
+    --muted:#64758f;
+    --green:#2f8fe6;
+    --green-dim:#1c6fc2;
+    --red:#dc2626;
+    --amber:#b45309;
+    --mono:'JetBrains Mono','Fira Code',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--mono);padding:0 20px 60px;}
+  header{display:flex;align-items:center;justify-content:space-between;padding:22px 4px;border-bottom:1px solid var(--border);max-width:1400px;margin:0 auto;flex-wrap:wrap;gap:14px;}
+  .brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;}
+  .brand a{color:var(--text);text-decoration:none;display:flex;align-items:center;gap:10px;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);}
+  .nav-links{display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;padding:6px 2px;border-bottom:2px solid transparent;transition:color .15s ease, border-color .15s ease;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-links a.active{color:var(--text);border-bottom-color:var(--green);}
+  .breadcrumbs{max-width:1400px;margin:14px auto 0;padding:0 20px;}
+  .breadcrumbs ol{list-style:none;display:flex;gap:6px;margin:0;padding:0;font-size:12px;color:var(--muted);}
+  .breadcrumbs a{color:var(--muted);text-decoration:none;}
+  .breadcrumbs a:hover{color:var(--text);}
+  .breadcrumbs li:not(:last-child)::after{content:"/";margin-left:6px;color:var(--border);}
+  .wrap{max-width:1400px;margin:0 auto;}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:34px;margin-top:28px;}
+  h1{font-size:26px;margin:0 0 8px;font-weight:700;}
+  h2{font-size:16px;margin:0 0 18px;font-weight:700;}
+  h3{font-size:14.5px;margin:0 0 8px;font-weight:700;color:var(--text);}
+  .sub{color:var(--muted);font-size:13.5px;margin:0 0 22px;line-height:1.5;}
+  .sub b{color:var(--text);}
+  textarea{width:100%;min-height:110px;background:var(--bg);border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:var(--mono);font-size:13.5px;padding:14px;resize:vertical;}
+  textarea::placeholder{color:#9fb0c8;}
+  textarea:focus{outline:none;border-color:var(--green);}
+
+  .strategy-toggle{display:flex;gap:8px;margin-top:14px;}
+  .strategy-toggle button{background:var(--panel);border:1px solid var(--border);color:var(--muted);padding:8px 16px;font-family:var(--mono);font-size:12.5px;font-weight:600;border-radius:5px;cursor:pointer;}
+  .strategy-toggle button.active{background:var(--green);color:#ffffff;border-color:var(--green);}
+
+  .actions{display:flex;align-items:center;gap:16px;margin-top:20px;flex-wrap:wrap;}
+  button.submit{background:var(--green-dim);color:#ffffff;border:none;padding:12px 26px;font-weight:700;font-family:var(--mono);font-size:14px;border-radius:5px;cursor:pointer;}
+  button.submit:hover{background:#155fa8;}
+  button.submit:disabled{background:#a9d3f5;color:#5c7896;cursor:not-allowed;}
+  .progress-text{color:var(--muted);font-size:12.5px;}
+  details{margin-top:22px;border-top:1px dashed var(--border-soft);padding-top:16px;}
+  summary{color:var(--amber);cursor:pointer;font-size:13px;list-style:none;}
+  summary::-webkit-details-marker{display:none;}
+  summary:before{content:"▶ ";}
+  details[open] summary:before{content:"▼ ";}
+  .details-body{color:var(--muted);font-size:12.5px;line-height:1.7;margin-top:10px;}
+  .results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px;}
+  .results-header h2{margin:0;}
+  button.export{background:transparent;color:var(--green);border:1px solid var(--green-dim);padding:8px 18px;font-weight:700;font-family:var(--mono);font-size:12.5px;border-radius:5px;cursor:pointer;display:flex;align-items:center;gap:6px;}
+  button.export:hover{background:rgba(47,143,230,.08);border-color:var(--green);}
+  button.export:disabled{opacity:.4;cursor:not-allowed;}
+
+  .result-card{border:1px solid var(--border-soft);border-radius:5px;padding:20px 22px;margin-bottom:16px;}
+  .result-card:last-child{margin-bottom:0;}
+  .result-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
+  .result-url{color:var(--text);font-size:13.5px;word-break:break-all;}
+  .verdict-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap;}
+  .verdict-badge.good{background:rgba(22,163,74,.10);color:#16a34a;}
+  .verdict-badge.needs_improvement{background:rgba(180,83,9,.10);color:var(--amber);}
+  .verdict-badge.poor{background:rgba(220,38,38,.10);color:var(--red);}
+  .verdict-badge.unknown{background:rgba(100,116,143,.12);color:var(--muted);}
+  .verdict-badge.pending{background:rgba(100,116,143,.12);color:var(--muted);}
+  .verdict-badge.error{background:rgba(220,38,38,.10);color:var(--red);}
+
+  .vitals-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:10px;}
+  .vital-box{border:1px solid var(--border-soft);border-radius:6px;padding:12px 14px;text-align:center;}
+  .vital-box .vital-name{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px;}
+  .vital-box .vital-value{font-size:20px;font-weight:700;display:block;}
+  .vital-box .vital-rating{font-size:10.5px;font-weight:600;margin-top:2px;display:block;}
+  .vital-box.good .vital-value, .vital-box.good .vital-rating{color:#16a34a;}
+  .vital-box.needs_improvement .vital-value, .vital-box.needs_improvement .vital-rating{color:var(--amber);}
+  .vital-box.poor .vital-value, .vital-box.poor .vital-rating{color:var(--red);}
+  .vital-box.unknown .vital-value, .vital-box.unknown .vital-rating{color:var(--muted);}
+
+  .meta-line{color:var(--muted);font-size:11.5px;margin-top:6px;}
+  .empty{text-align:center;color:var(--muted);padding:40px 0;font-size:13px;}
+
+  .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:6px;}
+  .info-item{border:1px solid var(--border-soft);border-radius:5px;padding:16px 18px;}
+  .info-item p{color:var(--muted);font-size:12.5px;line-height:1.6;margin:0;}
+
+  .ref-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:16px;}
+  .ref-table th{text-align:left;color:var(--muted);font-weight:600;padding:8px;border-bottom:1px solid var(--border);}
+  .ref-table td{padding:8px;border-bottom:1px solid var(--border-soft);color:var(--muted);}
+  .ref-table td:first-child{color:var(--text);font-weight:600;}
+
+  .faq-item{border-bottom:1px solid var(--border-soft);padding:16px 0;}
+  .faq-item:last-child{border-bottom:none;}
+  .faq-item p{color:var(--muted);font-size:13px;line-height:1.65;margin:6px 0 0;}
+
+  .cta-box{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border:1px solid var(--green-dim);border-radius:8px;padding:18px 22px;background:rgba(47,143,230,.05);margin-top:28px;}
+  .cta-box p{margin:0;font-size:13px;color:var(--muted);}
+  .cta-box a.cta-link{color:#ffffff;background:var(--green-dim);text-decoration:none;font-weight:700;font-family:var(--mono);font-size:13px;padding:9px 18px;border-radius:6px;white-space:nowrap;}
+  .cta-box a.cta-link:hover{background:#155fa8;}
+
+  footer{max-width:1400px;margin:40px auto 0;padding-top:20px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;text-align:center;}
+  footer a{color:var(--muted);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand"><a href="/index.html"><span class="dot"></span>QuickIndex</a></div>
+  <nav class="nav-links" id="site-nav" aria-label="Main navigation"></nav>
+</header>
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/index.html">Home</a></li>
+    <li aria-current="page">Core Web Vitals Checker</li>
+  </ol>
+</nav>
+
+<div class="wrap">
+  <div class="card">
+    <h1>Is your page actually fast, by Google's own numbers?</h1>
+    <p class="sub">Paste URLs below, one per line. We pull <b>LCP, INP, and CLS</b> straight from Google's PageSpeed Insights API — using real-world visitor data when it's available. Free, no sign-up, no daily limit.</p>
+
+    <textarea id="urlText" placeholder="https://example.com/page-1
+https://example.com/page-2" aria-label="URLs to check"></textarea>
+
+    <div class="strategy-toggle">
+      <button type="button" id="mobileBtn" class="active">📱 Mobile</button>
+      <button type="button" id="desktopBtn">🖥 Desktop</button>
+    </div>
+
+    <div class="actions">
+      <button class="submit" id="submitBtn">Check Web Vitals</button>
+      <span class="progress-text" id="progressText"></span>
+    </div>
+
+    <details>
+      <summary>What this actually does (read before you rely on it)</summary>
+      <div class="details-body">
+        This calls Google's own PageSpeed Insights API for each URL. When Google has enough real-world
+        Chrome traffic for a page, it returns <b>field data</b> — actual measured experience from real
+        visitors (the CrUX dataset), which is what Google's ranking systems use. If field data isn't
+        available (usually for lower-traffic pages), the results fall back to <b>lab data</b> — a single
+        simulated Lighthouse run, which is a reasonable proxy but not the same as real-world usage. INP in
+        particular requires real interaction data, so it will show as unavailable rather than being
+        estimated when field data doesn't exist. Each metric is rated Good / Needs Improvement / Poor using
+        Google's own published thresholds.
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <div class="results-header">
+      <h2>Results</h2>
+      <button class="export" id="exportBtn" disabled>⬇ Export to Excel</button>
+    </div>
+    <div id="resultsContainer">
+      <div class="empty">No results yet — paste URLs above.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Google's Core Web Vitals thresholds</h2>
+    <table class="ref-table">
+      <thead><tr><th>Metric</th><th>Good</th><th>Needs Improvement</th><th>Poor</th></tr></thead>
+      <tbody>
+        <tr><td>LCP (Largest Contentful Paint)</td><td>≤ 2.5s</td><td>2.5s – 4.0s</td><td>&gt; 4.0s</td></tr>
+        <tr><td>INP (Interaction to Next Paint)</td><td>≤ 200ms</td><td>200ms – 500ms</td><td>&gt; 500ms</td></tr>
+        <tr><td>CLS (Cumulative Layout Shift)</td><td>≤ 0.1</td><td>0.1 – 0.25</td><td>&gt; 0.25</td></tr>
+      </tbody>
+    </table>
+
+    <div class="info-grid" style="margin-top:22px;">
+      <div class="info-item">
+        <h3>LCP — loading speed</h3>
+        <p>Measures how long it takes the largest visible element (usually a hero image or heading) to render. Slow LCP is most often caused by slow servers, render-blocking CSS/JS, or unoptimized images.</p>
+      </div>
+      <div class="info-item">
+        <h3>INP — responsiveness</h3>
+        <p>Measures the delay between a user's click/tap and the page visually responding. High INP usually points to heavy JavaScript execution blocking the main thread.</p>
+      </div>
+      <div class="info-item">
+        <h3>CLS — visual stability</h3>
+        <p>Measures unexpected layout shifts, like text jumping when an ad or image loads without a reserved size. Almost always fixed by setting explicit width/height on images and embeds.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Frequently asked questions</h2>
+    <div class="faq-item">
+      <h3>What are Core Web Vitals?</h3>
+      <p>Core Web Vitals are three metrics Google uses to measure real-world page experience: LCP (how fast the main content loads), INP (how quickly the page responds to user interaction), and CLS (how much the layout visually shifts while loading). They are a confirmed Google ranking factor.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What's the difference between field data and lab data?</h3>
+      <p>Field data comes from real Chrome users who visited the page (Google's CrUX dataset) and reflects actual experience. Lab data comes from a single simulated Lighthouse test run. Field data is more representative but only exists for pages with enough real traffic; this tool uses field data when available and falls back to lab data otherwise.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why is my INP score missing?</h3>
+      <p>INP requires a real user interacting with the page, so it can only come from field data (CrUX). If a page doesn't have enough real-world traffic for Google to have field data, INP will show as unavailable rather than being estimated from a lab test.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is this tool free?</h3>
+      <p>Yes, the Core Web Vitals Checker is free to use with no sign-up and no daily limit.</p>
+    </div>
+  </div>
+
+  <div class="cta-box">
+    <p>Vitals looking good? Notify crawlers about your pages right away.</p>
+    <a href="/index.html" class="cta-link">Submit URLs →</a>
+  </div>
+</div>
+
+<footer>
+  <p id="site-footer-links">QuickIndex</p>
+</footer>
+
+<script src="nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+const urlText = document.getElementById('urlText');
+const submitBtn = document.getElementById('submitBtn');
+const progressText = document.getElementById('progressText');
+const resultsContainer = document.getElementById('resultsContainer');
+const exportBtn = document.getElementById('exportBtn');
+const mobileBtn = document.getElementById('mobileBtn');
+const desktopBtn = document.getElementById('desktopBtn');
+
+let results = [];
+let strategy = 'mobile';
+
+mobileBtn.addEventListener('click', () => { strategy = 'mobile'; mobileBtn.classList.add('active'); desktopBtn.classList.remove('active'); });
+desktopBtn.addEventListener('click', () => { strategy = 'desktop'; desktopBtn.classList.add('active'); mobileBtn.classList.remove('active'); });
+
+function extractUrls(){
+  const urlRegex = /https?:\/\/[^\s,"'<>]+/gi;
+  const found = urlText.value.match(urlRegex) || [];
+  return [...new Set(found.map(u => u.trim()))];
+}
+
+function verdictBadge(r){
+  if (r.status === 'pending') return '<span class="verdict-badge pending">checking…</span>';
+  if (r.status === 'error') return '<span class="verdict-badge error">error</span>';
+  const labels = { good: '✓ Good', needs_improvement: '⚠ Needs improvement', poor: '✕ Poor', unknown: 'Unknown' };
+  return `<span class="verdict-badge ${r.verdict}">${labels[r.verdict] || 'Unknown'}</span>`;
+}
+
+function fmtMs(v){ return v === null || v === undefined ? '—' : (v >= 1000 ? (v/1000).toFixed(2) + 's' : Math.round(v) + 'ms'); }
+function fmtCls(v){ return v === null || v === undefined ? '—' : v.toFixed(3); }
+function ratingLabel(r){ return { good: 'Good', needs_improvement: 'Needs work', poor: 'Poor', unknown: 'N/A' }[r] || 'N/A'; }
+
+function renderResults(){
+  if (!results.length){
+    resultsContainer.innerHTML = '<div class="empty">No results yet — paste URLs above.</div>';
+    exportBtn.disabled = true;
+    return;
+  }
+
+  resultsContainer.innerHTML = results.map(r => {
+    if (r.status === 'pending'){
+      return `<div class="result-card"><div class="result-top"><span class="result-url">${r.url}</span>${verdictBadge(r)}</div></div>`;
+    }
+    if (r.status === 'error'){
+      return `<div class="result-card"><div class="result-top"><span class="result-url">${r.url}</span>${verdictBadge(r)}</div><div class="meta-line">${r.errorMessage || 'Lookup failed'}</div></div>`;
+    }
+
+    return `<div class="result-card">
+      <div class="result-top"><span class="result-url">${r.url}</span>${verdictBadge(r)}</div>
+      <div class="vitals-grid">
+        <div class="vital-box ${r.lcpRating}"><span class="vital-name">LCP</span><span class="vital-value">${fmtMs(r.lcp)}</span><span class="vital-rating">${ratingLabel(r.lcpRating)}</span></div>
+        <div class="vital-box ${r.inpRating}"><span class="vital-name">INP</span><span class="vital-value">${fmtMs(r.inp)}</span><span class="vital-rating">${ratingLabel(r.inpRating)}</span></div>
+        <div class="vital-box ${r.clsRating}"><span class="vital-name">CLS</span><span class="vital-value">${fmtCls(r.cls)}</span><span class="vital-rating">${ratingLabel(r.clsRating)}</span></div>
+        <div class="vital-box unknown"><span class="vital-name">FCP</span><span class="vital-value">${fmtMs(r.fcp)}</span><span class="vital-rating">lab/field</span></div>
+        <div class="vital-box unknown"><span class="vital-name">TTFB</span><span class="vital-value">${fmtMs(r.ttfb)}</span><span class="vital-rating">lab/field</span></div>
+        <div class="vital-box unknown"><span class="vital-name">Perf Score</span><span class="vital-value">${r.performanceScore ?? '—'}</span><span class="vital-rating">/100</span></div>
+      </div>
+      <div class="meta-line">${r.fieldDataAvailable ? '✓ Real-world field data (CrUX) used' : 'Lab data only — not enough real-world traffic for field data'} · ${r.strategy === 'desktop' ? '🖥 Desktop' : '📱 Mobile'} scan</div>
+    </div>`;
+  }).join('');
+
+  const allDone = results.every(r => r.status !== 'pending');
+  exportBtn.disabled = !allDone;
+}
+
+async function checkOne(url){
+  try {
+    const res = await fetch('/api/web-vitals', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ url, strategy })
+    });
+    const data = await res.json();
+    if (!res.ok || data.error) {
+      return { status: 'error', errorMessage: data.error || `HTTP ${res.status}` };
+    }
+    return { status: 'done', ...data };
+  } catch(e){
+    return { status: 'error', errorMessage: e.message || 'Network error' };
+  }
+}
+
+submitBtn.addEventListener('click', async () => {
+  const urls = extractUrls();
+  if (!urls.length){
+    progressText.textContent = 'Add at least one valid URL first.';
+    return;
+  }
+
+  results = urls.map(u => ({ url: u, status: 'pending' }));
+  renderResults();
+  submitBtn.disabled = true;
+
+  for (let i = 0; i < results.length; i++){
+    progressText.textContent = `Checking ${i+1} of ${results.length}… (PageSpeed scans can take 10-20s each)`;
+    const outcome = await checkOne(results[i].url);
+    results[i] = { url: results[i].url, ...outcome };
+    renderResults();
+  }
+
+  progressText.textContent = `Done — checked ${results.length} URL(s).`;
+  submitBtn.disabled = false;
+});
+
+exportBtn.addEventListener('click', () => {
+  if (!results.length) return;
+
+  const rows = results.map(r => ({
+    URL: r.url,
+    Strategy: r.strategy || strategy,
+    Verdict: r.verdict || r.status,
+    LCP: r.lcp ?? '—',
+    'LCP Rating': ratingLabel(r.lcpRating),
+    INP: r.inp ?? '—',
+    'INP Rating': ratingLabel(r.inpRating),
+    CLS: r.cls ?? '—',
+    'CLS Rating': ratingLabel(r.clsRating),
+    FCP: r.fcp ?? '—',
+    TTFB: r.ttfb ?? '—',
+    'Performance Score': r.performanceScore ?? '—',
+    'Field Data Used': r.fieldDataAvailable ? 'Yes' : 'No',
+  }));
+
+  const ws = XLSX.utils.json_to_sheet(rows);
+  ws['!cols'] = [
+    { wch: 45 }, { wch: 10 }, { wch: 16 }, { wch: 10 }, { wch: 14 },
+    { wch: 10 }, { wch: 14 }, { wch: 10 }, { wch: 14 }, { wch: 10 },
+    { wch: 10 }, { wch: 16 }, { wch: 14 },
+  ];
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Web Vitals');
+
+  const timestamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+  XLSX.writeFile(wb, `quickindex-web-vitals-${timestamp}.xlsx`);
+});
+</script>
+
+</body>
+</html>
