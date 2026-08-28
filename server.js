@@ -52,23 +52,65 @@ const NAV_LINKS = [
   { href: "/web-vital.html", label: "Web Vitals" },
 ];
 
-function buildNavHtml() {
-  const items = NAV_LINKS.map(
-    (l) =>
-      `<a href="${l.href}" style="color:#fff;text-decoration:none;margin-right:20px;font-family:sans-serif;font-size:14px;">${l.label}</a>`
-  ).join("\n        ");
+function buildNavHtml(activePath) {
+  const links = NAV_LINKS.map((l) => {
+    const isActive = l.href === activePath || (l.href === "/" && activePath === "/index.html");
+    return `<a href="${l.href}"${isActive ? ' class="active"' : ""}>${l.label}</a>`;
+  }).join("\n        ");
 
-  return `<nav style="background:#111;padding:14px 24px;display:flex;align-items:center;flex-wrap:wrap;">
-        ${items}
+  // Self-contained: styles + markup, safe to inject into any page's <body>.
+  return `<style>
+        .qi-nav{position:sticky;top:0;z-index:999;display:flex;align-items:center;justify-content:space-between;
+          padding:14px 28px;background:rgba(10,14,20,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+          border-bottom:1px solid rgba(255,255,255,.07);
+          font-family:ui-monospace,'SF Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,monospace;}
+        .qi-brand{display:flex;align-items:center;gap:10px;color:#EDF1F5;font-weight:600;font-size:15px;
+          letter-spacing:-.02em;text-decoration:none;white-space:nowrap;}
+        .qi-dot{width:8px;height:8px;border-radius:50%;background:#00E6A0;flex:none;
+          animation:qi-pulse 2s infinite;}
+        @keyframes qi-pulse{
+          0%{box-shadow:0 0 0 0 rgba(0,230,160,.55);}
+          70%{box-shadow:0 0 0 7px rgba(0,230,160,0);}
+          100%{box-shadow:0 0 0 0 rgba(0,230,160,0);}
+        }
+        .qi-links{display:flex;align-items:center;gap:28px;}
+        .qi-links a{position:relative;color:#7C8798;text-decoration:none;font-size:13px;
+          letter-spacing:.02em;padding:6px 1px;transition:color .18s ease;}
+        .qi-links a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1.5px;
+          background:#00E6A0;transform:scaleX(0);transform-origin:right;transition:transform .25s ease;}
+        .qi-links a:hover{color:#EDF1F5;}
+        .qi-links a:hover::after{transform:scaleX(1);transform-origin:left;}
+        .qi-links a.active{color:#00E6A0;}
+        .qi-links a.active::after{transform:scaleX(1);}
+        .qi-toggle{display:none;}
+        .qi-burger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:4px;}
+        .qi-burger span{width:20px;height:2px;background:#EDF1F5;border-radius:1px;}
+        @media (max-width:720px){
+          .qi-links{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:flex-start;
+            gap:0;background:rgba(10,14,20,.98);border-bottom:1px solid rgba(255,255,255,.07);
+            max-height:0;overflow:hidden;transition:max-height .25s ease;}
+          .qi-links a{padding:14px 28px;width:100%;box-sizing:border-box;}
+          .qi-links a::after{display:none;}
+          .qi-burger{display:flex;}
+          .qi-toggle:checked ~ .qi-links{max-height:400px;}
+        }
+      </style>
+      <nav class="qi-nav">
+        <a href="/" class="qi-brand"><span class="qi-dot"></span>QuickIndex</a>
+        <input type="checkbox" id="qi-toggle" class="qi-toggle">
+        <label for="qi-toggle" class="qi-burger" aria-label="Toggle menu"><span></span><span></span><span></span></label>
+        <div class="qi-links">
+        ${links}
+        </div>
       </nav>`;
 }
 
 // Reads an HTML file from /public and injects the nav right after <body>
 // (or prepends it if no <body> tag is found), then sends the result.
-function serveHtmlWithNav(filePath, res, next) {
+function serveHtmlWithNav(filePath, activePath, res, next) {
   fs.readFile(filePath, "utf8", (err, html) => {
     if (err) return next();
-    const nav = buildNavHtml();
+    const nav = buildNavHtml(activePath);
     const injected = /<body[^>]*>/i.test(html)
       ? html.replace(/<body[^>]*>/i, (match) => `${match}\n      ${nav}`)
       : `${nav}\n${html}`;
@@ -80,12 +122,12 @@ function serveHtmlWithNav(filePath, res, next) {
 // nav before falling back to the plain static handler below.
 app.get(/\.html$/, (req, res, next) => {
   const filePath = path.join(PUBLIC_DIR, decodeURIComponent(req.path));
-  serveHtmlWithNav(filePath, res, next);
+  serveHtmlWithNav(filePath, req.path, res, next);
 });
 
 // Also inject the nav on the root "/" (served from public/index.html).
 app.get("/", (req, res, next) => {
-  serveHtmlWithNav(path.join(PUBLIC_DIR, "index.html"), res, next);
+  serveHtmlWithNav(path.join(PUBLIC_DIR, "index.html"), "/", res, next);
 });
 
 app.use(express.json());
@@ -167,7 +209,7 @@ app.get("/hub", (req, res) => {
     <!DOCTYPE html>
     <html><head><title>Discovery Hub</title></head>
     <body>
-      ${buildNavHtml()}
+      ${buildNavHtml("/hub")}
       <h1>Discovery Hub</h1>
       <p>Outbound links for crawler discovery.</p>
       <ul>${links}</ul>
