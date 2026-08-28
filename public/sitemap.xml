@@ -20,6 +20,11 @@
 <priority>1.0</priority>
 </url>
 <url>
+<loc>https://indexer-saas-production.up.railway.app/schema-checker.html</loc>
+<changefreq>daily</changefreq>
+<priority>1.0</priority>
+</url>
+<url>
 <loc>https://indexer-saas-production.up.railway.app/hub</loc>
 <changefreq>daily</changefreq>
 <priority>1.0</priority>
