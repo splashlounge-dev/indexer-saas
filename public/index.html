@@ -148,13 +148,7 @@
       <span class="ping-dot"></span>
       <span class="brand-name">QuickIndex</span>
     </div>
-    <nav class="main-nav" aria-label="Main navigation">
-      <a href="https://indexer-saas-production.up.railway.app" class="nav-link active">Submit URLs</a>
-      <a href="/check-index.html" class="nav-link" title="Check whether a page is eligible to be indexed">Check Indexability</a>
-      <a href="/seo-audit.html" class="nav-link" title="Audit on-page SEO fundamentals">SEO Auditor</a>
-      <a href="/sitemap-audit.html" class="nav-link" title="Scan your sitemap for pages that can't be indexed">Sitemap Auditor</a>
-      <a href="/schema-checker.html" class="nav-link" title="Check structured data / schema markup">Schema Checker</a>
-    </nav>
+    <nav class="nav-links" id="site-nav" aria-label="Main navigation"></nav>
     <div class="stats" id="stats">
       <div class="stat"><span class="stat-value" id="statTotal">0</span><span class="stat-label">submitted</span></div>
       <div class="stat"><span class="stat-value" id="statAccepted">0</span><span class="stat-label">accepted</span></div>
@@ -171,31 +165,14 @@
   <main>
     <section class="panel submit-panel">
       <h1>Send your URLs down the wire.</h1>
-      <p class="sub">One notification, three engines listening — Bing, Yandex, DuckDuckGo. Paste one URL per line, or upload a file below.</p>
+      <p class="sub">One notification, three engines listening — Bing, Yandex, DuckDuckGo. Paste one URL per line.</p>
       <textarea id="urlInput" placeholder="https://example.com/new-page-1
 https://example.com/new-page-2
 https://example.com/blog/my-post"></textarea>
-
-      <div class="drop" id="dropZone">
-        <div class="drop-left">
-          <span class="drop-icon">⇪</span>
-          <span class="drop-text"><b>Drop a file here</b> or click browse — .txt, .csv or .xlsx, one URL per line (or any column)</span>
-        </div>
-        <div style="display:flex; align-items:center; gap:10px;">
-          <span class="file-chip" id="fileChip"><span id="fileName"></span><button id="fileClear" title="Remove file">✕</button></span>
-          <button class="file-btn" id="browseBtn" type="button">Browse file</button>
-          <input type="file" id="fileInput" accept=".txt,.csv,.xlsx,.xls">
-        </div>
-      </div>
-
       <div class="submit-row">
         <button id="submitBtn">Submit URLs</button>
         <span id="submitStatus" class="submit-status"></span>
       </div>
-
-      <div id="liveProgress" class="live-progress" style="display:none;"></div>
-      <div id="resultSummary" class="result-summary" style="display:none;"></div>
-
       <details class="honesty-note">
         <summary>What this actually does (read before you rely on it)</summary>
         <ul>
@@ -230,7 +207,7 @@ https://example.com/blog/my-post"></textarea>
     <section class="panel info-panel">
       <h2>How IndexNow submission works</h2>
       <ol class="steps-list">
-        <li><strong>You paste or upload URLs</strong> — one per line, straight from your sitemap, a blog post, or a batch of updated pages.</li>
+        <li><strong>You paste URLs</strong> — one per line, straight from your sitemap, a blog post, or a batch of updated pages.</li>
         <li><strong>QuickIndex pings IndexNow</strong> — a single API call reaches Bing, Yandex, and DuckDuckGo at once, telling them a page is new or has changed.</li>
         <li><strong>Crawlers get notified within seconds</strong> — instead of waiting for their next scheduled crawl, these engines can visit the page right away.</li>
         <li><strong>You track the result</strong> — every submission is logged with its HTTP status so you can see what was accepted.</li>
@@ -273,8 +250,8 @@ https://example.com/blog/my-post"></textarea>
   </main>
 
   <style>
-    .main-nav{display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
-    .main-nav .nav-link{
+    .nav-links{display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
+    .nav-links a{
       color:var(--muted,#64758f);
       text-decoration:none;
       font-size:13px;
@@ -283,101 +260,13 @@ https://example.com/blog/my-post"></textarea>
       border-bottom:2px solid transparent;
       transition:color .15s ease, border-color .15s ease;
     }
-    .main-nav .nav-link:hover{color:var(--text,#152238);}
-    .main-nav .nav-link.active{
+    .nav-links a:hover{color:var(--text,#152238);}
+    .nav-links a.active{
       color:var(--text,#152238);
       border-bottom-color:var(--green,#2f8fe6);
     }
     .breadcrumbs{max-width:1400px;margin:14px auto 0;padding:0 20px;}
     .breadcrumbs ol{list-style:none;display:flex;gap:6px;margin:0;padding:0;font-size:12px;color:var(--muted,#64758f);}
-
-    .drop{
-      margin-top:14px;
-      border:1px dashed var(--border,#dbe7f4);
-      border-radius:5px;
-      padding:18px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      flex-wrap:wrap;
-      background:var(--bg,#f3f8fd);
-      transition:border-color .15s;
-    }
-    .drop.drag{border-color:var(--green,#2f8fe6);background:rgba(47,143,230,.06);}
-    .drop-left{display:flex;align-items:center;gap:12px;}
-    .drop-icon{color:var(--muted,#64758f);font-size:18px;}
-    .drop-text{font-size:12.5px;color:var(--muted,#64758f);}
-    .drop-text b{color:var(--text,#152238);}
-    .file-btn{
-      background:#ffffff;
-      border:1px solid var(--border,#dbe7f4);
-      color:var(--text,#152238);
-      padding:9px 16px;
-      border-radius:5px;
-      font-family:inherit;
-      font-size:12.5px;
-      cursor:pointer;
-    }
-    .file-btn:hover{border-color:var(--green,#2f8fe6);}
-    #fileInput{display:none;}
-    .file-chip{
-      display:none;
-      align-items:center;
-      gap:8px;
-      background:#ffffff;
-      border:1px solid var(--green,#2f8fe6);
-      padding:6px 10px;
-      border-radius:4px;
-      font-size:12px;
-      color:var(--green,#2f8fe6);
-    }
-    .file-chip button{
-      background:none;border:none;color:var(--muted,#64758f);cursor:pointer;font-size:13px;
-    }
-
-    .live-progress{
-      margin-top:16px;
-      border:1px solid var(--border,#dbe7f4);
-      border-radius:5px;
-      padding:14px;
-      background:var(--bg,#f3f8fd);
-      font-size:12.5px;
-    }
-    .live-progress .progress-row{
-      display:flex;
-      justify-content:space-between;
-      padding:6px 2px;
-      border-bottom:1px dashed var(--border-soft,#e9f2fb);
-      color:var(--muted,#64758f);
-    }
-    .live-progress .progress-row:last-child{border-bottom:none;}
-    .live-progress .progress-row .host{color:var(--text,#152238);}
-    .live-progress .progress-row .timer{font-variant-numeric:tabular-nums;}
-    .live-progress .progress-row.done .timer{color:var(--success,#0fa968);}
-
-    .result-summary{
-      margin-top:16px;
-      border:1px solid var(--border,#dbe7f4);
-      border-radius:5px;
-      padding:16px;
-      background:var(--bg,#f3f8fd);
-    }
-    .result-summary .summary-line{font-size:14px;font-weight:700;color:var(--text,#152238);margin-bottom:10px;}
-    .result-summary .summary-line .accepted-count{color:var(--success,#0fa968);}
-    .result-summary .retry-btn{
-      background:#ffffff;
-      border:1px solid var(--amber,#b45309);
-      color:var(--amber,#b45309);
-      padding:8px 16px;
-      border-radius:5px;
-      font-family:inherit;
-      font-size:12.5px;
-      cursor:pointer;
-      margin-top:8px;
-    }
-    .result-summary .retry-btn:hover{background:rgba(180,83,9,.08);}
-
     .info-panel .steps-list{margin:0;padding-left:20px;line-height:1.8;color:var(--muted,#64758f);font-size:13.5px;}
     .info-panel .steps-list strong{color:var(--text,#152238);}
     .info-panel a{color:var(--green,#2f8fe6);}
@@ -389,7 +278,7 @@ https://example.com/blog/my-post"></textarea>
     .faq-panel .faq-item p{color:var(--muted,#64758f);font-size:13.5px;line-height:1.7;margin:10px 0 0;}
   </style>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="nav.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
