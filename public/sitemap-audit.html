@@ -130,10 +130,10 @@
   header{display:flex;align-items:center;justify-content:space-between;padding:22px 4px;border-bottom:1px solid var(--border);max-width:1400px;margin:0 auto;flex-wrap:wrap;gap:14px;}
   .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:19px;font-weight:700;}
   .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);}
-  .main-nav{display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
-  .main-nav .nav-link{color:var(--muted);text-decoration:none;font-family:var(--display);font-size:13px;font-weight:500;padding:6px 2px;border-bottom:2px solid transparent;}
-  .main-nav .nav-link:hover{color:var(--text);}
-  .main-nav .nav-link.active{color:var(--text);border-bottom-color:var(--accent);}
+  .nav-links{display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
+  .nav-links a{color:var(--muted);text-decoration:none;font-family:var(--display);font-size:13px;font-weight:500;padding:6px 2px;border-bottom:2px solid transparent;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-links a.active{color:var(--text);border-bottom-color:var(--accent);}
   .breadcrumbs{max-width:1400px;margin:14px auto 0;padding:0 20px;}
   .breadcrumbs ol{list-style:none;display:flex;gap:6px;margin:0;padding:0;font-size:11.5px;color:var(--muted);}
   .breadcrumbs a{color:var(--muted);text-decoration:none;}
@@ -224,13 +224,7 @@
 
 <header>
   <div class="brand"><span class="dot"></span>QuickIndex</div>
-  <nav class="main-nav" aria-label="Main navigation">
-    <a href="https://indexer-saas-production.up.railway.app/" class="nav-link">Submit URLs</a>
-    <a href="/check-index.html" class="nav-link">Check Indexability</a>
-    <a href="/seo-audit.html" class="nav-link">SEO Auditor</a>
-    <a href="/sitemap-audit.html" class="nav-link active">Sitemap Auditor</a>
-    <a href="/schema-checker.html" class="nav-link">Schema Checker</a>
-  </nav>
+  <nav class="nav-links" id="site-nav" aria-label="Main navigation"></nav>
 </header>
 
 <nav class="breadcrumbs" aria-label="Breadcrumb">
@@ -340,14 +334,15 @@
 
   <div class="cta-box">
     <p>Found pages that are actually indexable? Notify crawlers about them right away.</p>
-    <a href="https://indexer-saas-production.up.railway.app/" class="cta-link">Submit URLs →</a>
+    <a href="/index.html" class="cta-link">Submit URLs →</a>
   </div>
 </div>
 
 <footer>
-  <p>QuickIndex — <a href="https://indexer-saas-production.up.railway.app/">Submit URLs</a> · <a href="/check-index.html">Check Indexability</a> · <a href="/seo-audit.html">SEO Auditor</a> · <a href="/sitemap-audit.html">Sitemap Auditor</a></p>
+  <p id="site-footer-links">QuickIndex</p>
 </footer>
 
+<script src="nav.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 const sitemapUrlInput = document.getElementById('sitemapUrl');
