@@ -23,6 +23,7 @@ const checkIndexRoute = require("./check-index-route");
 const seoAuditRoute = require("./seo-audit-route");
 const sitemapAuditRoute = require("./sitemap-audit-route");
 const schemaCheckerRoute = require("./schema-checker-route");
+const webVitalsRoute = require("./web-vitals-route");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -37,6 +38,7 @@ app.use(checkIndexRoute);
 app.use(seoAuditRoute);
 app.use(sitemapAuditRoute);
 app.use(schemaCheckerRoute);
+app.use(webVitalsRoute);
 
 // ---------- Database ----------
 const db = new Database(path.join(__dirname, "quickindex.db"));
