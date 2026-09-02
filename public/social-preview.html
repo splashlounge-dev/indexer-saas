@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HFMX99GFCJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-HFMX99GFCJ');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Social Share Preview Tool — See Your Link on Google, Facebook &amp; X | QuickIndex</title>
+<meta name="description" content="Paste a URL and instantly preview how it looks when shared on Google search, Facebook/LinkedIn, and Twitter/X — pulled from the page's real Open Graph and Twitter Card tags. Free, no sign-up.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://indexer-saas-production.up.railway.app/social-preview.html">
+<link rel="icon" href="QI-favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="QI-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="QI-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="QI-apple-touch-icon.png">
+
+<meta property="og:title" content="Free Social Share Preview Tool — QuickIndex">
+<meta property="og:description" content="Paste a URL and instantly preview how it looks when shared on Google, Facebook/LinkedIn, and Twitter/X.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="QuickIndex">
+<meta property="og:url" content="https://indexer-saas-production.up.railway.app/social-preview.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Free Social Share Preview Tool — QuickIndex">
+<meta name="twitter:description" content="Paste a URL and instantly preview how it looks when shared on Google, Facebook/LinkedIn, and Twitter/X.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "QuickIndex",
+  "url": "https://indexer-saas-production.up.railway.app/",
+  "description": "A bulk URL indexing tool that submits pages to Bing, Yandex, and DuckDuckGo via the IndexNow protocol.",
+  "publisher": { "@type": "Organization", "name": "QuickIndex" }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "QuickIndex Social Share Preview Tool",
+  "applicationCategory": "SEO Tool",
+  "operatingSystem": "Web",
+  "url": "https://indexer-saas-production.up.railway.app/social-preview.html",
+  "description": "A free tool that reads a page's Open Graph and Twitter Card meta tags and renders a live mockup of how the link will appear when shared on Google search, Facebook/LinkedIn, and Twitter/X.",
+  "isPartOf": { "@type": "WebSite", "name": "QuickIndex", "url": "https://indexer-saas-production.up.railway.app/" },
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": [
+    "Google search result snippet preview",
+    "Facebook/LinkedIn Open Graph card preview",
+    "Twitter/X Card preview",
+    "Missing tag detection with fallback explanation",
+    "Bulk URL checking with Excel export"
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://indexer-saas-production.up.railway.app/" },
+    { "@type": "ListItem", "position": 2, "name": "Social Share Preview", "item": "https://indexer-saas-production.up.railway.app/social-preview.html" }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why does my link look wrong when shared on Facebook or Twitter?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Social platforms build their preview cards from a page's Open Graph tags (og:title, og:description, og:image) and Twitter Card tags. If those tags are missing, the platform falls back to the page's regular title and meta description, and often shows no image at all — which is usually why a shared link looks blank or generic." }
+    },
+    {
+      "@type": "Question",
+      "name": "What image size should og:image be?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Facebook and LinkedIn recommend at least 1200×630 pixels for og:image so it renders sharply as a large card rather than a small square thumbnail. Twitter/X uses the same image for its summary_large_image card type." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this tool change anything on my site?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No — it only reads the page's existing HTML and renders a preview. To fix a broken preview, you need to add or correct the relevant meta tags in your own page's <head>." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this tool free?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, the Social Share Preview Tool is free to use with no sign-up and no daily limit." }
+    }
+  ]
+}
+</script>
+
+<style>
+  :root{
+    --bg:#f5f9fd;
+    --panel:#ffffff;
+    --border:#d8e6f5;
+    --border-soft:#e9f2fb;
+    --text:#152238;
+    --muted:#64758f;
+    --green:#2f8fe6;
+    --green-dim:#1c6fc2;
+    --red:#dc2626;
+    --amber:#b45309;
+    --mono:'JetBrains Mono','Fira Code',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--mono);padding:0 20px 60px;}
+  header{display:flex;align-items:center;justify-content:space-between;padding:22px 4px;border-bottom:1px solid var(--border);max-width:1400px;margin:0 auto;flex-wrap:wrap;gap:14px;}
+  .brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;}
+  .brand a{color:var(--text);text-decoration:none;display:flex;align-items:center;gap:10px;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);}
+  .nav-links{display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;padding:6px 2px;border-bottom:2px solid transparent;transition:color .15s ease, border-color .15s ease;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-links a.active{color:var(--text);border-bottom-color:var(--green);}
+  .breadcrumbs{max-width:1400px;margin:14px auto 0;padding:0 20px;}
+  .breadcrumbs ol{list-style:none;display:flex;gap:6px;margin:0;padding:0;font-size:12px;color:var(--muted);}
+  .breadcrumbs a{color:var(--muted);text-decoration:none;}
+  .breadcrumbs a:hover{color:var(--text);}
+  .breadcrumbs li:not(:last-child)::after{content:"/";margin-left:6px;color:var(--border);}
+  .wrap{max-width:1400px;margin:0 auto;}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:34px;margin-top:28px;}
+  h1{font-size:26px;margin:0 0 8px;font-weight:700;}
+  h2{font-size:16px;margin:0 0 18px;font-weight:700;}
+  h3{font-size:14.5px;margin:0 0 8px;font-weight:700;color:var(--text);}
+  .sub{color:var(--muted);font-size:13.5px;margin:0 0 22px;line-height:1.5;}
+  .sub b{color:var(--text);}
+  input[type="text"]{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:var(--mono);font-size:13.5px;padding:14px;}
+  input[type="text"]::placeholder{color:#9fb0c8;}
+  input[type="text"]:focus{outline:none;border-color:var(--green);}
+  .actions{display:flex;align-items:center;gap:16px;margin-top:20px;flex-wrap:wrap;}
+  button.submit{background:var(--green-dim);color:#ffffff;border:none;padding:12px 26px;font-weight:700;font-family:var(--mono);font-size:14px;border-radius:5px;cursor:pointer;}
+  button.submit:hover{background:#155fa8;}
+  button.submit:disabled{background:#a9d3f5;color:#5c7896;cursor:not-allowed;}
+  .progress-text{color:var(--muted);font-size:12.5px;}
+  details{margin-top:22px;border-top:1px dashed var(--border-soft);padding-top:16px;}
+  summary{color:var(--amber);cursor:pointer;font-size:13px;list-style:none;}
+  summary::-webkit-details-marker{display:none;}
+  summary:before{content:"▶ ";}
+  details[open] summary:before{content:"▼ ";}
+  .details-body{color:var(--muted);font-size:12.5px;line-height:1.7;margin-top:10px;}
+  .results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px;}
+  .results-header h2{margin:0;}
+  button.export{background:transparent;color:var(--green);border:1px solid var(--green-dim);padding:8px 18px;font-weight:700;font-family:var(--mono);font-size:12.5px;border-radius:5px;cursor:pointer;display:flex;align-items:center;gap:6px;}
+  button.export:hover{background:rgba(47,143,230,.08);border-color:var(--green);}
+  button.export:disabled{opacity:.4;cursor:not-allowed;}
+
+  .result-card{border:1px solid var(--border-soft);border-radius:8px;padding:24px;margin-bottom:20px;}
+  .result-card:last-child{margin-bottom:0;}
+  .result-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px;}
+  .result-url{color:var(--text);font-size:13.5px;word-break:break-all;}
+  .status-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap;}
+  .status-badge.ok{background:rgba(22,163,74,.10);color:#16a34a;}
+  .status-badge.pending{background:rgba(100,116,143,.12);color:var(--muted);}
+  .status-badge.error{background:rgba(220,38,38,.10);color:var(--red);}
+
+  .previews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:12px;}
+  .preview-block{border:1px solid var(--border-soft);border-radius:8px;overflow:hidden;background:#fafcfe;}
+  .preview-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:10px 14px;border-bottom:1px solid var(--border-soft);font-family:var(--mono);}
+
+  /* Google search result mockup */
+  .google-mock{padding:14px 16px;font-family:var(--sans);background:#ffffff;}
+  .google-mock .g-url{color:#202124;font-size:13px;margin-bottom:2px;}
+  .google-mock .g-title{color:#1a0dab;font-size:18px;line-height:1.3;margin-bottom:3px;}
+  .google-mock .g-desc{color:#4d5156;font-size:13px;line-height:1.5;}
+
+  /* Facebook/LinkedIn card mockup */
+  .fb-mock{font-family:var(--sans);}
+  .fb-mock .fb-img{width:100%;aspect-ratio:1.91/1;background:#e4e6eb;display:flex;align-items:center;justify-content:center;color:#8a8d91;font-size:12px;overflow:hidden;}
+  .fb-mock .fb-img img{width:100%;height:100%;object-fit:cover;}
+  .fb-mock .fb-text{padding:10px 14px;background:#f0f2f5;}
+  .fb-mock .fb-domain{color:#65676b;font-size:11px;text-transform:uppercase;letter-spacing:.02em;margin-bottom:3px;}
+  .fb-mock .fb-title{color:#050505;font-size:14px;font-weight:600;line-height:1.3;margin-bottom:3px;}
+  .fb-mock .fb-desc{color:#65676b;font-size:12.5px;line-height:1.4;}
+
+  /* Twitter/X card mockup */
+  .tw-mock{font-family:var(--sans);border:1px solid #cfd9de;border-radius:14px;overflow:hidden;margin:10px;}
+  .tw-mock .tw-img{width:100%;aspect-ratio:1.91/1;background:#e8eef2;display:flex;align-items:center;justify-content:center;color:#8899a6;font-size:12px;overflow:hidden;}
+  .tw-mock .tw-img img{width:100%;height:100%;object-fit:cover;}
+  .tw-mock .tw-text{padding:10px 14px;}
+  .tw-mock .tw-domain{color:#536471;font-size:12px;margin-bottom:2px;}
+  .tw-mock .tw-title{color:#0f1419;font-size:14px;font-weight:600;line-height:1.3;margin-bottom:3px;}
+  .tw-mock .tw-desc{color:#536471;font-size:12.5px;line-height:1.35;}
+
+  .issues-list{margin:14px 0 0;padding-left:18px;color:var(--amber);font-size:12px;line-height:1.8;}
+  .empty{text-align:center;color:var(--muted);padding:40px 0;font-size:13px;}
+
+  .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:6px;}
+  .info-item{border:1px solid var(--border-soft);border-radius:5px;padding:16px 18px;}
+  .info-item p{color:var(--muted);font-size:12.5px;line-height:1.6;margin:0;}
+
+  .faq-item{border-bottom:1px solid var(--border-soft);padding:16px 0;}
+  .faq-item:last-child{border-bottom:none;}
+  .faq-item p{color:var(--muted);font-size:13px;line-height:1.65;margin:6px 0 0;}
+
+  .cta-box{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border:1px solid var(--green-dim);border-radius:8px;padding:18px 22px;background:rgba(47,143,230,.05);margin-top:28px;}
+  .cta-box p{margin:0;font-size:13px;color:var(--muted);}
+  .cta-box a.cta-link{color:#ffffff;background:var(--green-dim);text-decoration:none;font-weight:700;font-family:var(--mono);font-size:13px;padding:9px 18px;border-radius:6px;white-space:nowrap;}
+  .cta-box a.cta-link:hover{background:#155fa8;}
+
+  footer{max-width:1400px;margin:40px auto 0;padding-top:20px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;text-align:center;}
+  footer a{color:var(--muted);}
+</style>
+</head>
+<body>
+
+<header id="site-header"></header>
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/index.html">Home</a></li>
+    <li aria-current="page">Social Share Preview</li>
+  </ol>
+</nav>
+
+<div class="wrap">
+  <div class="card">
+    <h1>What does your link actually look like when someone shares it?</h1>
+    <p class="sub">Paste URLs below, one per line. We read each page's real <b>Open Graph</b> and <b>Twitter Card</b> tags and render a live mockup of how it appears on <b>Google search, Facebook/LinkedIn, and Twitter/X</b>. Free, no sign-up, no daily limit.</p>
+
+    <textarea id="urlText" style="width:100%;min-height:100px;background:var(--bg);border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:var(--mono);font-size:13.5px;padding:14px;resize:vertical;" placeholder="https://example.com/page-1
+https://example.com/page-2" aria-label="URLs to preview"></textarea>
+
+    <div class="actions">
+      <button class="submit" id="submitBtn">Generate Previews</button>
+      <span class="progress-text" id="progressText"></span>
+    </div>
+
+    <details>
+      <summary>What this actually does (read before you rely on it)</summary>
+      <div class="details-body">
+        This fetches each page's HTML and reads its <code>og:title</code>, <code>og:description</code>,
+        <code>og:image</code>, and <code>twitter:*</code> meta tags, applying the same fallback logic real
+        platforms use (missing Open Graph tags fall back to the regular page title/description; missing
+        Twitter Card tags fall back to Open Graph). It then renders a close visual approximation of each
+        platform's card. Actual rendering can vary slightly by platform and can be affected by caching —
+        Facebook and LinkedIn especially cache old previews aggressively, so a page you just fixed may still
+        show the old version there until their cache is manually refreshed via their own debugging tools.
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <div class="results-header">
+      <h2>Results</h2>
+      <button class="export" id="exportBtn" disabled>⬇ Export to Excel</button>
+    </div>
+    <div id="resultsContainer">
+      <div class="empty">No results yet — paste URLs above.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>How to fix a broken preview</h2>
+    <div class="info-grid">
+      <div class="info-item">
+        <h3>Add Open Graph tags</h3>
+        <p>At minimum, add <code>og:title</code>, <code>og:description</code>, and <code>og:image</code> to your page's <code>&lt;head&gt;</code>. This covers Facebook, LinkedIn, and is also the fallback source for Twitter/X.</p>
+      </div>
+      <div class="info-item">
+        <h3>Use a proper image size</h3>
+        <p>Set <code>og:image</code> to at least 1200×630px. Smaller or oddly-cropped images often render as a tiny thumbnail instead of a full card.</p>
+      </div>
+      <div class="info-item">
+        <h3>Set twitter:card explicitly</h3>
+        <p>Add <code>&lt;meta name="twitter:card" content="summary_large_image"&gt;</code> to guarantee a large image card on Twitter/X rather than a small default thumbnail.</p>
+      </div>
+      <div class="info-item">
+        <h3>Clear the platform's cache</h3>
+        <p>After fixing tags, use Facebook's Sharing Debugger or LinkedIn's Post Inspector to force them to re-scrape the page — otherwise they may keep showing a stale cached preview.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Frequently asked questions</h2>
+    <div class="faq-item">
+      <h3>Why does my link look wrong when shared on Facebook or Twitter?</h3>
+      <p>Social platforms build their preview cards from a page's Open Graph tags (og:title, og:description, og:image) and Twitter Card tags. If those tags are missing, the platform falls back to the page's regular title and meta description, and often shows no image at all — which is usually why a shared link looks blank or generic.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What image size should og:image be?</h3>
+      <p>Facebook and LinkedIn recommend at least 1200×630 pixels for og:image so it renders sharply as a large card rather than a small square thumbnail. Twitter/X uses the same image for its summary_large_image card type.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does this tool change anything on my site?</h3>
+      <p>No — it only reads the page's existing HTML and renders a preview. To fix a broken preview, you need to add or correct the relevant meta tags in your own page's &lt;head&gt;.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is this tool free?</h3>
+      <p>Yes, the Social Share Preview Tool is free to use with no sign-up and no daily limit.</p>
+    </div>
+  </div>
+
+  <div class="cta-box">
+    <p>Previews looking sharp? Notify crawlers about your pages right away.</p>
+    <a href="/index.html" class="cta-link">Submit URLs →</a>
+  </div>
+</div>
+
+<footer id="site-footer"></footer>
+
+<script src="site-chrome.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+const urlText = document.getElementById('urlText');
+const submitBtn = document.getElementById('submitBtn');
+const progressText = document.getElementById('progressText');
+const resultsContainer = document.getElementById('resultsContainer');
+const exportBtn = document.getElementById('exportBtn');
+
+let results = [];
+
+function extractUrls(){
+  const urlRegex = /https?:\/\/[^\s,"'<>]+/gi;
+  const found = urlText.value.match(urlRegex) || [];
+  return [...new Set(found.map(u => u.trim()))];
+}
+
+function escapeHtml(str){
+  if (!str) return '';
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function statusBadge(r){
+  if (r.status === 'pending') return '<span class="status-badge pending">generating…</span>';
+  if (r.status === 'error') return '<span class="status-badge error">error</span>';
+  return '<span class="status-badge ok">✓ Generated</span>';
+}
+
+function renderResults(){
+  if (!results.length){
+    resultsContainer.innerHTML = '<div class="empty">No results yet — paste URLs above.</div>';
+    exportBtn.disabled = true;
+    return;
+  }
+
+  resultsContainer.innerHTML = results.map(r => {
+    if (r.status === 'pending'){
+      return `<div class="result-card"><div class="result-top"><span class="result-url">${escapeHtml(r.url)}</span>${statusBadge(r)}</div></div>`;
+    }
+    if (r.status === 'error' || r.error){
+      return `<div class="result-card"><div class="result-top"><span class="result-url">${escapeHtml(r.url)}</span>${statusBadge({status:'error'})}</div><div class="issues-list">${escapeHtml(r.errorMessage || r.error || 'Lookup failed')}</div></div>`;
+    }
+
+    const g = r.googlePreview || {};
+    const fb = r.facebookPreview || {};
+    const tw = r.twitterPreview || {};
+
+    const fbImg = fb.image
+      ? `<img src="${escapeHtml(fb.image)}" alt="" loading="lazy" onerror="this.parentElement.textContent='Image failed to load'" />`
+      : 'No image (og:image missing)';
+    const twImg = tw.image
+      ? `<img src="${escapeHtml(tw.image)}" alt="" loading="lazy" onerror="this.parentElement.textContent='Image failed to load'" />`
+      : 'No image';
+
+    const issuesHtml = (r.issues && r.issues.length)
+      ? `<ul class="issues-list">${r.issues.map(i => `<li>${escapeHtml(i)}</li>`).join('')}</ul>`
+      : '';
+
+    return `<div class="result-card">
+      <div class="result-top"><span class="result-url">${escapeHtml(r.url)}</span>${statusBadge(r)}</div>
+
+      <div class="previews-grid">
+        <div class="preview-block">
+          <div class="preview-label">Google Search</div>
+          <div class="google-mock">
+            <div class="g-url">${escapeHtml(g.displayUrl || r.host || '')}</div>
+            <div class="g-title">${escapeHtml(g.title || '')}</div>
+            <div class="g-desc">${escapeHtml(g.description || '')}</div>
+          </div>
+        </div>
+
+        <div class="preview-block">
+          <div class="preview-label">Facebook / LinkedIn</div>
+          <div class="fb-mock">
+            <div class="fb-img">${fbImg}</div>
+            <div class="fb-text">
+              <div class="fb-domain">${escapeHtml(fb.domain || '')}</div>
+              <div class="fb-title">${escapeHtml(fb.title || '')}</div>
+              <div class="fb-desc">${escapeHtml(fb.description || '')}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="preview-block">
+          <div class="preview-label">Twitter / X</div>
+          <div class="tw-mock">
+            <div class="tw-img">${twImg}</div>
+            <div class="tw-text">
+              <div class="tw-domain">${escapeHtml(tw.domain || '')}</div>
+              <div class="tw-title">${escapeHtml(tw.title || '')}</div>
+              <div class="tw-desc">${escapeHtml(tw.description || '')}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      ${issuesHtml}
+    </div>`;
+  }).join('');
+
+  const allDone = results.every(r => r.status !== 'pending');
+  exportBtn.disabled = !allDone;
+}
+
+async function checkOne(url){
+  try {
+    const res = await fetch('/api/social-preview', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ url })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      return { status: 'error', errorMessage: data.error || `HTTP ${res.status}` };
+    }
+    if (data.error) {
+      return { status: 'error', errorMessage: data.error };
+    }
+    return { status: 'done', ...data };
+  } catch(e){
+    return { status: 'error', errorMessage: e.message || 'Network error' };
+  }
+}
+
+submitBtn.addEventListener('click', async () => {
+  const urls = extractUrls();
+  if (!urls.length){
+    progressText.textContent = 'Add at least one valid URL first.';
+    return;
+  }
+
+  results = urls.map(u => ({ url: u, status: 'pending' }));
+  renderResults();
+  submitBtn.disabled = true;
+
+  for (let i = 0; i < results.length; i++){
+    progressText.textContent = `Generating ${i+1} of ${results.length}…`;
+    const outcome = await checkOne(results[i].url);
+    results[i] = { url: results[i].url, ...outcome };
+    renderResults();
+  }
+
+  progressText.textContent = `Done — generated previews for ${results.length} URL(s).`;
+  submitBtn.disabled = false;
+});
+
+exportBtn.addEventListener('click', () => {
+  if (!results.length) return;
+
+  const rows = results.map(r => ({
+    URL: r.url,
+    'Page Title': r.title || '—',
+    'Meta Description': r.metaDescription || '—',
+    'OG Title': (r.og && r.og.title) || '—',
+    'OG Description': (r.og && r.og.description) || '—',
+    'OG Image': (r.og && r.og.image) || '—',
+    'Twitter Card': (r.twitter && r.twitter.card) || '—',
+    'Twitter Title': (r.twitter && r.twitter.title) || '—',
+    'Twitter Image': (r.twitter && r.twitter.image) || '—',
+    Issues: (r.issues && r.issues.length) ? r.issues.join(' | ') : (r.errorMessage || r.error || 'None'),
+  }));
+
+  const ws = XLSX.utils.json_to_sheet(rows);
+  ws['!cols'] = [
+    { wch: 40 }, { wch: 35 }, { wch: 45 }, { wch: 35 }, { wch: 45 },
+    { wch: 45 }, { wch: 16 }, { wch: 35 }, { wch: 45 }, { wch: 55 },
+  ];
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Social Previews');
+
+  const timestamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+  XLSX.writeFile(wb, `quickindex-social-preview-${timestamp}.xlsx`);
+});
+</script>
+
+</body>
+</html>
