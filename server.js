@@ -32,6 +32,7 @@ const seoAuditRoute = require("./seo-audit-route");
 const sitemapAuditRoute = require("./sitemap-audit-route");
 const schemaCheckerRoute = require("./schema-checker-route");
 const webVitalsRoute = require("./web-vitals-route");
+const socialPreviewRoute = require("./social-preview-route");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -49,7 +50,8 @@ const NAV_LINKS = [
   { href: "/seo-audit.html", label: "SEO Audit" },
   { href: "/sitemap-audit.html", label: "Sitemap Audit" },
   { href: "/schema-checker.html", label: "Schema Checker" },
-  { href: "/web-vital.html", label: "Web Vitals" },
+  { href: "/web-vitals.html", label: "Web Vitals" },
+  { href: "/social-preview.html", label: "Social Preview" },
 ];
 
 function buildNavHtml(activePath) {
@@ -137,6 +139,7 @@ app.use(seoAuditRoute);
 app.use(sitemapAuditRoute);
 app.use(schemaCheckerRoute);
 app.use(webVitalsRoute);
+app.use(socialPreviewRoute);
 
 // ---------- Database ----------
 const db = new Database(path.join(__dirname, "quickindex.db"));
